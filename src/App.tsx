@@ -1,10 +1,8 @@
 import React from 'react';
 import './App.css';
-import {TodoList} from './TodoList';
+import {Todolist} from './Todolist';
 
 function App() {
-    const truck1 = "What to learn1"
-    const truck2 = "What to learn2222"
 
     const tasks1 = [
         { id: 1, title: "HTML&CSS", isDone: true },
@@ -17,11 +15,14 @@ function App() {
         { id: 3, title: "Yo", isDone: false }
     ]
 
+    const removeTask = ()=> {
+        console.log("jnknsmol")
+    }
 
     return (
         <div className="App">
-            <TodoList truck={truck1} task={tasks1}/>
-            <TodoList truck={truck2} task={tasks2}/>
+            <Todolist title="What to learn" tasks={tasks1} remove={removeTask}/>
+           {/* <Todolist title="Songs" tasks={tasks2} />*/}
         </div>
     );
 }
