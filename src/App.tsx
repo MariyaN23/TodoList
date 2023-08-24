@@ -27,23 +27,24 @@ function App() {
         setTasks(tasks.filter(taskElement=>taskElement.id !== id))
     }
 
-    let durshlag = tasks
+    /*let [active, setActive] = useState<ActiveType>('All')
 
-    let [active, setActive] = useState('All')
-    const filterTask = (active: ActiveType) => {
-        setActive(active)
+    const filterTask = (buttonName: ActiveType) => {
+        setActive(buttonName)
     }
-    if (active === 'Active') {
-        (tasks.filter(el=>el.isDone))
-    }
-    if (active === 'Completed') {
-        (tasks.filter(el=>!el.isDone))
-    }
+        let durshlag = tasks
+        if (active === 'Active') {
+            durshlag = tasks.filter(el => el.isDone)
+        }
+        if (active === 'Completed') {
+            durshlag = tasks.filter(el => !el.isDone)
+        }*/
 
     return (
         <div className="App">
-            <Todolist title="What to learn" tasks={durshlag} remove={removeTask}
-            filter={filterTask}/>
+            <Todolist title="What to learn" tasks={tasks} remove={removeTask}
+                      //filter={filterTask}
+            />
            {/* <Todolist title="Songs" tasks={tasks2} />*/}
         </div>
     );
