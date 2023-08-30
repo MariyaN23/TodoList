@@ -15,8 +15,8 @@ function App() {
         { id: v1(), title: "GraphQL", isDone: false }
     ]);
 
-    const addTask = ()=> {
-        const newTask = { id: v1(), title: "Ofyll[55", isDone: false }
+    const addTask = (title: string)=> {
+        const newTask = { id: v1(), title: title, isDone: false }
         setTasks([newTask, ...tasks])
     }
 
