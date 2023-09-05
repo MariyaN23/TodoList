@@ -40,6 +40,15 @@ function App() {
         setFilter(value);
     }
 
+    const changeIsDone =(taskId: string, newIsDone: boolean)=> {
+        /*const currentTask = tasks.find(el=>el.id === taskId)
+        if (currentTask) {
+            currentTask.isDone=isDone
+            setTasks([...tasks])
+        }*/
+        setTasks(tasks.map(el=>el.id === taskId ? {...el, isDone: newIsDone} : el))
+    }
+
     return (
         <div className="App">
             <Todolist title="What to learn"
@@ -47,6 +56,7 @@ function App() {
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
+                      changeIsDone={changeIsDone}
             />
         </div>
     );
