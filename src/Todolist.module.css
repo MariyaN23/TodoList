@@ -1,0 +1,11 @@
+.error {
+    border: 3px solid red;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.activeFilter {
+    background-color: rgba(100, 75, 227, 0.79);
+}
