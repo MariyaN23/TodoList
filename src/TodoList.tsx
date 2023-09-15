@@ -12,11 +12,12 @@ type TaskType = {
 type PropsType = {
     title: string
     tasks: Array<TaskType>
-    removeTask: (taskId: string) => void
+    removeTask: (todoId: string, taskId: string) => void
     changeFilter: (todoId: string, value: FilterValuesType) => void
-    addTask: (title: string)=>void
-    changeIsDone: (taskId: string, isDone: boolean)=>void
+    addTask: (todoId: string, title: string)=>void
+    changeIsDone: (todoId: string, taskId: string, isDone: boolean)=>void
     todoId: string
+    removeTodoList: (todoId: string)=>void
 }
 
 export function Todolist(props: PropsType) {
@@ -32,9 +33,9 @@ export function Todolist(props: PropsType) {
     }
 
     const mapped = props.tasks.map(t => {
-        const removeTaskHandler =()=> props.removeTask(t.id)
+        const removeTaskHandler =()=> props.removeTask(props.todoId, t.id)
         const changeIsDoneHandler =(e: ChangeEvent<HTMLInputElement>)=> {
-            props.changeIsDone(t.id, e.currentTarget.checked)
+            props.changeIsDone(props.todoId, t.id, e.currentTarget.checked)
         }
 
         return (
@@ -48,7 +49,7 @@ export function Todolist(props: PropsType) {
 
     const addTaskHandler =()=> {
         if (newTitle.trim() !== '') {
-            props.addTask(newTitle.trim())
+            props.addTask(props.todoId, newTitle.trim())
             setNewTitle('')
         } else {
             setError("Title is required")
@@ -67,7 +68,9 @@ export function Todolist(props: PropsType) {
     }
 
     return <div>
-        <h3>{props.title}</h3>
+        <h3> {`${props.title} `}
+            <Button name={'X'} callBack={()=>props.removeTodoList(props.todoId)}/>
+        </h3>
         <div>
             <input className={error ? s.error : ''}
                 value={newTitle}
