@@ -14,19 +14,6 @@ type TodolistsType = {
 
 function App() {
 
-   /* const [todoList, setTodoList] = useState<Array<TodoListType>>([
-        {id: v1(), title: 'What to learn', filter: 'all'},
-        {id: v1(), title: 'What to buy', filter: 'all'}
-    ])
-
-    const [tasks, setTasks] = useState([
-        { id: v1(), title: "HTML&CSS", isDone: true },
-        { id: v1(), title: "JS", isDone: true },
-        { id: v1(), title: "ReactJS", isDone: false },
-        { id: v1(), title: "Rest API", isDone: false },
-        { id: v1(), title: "GraphQL", isDone: false }
-    ]);*/
-
     let todolistID1 = v1()
     let todolistID2 = v1()
 
@@ -52,13 +39,10 @@ function App() {
     const addTask = (todoId: string, title: string)=> {
         const newTask = { id: v1(), title: title, isDone: false }
         setTasks({...tasks, [todoId]: [newTask, ...tasks[todoId]]})
-        //setTasks([newTask, ...tasks])
     }
 
     function removeTask(todoId: string, taskId: string) {
         setTasks({...tasks, [todoId]: tasks[todoId].filter(t => t.id !== taskId)})
-        /*let filteredTasks = tasks.filter(t => t.id !== id);
-        setTasks(filteredTasks);*/
     }
 
     function changeFilter(todoId: string, value: FilterValuesType) {
@@ -67,7 +51,6 @@ function App() {
 
     const changeIsDone =(todoId: string, taskId: string, newIsDone: boolean)=> {
         setTasks({...tasks, [todoId]: tasks[todoId].map(el=>el.id === taskId ? {...el, isDone: newIsDone} : el)})
-       /* setTasks(tasks.map(el=>el.id === taskId ? {...el, isDone: newIsDone} : el))*/
     }
 
     const removeTodoList =(todoId: string)=> {
@@ -81,6 +64,14 @@ function App() {
         const newTodoList:TodolistsType = {id: newTodoListId, title: title, filter: 'all'};
         setTodolists([newTodoList, ...todolists])
         setTasks({...tasks, [newTodoListId]: []})
+    }
+
+    const updateTask =(todoId: string, taskId: string, newTitle: string)=> {
+        setTasks({...tasks, [todoId]: tasks[todoId].map(t=>t.id==taskId ? {...t, title: newTitle} : t)})
+    }
+
+    const updateTodolistTitle = (todoId: string, newTitle: string)=> {
+        setTodolists(todolists.map(t=>t.id ===todoId ? {...t, title: newTitle} : t))
     }
 
     return (
@@ -106,6 +97,8 @@ function App() {
                               changeIsDone={changeIsDone}
                               todoId={el.id}
                               removeTodoList={removeTodoList}
+                              updateTask={updateTask}
+                              updateTodolistTitle={updateTodolistTitle}
                     />
                 )
             })}
