@@ -3,8 +3,12 @@ import './App.css';
 import {Todolist} from './Todolist';
 import {v1} from 'uuid';
 import {AddItemForm} from './components/AddItemForm';
+import {ButtonAppBar} from './components/ButtonAppBar';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
 
-export type FilterValuesType = "all" | "active" | "completed";
+export type FilterValuesType = 'all' | 'active' | 'completed';
 
 type TodolistsType = {
     id: string
@@ -36,8 +40,8 @@ function App() {
     })
 
 
-    const addTask = (todoId: string, title: string)=> {
-        const newTask = { id: v1(), title: title, isDone: false }
+    const addTask = (todoId: string, title: string) => {
+        const newTask = {id: v1(), title: title, isDone: false}
         setTasks({...tasks, [todoId]: [newTask, ...tasks[todoId]]})
     }
 
@@ -46,62 +50,73 @@ function App() {
     }
 
     function changeFilter(todoId: string, value: FilterValuesType) {
-        setTodolists(todolists.map(el=>el.id === todoId ? {...el, filter:value} : el));
+        setTodolists(todolists.map(el => el.id === todoId ? {...el, filter: value} : el));
     }
 
-    const changeIsDone =(todoId: string, taskId: string, newIsDone: boolean)=> {
-        setTasks({...tasks, [todoId]: tasks[todoId].map(el=>el.id === taskId ? {...el, isDone: newIsDone} : el)})
+    const changeIsDone = (todoId: string, taskId: string, newIsDone: boolean) => {
+        setTasks({...tasks, [todoId]: tasks[todoId].map(el => el.id === taskId ? {...el, isDone: newIsDone} : el)})
     }
 
-    const removeTodoList =(todoId: string)=> {
-        let filteredTodoLists = todolists.filter(el=>el.id !== todoId)
+    const removeTodoList = (todoId: string) => {
+        let filteredTodoLists = todolists.filter(el => el.id !== todoId)
         setTodolists(filteredTodoLists)
         delete tasks[todoId]
     }
 
-    const addTodoList =(title: string)=> {
+    const addTodoList = (title: string) => {
         const newTodoListId = v1()
-        const newTodoList:TodolistsType = {id: newTodoListId, title: title, filter: 'all'};
+        const newTodoList: TodolistsType = {id: newTodoListId, title: title, filter: 'all'};
         setTodolists([newTodoList, ...todolists])
         setTasks({...tasks, [newTodoListId]: []})
     }
 
-    const updateTask =(todoId: string, taskId: string, newTitle: string)=> {
-        setTasks({...tasks, [todoId]: tasks[todoId].map(t=>t.id==taskId ? {...t, title: newTitle} : t)})
+    const updateTask = (todoId: string, taskId: string, newTitle: string) => {
+        setTasks({...tasks, [todoId]: tasks[todoId].map(t => t.id == taskId ? {...t, title: newTitle} : t)})
     }
 
-    const updateTodolistTitle = (todoId: string, newTitle: string)=> {
-        setTodolists(todolists.map(t=>t.id ===todoId ? {...t, title: newTitle} : t))
+    const updateTodolistTitle = (todoId: string, newTitle: string) => {
+        setTodolists(todolists.map(t => t.id === todoId ? {...t, title: newTitle} : t))
     }
 
     return (
         <div className="App">
-            <AddItemForm callBack={addTodoList}/>
-            {todolists.map(el=>{
+            <ButtonAppBar/>
+            <Container>
+                <Grid container style={{padding: "20px"}}>
+                    <AddItemForm callBack={addTodoList}/>
+                </Grid>
+                <Grid container spacing={3}>
+                    {todolists.map(el => {
 
-                let tasksForTodolist = tasks[el.id];
-                if (el.filter === "active") {
-                    tasksForTodolist = tasks[el.id].filter(t => !t.isDone);
-                }
-                if (el.filter === "completed") {
-                    tasksForTodolist = tasks[el.id].filter(t => t.isDone);
-                }
+                        let tasksForTodolist = tasks[el.id];
+                        if (el.filter === 'active') {
+                            tasksForTodolist = tasks[el.id].filter(t => !t.isDone);
+                        }
+                        if (el.filter === 'completed') {
+                            tasksForTodolist = tasks[el.id].filter(t => t.isDone);
+                        }
 
-                return (
-                    <Todolist title={el.title}
-                              key={el.id}
-                              tasks={tasksForTodolist}
-                              removeTask={removeTask}
-                              changeFilter={changeFilter}
-                              addTask={addTask}
-                              changeIsDone={changeIsDone}
-                              todoId={el.id}
-                              removeTodoList={removeTodoList}
-                              updateTask={updateTask}
-                              updateTodolistTitle={updateTodolistTitle}
-                    />
-                )
-            })}
+                        return (
+                            <Grid item>
+                                <Paper elevation={3}
+                                        style={{padding: "10px"}}>
+                                    <Todolist title={el.title}
+                                              key={el.id}
+                                              tasks={tasksForTodolist}
+                                              removeTask={removeTask}
+                                              changeFilter={changeFilter}
+                                              addTask={addTask}
+                                              changeIsDone={changeIsDone}
+                                              todoId={el.id}
+                                              removeTodoList={removeTodoList}
+                                              updateTask={updateTask}
+                                              updateTodolistTitle={updateTodolistTitle}/>
+                                </Paper>
+                            </Grid>)
+                    })}
+                </Grid>
+            </Container>
+
         </div>
     );
 }

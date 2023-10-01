@@ -1,19 +1,33 @@
 import React from 'react';
-import s from '../Todolist.module.css'
+import Button from '@mui/material/Button';
+
+type StyleType = {
+    maxWidth: string
+    maxHeight: string
+    minWidth: string
+    minHeight: string
+}
 
 type ButtonPropsType = {
     name: string
     callBack: ()=>void
     className?: string
+    style?: StyleType
+    variant?: "text" | "contained" | "outlined" | undefined
 }
 
-export const Button = (props: ButtonPropsType) => {
+export const TodoListButton = (props: ButtonPropsType) => {
 
     const onClickButtonHandler = () => {
         props.callBack()
     }
 
     return (
-        <button className={props.className} onClick={onClickButtonHandler}>{props.name}</button>
+        <Button variant={props.variant ? props.variant : "outlined"}
+                className={props.className}
+                style={props.style}
+                onClick={onClickButtonHandler}
+                color={'secondary'}>{props.name}</Button>
+
     )
 };

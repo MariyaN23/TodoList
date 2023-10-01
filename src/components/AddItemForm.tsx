@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import s from '../Todolist.module.css';
-import {Button} from './Button';
+import {TodoListButton} from './Button';
+import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
     callBack: (title: string)=>void
@@ -33,13 +34,22 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
 
     return (
         <div>
-            <input className={error ? s.error : ''}
-                   value={newTitle}
-                   onChange={onChangeHandler}
-                   onKeyDown={onKeyDownHandler}
-            />
-            <Button name={"+"} callBack={addTaskHandler}/>
-            {error && <div className={error ? s.errorMessage : s.errorMessageNo}>{error}</div>}
+            <TextField id="outlined-basic"
+                       label={error ? error : "Type something"}
+                       variant="outlined"
+                       size="small"
+                       color="secondary"
+                       error={!!error}
+                       value={newTitle}
+                       onChange={onChangeHandler}
+                       onKeyDown={onKeyDownHandler}/>
+            <TodoListButton name={"+"}
+                            style={{maxWidth: "38px",
+                                maxHeight: "38px",
+                                minWidth: "38px",
+                                minHeight: "38px"}}
+                            variant={"contained"}
+                            callBack={addTaskHandler}/>
         </div>
     );
 };
