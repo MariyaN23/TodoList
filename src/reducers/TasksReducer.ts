@@ -1,7 +1,7 @@
 import {TasksType} from '../App';
 import {v1} from 'uuid';
 
-export const TasksReducer = (state: TasksType, action: TsarType): TasksType => {
+export const TasksReducer = (state: TasksType, action: TasksReducerType): TasksType => {
     switch (action.type) {
         case 'ADD-TASK': {
             const newTask = {id: v1(), title: action.payload.title, isDone: false}
@@ -24,7 +24,7 @@ export const TasksReducer = (state: TasksType, action: TsarType): TasksType => {
     }
 }
 
-type TsarType = addTaskACType | removeTaskACType | changeIsDoneACType | updateTaskACType | addTasksToNewTodolistACType
+type TasksReducerType = addTaskACType | removeTaskACType | changeIsDoneACType | updateTaskACType | addTasksToNewTodolistACType
 
 type addTaskACType = ReturnType<typeof addTaskAC>
 

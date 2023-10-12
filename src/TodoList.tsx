@@ -7,6 +7,7 @@ import {EditableSpan} from './components/EditableSpan';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Checkbox from '@mui/material/Checkbox';
+import {SuperCheckbox} from './components/SuperCheckbox';
 
 export type TaskType = {
     id: string
@@ -35,25 +36,31 @@ export function Todolist(props: PropsType) {
         setButtonName(filter)
     }
 
+    const changeIsDoneHandler = (tId: string, checked: boolean) => {
+        props.changeIsDone(props.todoId, tId, checked)
+    }
+
     const mapped = props.tasks.map(t => {
         const removeTaskHandler = () => props.removeTask(props.todoId, t.id)
-        const changeIsDoneHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        /*const changeIsDoneHandler = (e: ChangeEvent<HTMLInputElement>) => {
             props.changeIsDone(props.todoId, t.id, e.currentTarget.checked)
-        }
+        }*/
         const updateTaskHandler = (newTitle: string) => props.updateTask(props.todoId, t.id, newTitle)
 
         return (
             <li key={t.id} className={t.isDone ? s.isDone : ''}>
-                {/*<input type="checkbox" />*/}
-                <Checkbox defaultChecked checked={t.isDone} onChange={changeIsDoneHandler} color="secondary"/>
+                {/*<Checkbox defaultChecked checked={t.isDone} onChange={changeIsDoneHandler} color="secondary"/>*/}
+                <SuperCheckbox isDone={t.isDone} callback={(checked)=>changeIsDoneHandler(t.id, checked)}/>
                 <EditableSpan title={t.title} callback={updateTaskHandler}/>
                 <TodoListButton name={'x'}
                                 callBack={removeTaskHandler}
-                                style={{maxWidth: "30px",
-                                    maxHeight: "30px",
-                                    minWidth: "30px",
-                                    minHeight: "30px"}}
-                                variant={"contained"}/>
+                                style={{
+                                    maxWidth: '30px',
+                                    maxHeight: '30px',
+                                    minWidth: '30px',
+                                    minHeight: '30px'
+                                }}
+                                variant={'contained'}/>
             </li>
         )
     })
@@ -77,11 +84,11 @@ export function Todolist(props: PropsType) {
             {mapped}
         </ul>
         <div>
-            <TodoListButton variant={buttonName === 'all' ? "contained" : "outlined"} name={'All'}
+            <TodoListButton variant={buttonName === 'all' ? 'contained' : 'outlined'} name={'All'}
                             callBack={() => changeFilterHandler('all')}/>
-            <TodoListButton variant={buttonName === 'active' ? "contained" : "outlined"} name={'Active'}
+            <TodoListButton variant={buttonName === 'active' ? 'contained' : 'outlined'} name={'Active'}
                             callBack={() => changeFilterHandler('active')}/>
-            <TodoListButton variant={buttonName === 'completed' ? "contained" : "outlined"} name={'Completed'}
+            <TodoListButton variant={buttonName === 'completed' ? 'contained' : 'outlined'} name={'Completed'}
                             callBack={() => changeFilterHandler('completed')}/>
         </div>
     </div>
