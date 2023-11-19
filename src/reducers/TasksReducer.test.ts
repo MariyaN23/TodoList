@@ -3,23 +3,28 @@ import {v1} from 'uuid';
 import {TasksType, TodolistsType} from '../App';
 import {addTodoListAC} from './TodolistReducer';
 
-test('correct task should be added', ()=> {
-    let todolistID1 = v1()
-    let todolistID2 = v1()
+let todolistID1:string
+let todolistID2:string
+let startState: TasksType
 
-    const startState: TasksType = {
+beforeEach(()=> {
+    todolistID1 = v1()
+    todolistID2 = v1()
+    startState = {
         [todolistID1]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false}
+            {id:"1", title: 'HTML&CSS', isDone: true},
+            {id: "2", title: 'JS', isDone: true},
+            {id: "3", title: 'ReactJS', isDone: false}
         ],
         [todolistID2]: [
-            {id: v1(), title: 'Chocolate', isDone: true},
-            {id: v1(), title: 'Pizza', isDone: false},
-            {id: v1(), title: 'Hot Dog', isDone: false}
+            {id: "1", title: 'Chocolate', isDone: true},
+            {id: "2", title: 'Pizza', isDone: false},
+            {id: "3", title: 'Hot Dog', isDone: false}
         ]
     }
+})
 
+test('correct task should be added', ()=> {
     const newTitle = 'Redux'
 
     const endState = tasksReducer(startState, {type: 'ADD-TASK', payload: {todoId: todolistID1, title: newTitle}})
@@ -30,22 +35,6 @@ test('correct task should be added', ()=> {
 })
 
 test('correct task should be removed', ()=> {
-    let todolistID1 = v1()
-    let todolistID2 = v1()
-
-    const startState: TasksType = {
-        [todolistID1]: [
-            {id: '1', title: 'HTML&CSS', isDone: true},
-            {id: '2', title: 'JS', isDone: true},
-            {id: '3', title: 'ReactJS', isDone: false}
-        ],
-        [todolistID2]: [
-            {id: '1', title: 'Chocolate', isDone: true},
-            {id: '2', title: 'Pizza', isDone: false},
-            {id: '3', title: 'Hot Dog', isDone: false}
-        ]
-    }
-
     const endState = tasksReducer(startState, {type: 'REMOVE-TASK', payload: {todoId: todolistID1, taskId: '1'}})
 
     expect(endState[todolistID1].length).toBe(2)
@@ -55,22 +44,6 @@ test('correct task should be removed', ()=> {
 })
 
 test('correct task isDone should be changed to newIsDone', ()=> {
-    let todolistID1 = v1()
-    let todolistID2 = v1()
-
-    const startState: TasksType = {
-        [todolistID1]: [
-            {id: '1', title: 'HTML&CSS', isDone: true},
-            {id: '2', title: 'JS', isDone: true},
-            {id: '3', title: 'ReactJS', isDone: false}
-        ],
-        [todolistID2]: [
-            {id: '1', title: 'Chocolate', isDone: true},
-            {id: '2', title: 'Pizza', isDone: false},
-            {id: '3', title: 'Hot Dog', isDone: false}
-        ]
-    }
-
     const endState = tasksReducer(startState, {type: 'CHANGE-IS-DONE', payload: {todoId: todolistID1, taskId: '1', newIsDone: false}})
 
     expect(endState[todolistID1][0].isDone).toBeFalsy()
@@ -79,22 +52,6 @@ test('correct task isDone should be changed to newIsDone', ()=> {
 })
 
 test('correct task isDone should be changed to newIsDone', ()=> {
-    let todolistID1 = v1()
-    let todolistID2 = v1()
-
-    const startState: TasksType = {
-        [todolistID1]: [
-            {id: '1', title: 'HTML&CSS', isDone: true},
-            {id: '2', title: 'JS', isDone: true},
-            {id: '3', title: 'ReactJS', isDone: false}
-        ],
-        [todolistID2]: [
-            {id: '1', title: 'Chocolate', isDone: true},
-            {id: '2', title: 'Pizza', isDone: false},
-            {id: '3', title: 'Hot Dog', isDone: false}
-        ]
-    }
-
     const newTitle = 'Bounty'
 
     const endState = tasksReducer(startState, {type: 'UPDATE-TASK', payload: {todoId: todolistID2, taskId: '1', newTitle: newTitle}})
@@ -104,22 +61,6 @@ test('correct task isDone should be changed to newIsDone', ()=> {
 })
 
 test ('new property with new array should be added when new todolist is added', ()=> {
-    let todolistID1 = v1()
-    let todolistID2 = v1()
-
-    const startState: TasksType = {
-        [todolistID1]: [
-            {id: '1', title: 'HTML&CSS', isDone: true},
-            {id: '2', title: 'JS', isDone: true},
-            {id: '3', title: 'ReactJS', isDone: false}
-        ],
-        [todolistID2]: [
-            {id: '1', title: 'Chocolate', isDone: true},
-            {id: '2', title: 'Pizza', isDone: false},
-            {id: '3', title: 'Hot Dog', isDone: false}
-        ]
-    }
-
     const action = addTodoListAC("new todilist")
     const endState = tasksReducer(startState, action)
 
