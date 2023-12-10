@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {AddItemForm} from './components/AddItemForm';
@@ -39,9 +39,9 @@ function App() {
         dispatch(removeTodoListAC(todoId))
     }
 
-    const addTodoList = (title: string) => {
+    const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
-    }
+    }, [])
 
 
     const updateTodolistTitle = (todoId: string, newTitle: string) => {

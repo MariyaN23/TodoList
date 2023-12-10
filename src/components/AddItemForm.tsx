@@ -7,7 +7,7 @@ type AddItemFormPropsType = {
     callBack: (title: string)=>void
 }
 
-export const AddItemForm = (props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     const [newTitle, setNewTitle] = useState('')
 
     const [error, setError] = useState<string | null>(null)
@@ -28,7 +28,9 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=>{
-        setError(null)
+        if (error !== null) {
+            setError(null)
+        }
         setNewTitle(e.currentTarget.value)
     }
 
@@ -52,4 +54,4 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                             callBack={addTaskHandler}/>
         </div>
     );
-};
+})
