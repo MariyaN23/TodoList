@@ -28,25 +28,25 @@ export type TasksType = {
 }
 
 function App() {
+    console.log('App is called')
     const dispatch = useDispatch()
     const todolists = useSelector<AppRootState, TodolistsType[]>(state => state.todoLists)
 
-    function changeFilter(todoId: string, value: FilterValuesType) {
+    const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
         dispatch(changeFilterAC(todoId, value))
-    }
+    }, [dispatch])
 
-    const removeTodoList = (todoId: string) => {
+    const removeTodoList = useCallback((todoId: string) => {
         dispatch(removeTodoListAC(todoId))
-    }
+    }, [dispatch])
 
     const addTodoList = useCallback((title: string) => {
         dispatch(addTodoListAC(title))
-    }, [])
+    }, [dispatch])
 
-
-    const updateTodolistTitle = (todoId: string, newTitle: string) => {
+    const updateTodolistTitle = useCallback((todoId: string, newTitle: string) => {
         dispatch(updateTodolistTitleAC(todoId, newTitle))
-    }
+    }, [dispatch])
 
     return (
         <div className="App">
@@ -57,9 +57,8 @@ function App() {
                 </Grid>
                 <Grid container spacing={3}>
                     {todolists.map(el => {
-
                         return (
-                            <Grid item>
+                            <Grid item key={el.id}>
                                 <Paper elevation={3}
                                         style={{padding: "10px"}}>
                                     <Todolist title={el.title}
@@ -75,7 +74,6 @@ function App() {
                     })}
                 </Grid>
             </Container>
-
         </div>
     );
 }

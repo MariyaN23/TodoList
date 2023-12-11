@@ -16,7 +16,7 @@ type ButtonPropsType = {
     variant?: "text" | "contained" | "outlined" | undefined
 }
 
-export const TodoListButton = (props: ButtonPropsType) => {
+export const TodoListButton = React.memo((props: ButtonPropsType) => {
 
     const onClickButtonHandler = () => {
         props.callBack()
@@ -30,4 +30,4 @@ export const TodoListButton = (props: ButtonPropsType) => {
                 color={'secondary'}>{props.name}</Button>
 
     )
-};
+});

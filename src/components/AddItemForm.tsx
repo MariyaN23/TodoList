@@ -1,6 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import s from '../Todolist.module.css';
-import {TodoListButton} from './Button';
+import {TodoListButton} from './TodoListButton';
 import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
@@ -8,6 +7,7 @@ type AddItemFormPropsType = {
 }
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+    console.log('AddItemForm is called')
     const [newTitle, setNewTitle] = useState('')
 
     const [error, setError] = useState<string | null>(null)

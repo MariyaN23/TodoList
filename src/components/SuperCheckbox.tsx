@@ -6,7 +6,7 @@ type SuperCheckboxType = {
     callback: (checked: boolean)=> void
 }
 
-export const SuperCheckbox = (props: SuperCheckboxType) => {
+export const SuperCheckbox = React.memo((props: SuperCheckboxType) => {
     const changeIsDoneHandler = (e: ChangeEvent<HTMLInputElement>)=> {
         props.callback(e.currentTarget.checked)
     }
@@ -16,4 +16,4 @@ export const SuperCheckbox = (props: SuperCheckboxType) => {
                       onChange={changeIsDoneHandler}
                       color="secondary"/>
     );
-};
+});
