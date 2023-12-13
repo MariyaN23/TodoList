@@ -1,6 +1,6 @@
-import {AnyAction, Dispatch} from 'redux';
+import {Dispatch} from 'redux';
 import React, {useCallback} from 'react';
-import {changeIsDoneAC, removeTaskAC, updateTaskAC} from './reducers/TasksReducer';
+import {changeIsDoneAC, removeTaskAC, TasksReducerType, updateTaskAC} from './reducers/TasksReducer';
 import s from './Todolist.module.css';
 import {SuperCheckbox} from './components/SuperCheckbox';
 import {EditableSpan} from './components/EditableSpan';
@@ -8,7 +8,8 @@ import {TodoListButton} from './components/TodoListButton';
 import {TaskType} from './Todolist';
 
 type TaskPropsType = {
-    dispatch: Dispatch<AnyAction>
+    dispatch: (action: TasksReducerType)=>void
+        //Dispatch<TasksReducerType>
     t: TaskType
     todoId: string
 }

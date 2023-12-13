@@ -43,7 +43,7 @@ export const tasksReducer = (state: TasksType = initialState, action: TasksReduc
     }
 }
 
-type TasksReducerType = addTaskACType | removeTaskACType | changeIsDoneACType | updateTaskACType | AddTodoListACType | RemoveTodoListACType
+export type TasksReducerType = addTaskACType | removeTaskACType | changeIsDoneACType | updateTaskACType | AddTodoListACType | RemoveTodoListACType
 
 type addTaskACType = ReturnType<typeof addTaskAC>
 
