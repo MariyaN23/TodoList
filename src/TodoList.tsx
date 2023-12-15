@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from './reducers/store';
-import {addTaskAC} from './reducers/TasksReducer';
+import {addTaskAC, changeIsDoneAC, removeTaskAC, updateTaskAC} from './reducers/TasksReducer';
 import {Task} from './Task';
 
 export type TaskType = {
@@ -55,6 +55,14 @@ export const Todolist = React.memo(function (props: PropsType) {
         props.updateTodolistTitle(props.todoId, newTitle)
     }, [props.updateTodolistTitle, props.todoId])
 
+    const removeTaskHandler = useCallback((tId: string) => dispatch(removeTaskAC(props.todoId, tId)), [dispatch, props.todoId])
+
+    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskAC(props.todoId, tId, newTitle)), [dispatch, props.todoId])
+
+    const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
+        dispatch(changeIsDoneAC(props.todoId, tId, checked))
+    }, [dispatch, props.todoId])
+
     return <div>
         <h3><EditableSpan title={props.title} callback={updateTodolistTitleHandler}/>
             <IconButton aria-label="delete" onClick={() => props.removeTodoList(props.todoId)}>
@@ -63,7 +71,12 @@ export const Todolist = React.memo(function (props: PropsType) {
         </h3>
         <AddItemForm callBack={addTaskHandler}/>
         <ul>
-            {tasksForTodolist.map(t => <Task dispatch={dispatch} t={t} todoId={props.todoId} key={t.id}/>)}
+            {tasksForTodolist.map(t => <Task
+                updateTask={updateTaskHandler}
+                removeTask={removeTaskHandler}
+                changeIsDone={changeIsDoneHandler}
+                t={t}
+                key={t.id}/>)}
         </ul>
         <div>
             <TodoListButton variant={buttonName === 'all' ? 'contained' : 'outlined'} name={'All'}
