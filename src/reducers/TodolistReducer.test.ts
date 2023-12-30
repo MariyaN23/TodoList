@@ -1,6 +1,6 @@
 import {todolistReducer} from './TodolistReducer'
 import {v1} from 'uuid';
-import {TasksType, TodolistsType} from '../App';
+import {TasksType, TodolistsType} from '../components/App/App';
 
 let todolistID1:string
 let todolistID2:string

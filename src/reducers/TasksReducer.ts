@@ -1,4 +1,4 @@
-import {TasksType} from '../App';
+import {TasksType} from '../components/App/App';
 import {v1} from 'uuid';
 import {AddTodoListACType, RemoveTodoListACType, todolistID1, todolistID2} from './TodolistReducer';
 

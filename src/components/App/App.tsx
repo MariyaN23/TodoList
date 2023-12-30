@@ -1,19 +1,12 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import './App.css';
-import {TaskType, Todolist} from './Todolist';
-import {AddItemForm} from './components/AddItemForm';
-import {ButtonAppBar} from './components/ButtonAppBar';
+import {TaskType, Todolist} from '../Todolist/Todolist';
+import {AddItemForm} from '../AddItemForm/AddItemForm';
+import {ButtonAppBar} from '../ButtonAppBar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import {
-    addTodoListAC,
-    changeFilterAC,
-    removeTodoListAC,
-    updateTodolistTitleAC
-} from './reducers/TodolistReducer';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from './reducers/store';
+import {useTodoLists} from '../hooks/useTodoLists';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -29,25 +22,13 @@ export type TasksType = {
 
 function App() {
     console.log('App is called')
-    const dispatch = useDispatch()
-    const todolists = useSelector<AppRootState, TodolistsType[]>(state => state.todoLists)
-
-    const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
-        dispatch(changeFilterAC(todoId, value))
-    }, [dispatch])
-
-    const removeTodoList = useCallback((todoId: string) => {
-        dispatch(removeTodoListAC(todoId))
-    }, [dispatch])
-
-    const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title))
-    }, [dispatch])
-
-    const updateTodolistTitle = useCallback((todoId: string, newTitle: string) => {
-        dispatch(updateTodolistTitleAC(todoId, newTitle))
-    }, [dispatch])
-
+    const {
+        addTodoList,
+        todolists,
+        changeFilter,
+        removeTodoList,
+        updateTodolistTitle
+    } = useTodoLists()
     return (
         <div className="App">
             <ButtonAppBar/>

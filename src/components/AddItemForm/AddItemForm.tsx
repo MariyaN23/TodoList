@@ -1,6 +1,7 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {TodoListButton} from './TodoListButton';
+import React from 'react';
+import {TodoListButton} from '../TodoListButton';
 import TextField from '@mui/material/TextField';
+import {useAddItemForm} from '../hooks/useAddItemForm';
 
 type AddItemFormPropsType = {
     callBack: (title: string)=>void
@@ -8,31 +9,11 @@ type AddItemFormPropsType = {
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     console.log('AddItemForm is called')
-    const [newTitle, setNewTitle] = useState('')
-
-    const [error, setError] = useState<string | null>(null)
-
-    const addTaskHandler =()=> {
-        if (newTitle.trim() !== '') {
-            props.callBack(newTitle.trim())
-            setNewTitle('')
-        } else {
-            setError("Title is required")
-        }
-    }
-
-    const onKeyDownHandler =(e: KeyboardEvent<HTMLInputElement>)=>{
-        if (e.key === "Enter") {
-            addTaskHandler()
-        }
-    }
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=>{
-        if (error !== null) {
-            setError(null)
-        }
-        setNewTitle(e.currentTarget.value)
-    }
+    const {error,
+        newTitle,
+        onChangeHandler,
+        onKeyDownHandler,
+        addTaskHandler} = useAddItemForm(props.callBack)
 
     return (
         <div>

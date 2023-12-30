@@ -1,4 +1,4 @@
-import {FilterValuesType, TodolistsType} from '../App';
+import {FilterValuesType, TodolistsType} from '../components/App/App';
 import {v1} from 'uuid';
 
 export const todolistID1 = v1()
