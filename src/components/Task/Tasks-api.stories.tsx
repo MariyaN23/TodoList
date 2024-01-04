@@ -71,29 +71,35 @@ export const UpdateTask = () => {
     const [state, setState] = useState<ResponseType<{item: TasksType[]}> | null>(null)
     const [todolistId, setTodolistId] = useState("")
     const [taskId, setTaskId] = useState("")
-    const [newTask, setNewTask] = useState({
-        title: "putin",
-        description: "ya russiky",
-        completed: true,
-        status: 1,
-        priority: 1,
-        startDate: "2024-01-02T12:52:20.037",
-        deadline: "2024-01-02T12:52:20.037"
-    })
+    const [title, setTitle] = useState("title 1")
+    const [description, setDescription] = useState("description 1")
+    const [status, setStatus] = useState(0)
+    const [priority, setPriority] = useState(0)
     const updateTask = () => {
-        tasksApi.updateTasks(todolistId, taskId, newTask)
+        tasksApi.updateTasks(todolistId, taskId, {
+            deadline: '',
+            description,
+            title,
+            status,
+            completed: false,
+            priority,
+            startDate: ''
+        })
             .then(response => {
                 setState(response.data)
             })
         setTodolistId('')
         setTaskId('')
+        setTitle('')
     }
     return <div>{JSON.stringify(state)}
         <div>
             <input placeholder={"todolistId"} value={todolistId} onChange={(e)=>setTodolistId(e.currentTarget.value)}/>
             <input placeholder={"taskId"} value={taskId} onChange={(e)=>setTaskId(e.currentTarget.value)}/>
-            <input placeholder={"title"} value={newTask.title} onChange={(e)=>setNewTask({...newTask, title: e.currentTarget.value})}/>
-            <input placeholder={"description"} value={newTask.description} onChange={(e)=>setNewTask({...newTask, description: e.currentTarget.value})}/>
+            <input placeholder={"title"} value={title} onChange={(e)=>setTitle(e.currentTarget.value)}/>
+            <input placeholder={"description"} value={description} onChange={(e)=>setDescription(e.currentTarget.value)}/>
+            <input placeholder={"status"} value={status} type={'number'} onChange={(e)=>setStatus(+e.currentTarget.value)}/>
+            <input placeholder={"priority"} value={priority} type={'number'} onChange={(e)=>setPriority(+e.currentTarget.value)}/>
             <button onClick={updateTask}>Update Task</button>
         </div>
     </div>
