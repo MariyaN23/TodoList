@@ -1,24 +1,12 @@
 import React from 'react';
 import './App.css';
-import {TaskType, Todolist} from '../Todolist/Todolist';
+import {Todolist} from '../Todolist/Todolist';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {ButtonAppBar} from '../ButtonAppBar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {useTodoLists} from '../hooks/useTodoLists';
-
-export type FilterValuesType = 'all' | 'active' | 'completed';
-
-export type TodolistsType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-
-export type TasksType = {
-    [key: string] : TaskType[]
-}
 
 function App() {
     console.log('App is called')

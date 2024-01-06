@@ -5,6 +5,7 @@ import {combineReducers, legacy_createStore} from 'redux';
 import {todolistID1, todolistID2, todolistReducer} from '../reducers/TodolistReducer';
 import {tasksReducer} from '../reducers/TasksReducer';
 import {v1} from 'uuid';
+import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 
 export const rootReducer = combineReducers({
     todoLists: todolistReducer,
@@ -13,19 +14,19 @@ export const rootReducer = combineReducers({
 
 const initialState = {
     todoLists: [
-        {id: todolistID1, title: 'Who is admin', filter: 'all'},
-        {id: todolistID2, title: 'What to buy', filter: 'all'}
+        {id: todolistID1, title: 'Who is admin', filter: 'all', addedDate: '', order: 0},
+        {id: todolistID2, title: 'What to buy', filter: 'all', addedDate: '', order: 1}
     ],
     tasks: {
         [todolistID1]: [
-            {id: v1(), title: 'Svetlana', isDone: true},
-            {id: v1(), title: 'Oleg', isDone: true},
-            {id: v1(), title: 'Basik', isDone: false}
+            {id: v1(), title: 'Svetlana', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1},
+            {id: v1(), title: 'Oleg', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1},
+            {id: v1(), title: 'Basik', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1}
         ],
         [todolistID2]: [
-            {id: v1(), title: 'Toilet paper', isDone: true},
-            {id: v1(), title: 'Duck for bath', isDone: false},
-            {id: v1(), title: 'Vodka', isDone: false}
+            {id: v1(), title: 'Toilet paper', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
+            {id: v1(), title: 'Duck for bath', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
+            {id: v1(), title: 'Vodka', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2}
         ]
     }
 }

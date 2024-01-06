@@ -3,7 +3,7 @@ import s from '../Todolist/Todolist.module.css';
 import {SuperCheckbox} from '../SuperCheckbox';
 import {EditableSpan} from '../EditableSpan';
 import {TodoListButton} from '../TodoListButton';
-import {TaskType} from '../Todolist/Todolist';
+import {TaskStatuses, TaskType} from '../../api/tasks-api';
 
 type TaskPropsType = {
     removeTask: (tId: string)=>void
@@ -14,8 +14,8 @@ type TaskPropsType = {
 
 export const Task = React.memo((props: TaskPropsType) => {
 
-    return <li key={props.t.id} className={props.t.isDone ? s.isDone : ''}>
-        <SuperCheckbox isDone={props.t.isDone} callback={(checked) => props.changeIsDone(props.t.id, checked)}/>
+    return <li key={props.t.id} className={props.t.status===TaskStatuses.Completed ? s.isDone : ''}>
+        <SuperCheckbox status={props.t.status} callback={(checked) => props.changeIsDone(props.t.id, checked)}/>
         <EditableSpan title={props.t.title} callback={(newTitle) => props.updateTask(props.t.id, newTitle)}/>
         <TodoListButton name={'x'}
                         callBack={() => props.removeTask(props.t.id)}

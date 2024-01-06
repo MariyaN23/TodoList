@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {tasksApi} from '../../api/tasks-api';
-import {TasksType} from '../../api/tasks-api';
+import React, {useState} from 'react'
+import {tasksApi, TaskType} from '../../api/tasks-api';
 import {ResponseType} from '../../api/todolists-api';
 
 export default {
@@ -8,7 +7,7 @@ export default {
 }
 
 export const GetTasks = () => {
-    const [state, setState] = useState<TasksType[] | null>(null)
+    const [state, setState] = useState<TaskType[] | null>(null)
     const [todolistId, setTodolistId] = useState("")
     const getTasks =(() => {
         tasksApi.getTasks(todolistId)
@@ -68,7 +67,7 @@ export const DeleteTask = () => {
 }
 
 export const UpdateTask = () => {
-    const [state, setState] = useState<ResponseType<{item: TasksType[]}> | null>(null)
+    const [state, setState] = useState<ResponseType<{item: TaskType[]}> | null>(null)
     const [todolistId, setTodolistId] = useState("")
     const [taskId, setTaskId] = useState("")
     const [title, setTitle] = useState("title 1")

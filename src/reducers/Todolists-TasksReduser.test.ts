@@ -1,11 +1,11 @@
 import {v1} from 'uuid';
-import {TasksType, TodolistsType} from '../components/App/App';
-import {addTodoListAC, removeTodoListAC, todolistReducer} from './TodolistReducer';
-import {tasksReducer} from './TasksReducer';
+import {addTodoListAC, removeTodoListAC, todolistReducer, TodolistsDomainType} from './TodolistReducer';
+import {TasksDomainType, tasksReducer} from './TasksReducer';
+import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 
 test ('ids should be equal', ()=> {
-    const startTasksState: TasksType = {}
-    const startTodolistState: TodolistsType[] = []
+    const startTasksState: TasksDomainType = {}
+    const startTodolistState: TodolistsDomainType[] = []
 
     const action = addTodoListAC("new todilist")
 
@@ -24,16 +24,16 @@ test ('property with todolistId should be deleted', ()=> {
     let todolistID1 = v1()
     let todolistID2 = v1()
 
-    const startState: TasksType = {
+    const startState: TasksDomainType = {
         [todolistID1]: [
-            {id: '1', title: 'HTML&CSS', isDone: true},
-            {id: '2', title: 'JS', isDone: true},
-            {id: '3', title: 'ReactJS', isDone: false}
+            {id: '1', title: 'HTML&CSS', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1},
+            {id: '2', title: 'JS', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1},
+            {id: '3', title: 'ReactJS', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1}
         ],
         [todolistID2]: [
-            {id: '1', title: 'Chocolate', isDone: true},
-            {id: '2', title: 'Pizza', isDone: false},
-            {id: '3', title: 'Hot Dog', isDone: false}
+            {id: '1', title: 'Chocolate', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
+            {id: '2', title: 'Pizza', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
+            {id: '3', title: 'Hot Dog', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2}
         ]
     }
 

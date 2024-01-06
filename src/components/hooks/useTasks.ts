@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from '../../reducers/store';
 import {useCallback, useState} from 'react';
-import {FilterValuesType} from '../App/App';
-import {addTaskAC, changeIsDoneAC, removeTaskAC, updateTaskAC} from '../../reducers/TasksReducer';
-import {TaskType} from '../Todolist/Todolist';
+import {addTaskAC, changeStatusAC, removeTaskAC, updateTaskAC} from '../../reducers/TasksReducer';
+import {FilterValuesType} from '../../reducers/TodolistReducer';
+import {TaskStatuses, TaskType} from '../../api/tasks-api';
 
 export function useTasks(todoId: string,
                          changeFilter: (todoId: string, value: FilterValuesType) => void,
@@ -23,10 +23,10 @@ export function useTasks(todoId: string,
     let tasksForTodolist = tasks
 
     if (filter === 'active') {
-        tasksForTodolist = allTasksForTodolist.filter(t => !t.isDone);
+        tasksForTodolist = allTasksForTodolist.filter(t => t.status===TaskStatuses.New);
     }
     if (filter === 'completed') {
-        tasksForTodolist = allTasksForTodolist.filter(t => t.isDone);
+        tasksForTodolist = allTasksForTodolist.filter(t => t.status===TaskStatuses.Completed);
     }
 
     const addTaskHandler = useCallback((title: string) => {
@@ -42,7 +42,7 @@ export function useTasks(todoId: string,
     const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskAC(todoId, tId, newTitle)), [dispatch, todoId])
 
     const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
-        dispatch(changeIsDoneAC(todoId, tId, checked))
+        dispatch(changeStatusAC(todoId, tId, checked ? TaskStatuses.Completed : TaskStatuses.New ))
     }, [dispatch, todoId])
 
     return {

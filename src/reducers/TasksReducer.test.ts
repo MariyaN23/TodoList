@@ -1,30 +1,95 @@
-import {tasksReducer} from './TasksReducer'
+import {TasksDomainType, tasksReducer} from './TasksReducer'
 import {v1} from 'uuid';
-import {TasksType, TodolistsType} from '../components/App/App';
 import {addTodoListAC} from './TodolistReducer';
+import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 
-let todolistID1:string
-let todolistID2:string
-let startState: TasksType
+let todolistID1: string
+let todolistID2: string
+let startState: TasksDomainType
 
-beforeEach(()=> {
+beforeEach(() => {
     todolistID1 = v1()
     todolistID2 = v1()
     startState = {
         [todolistID1]: [
-            {id:"1", title: 'HTML&CSS', isDone: true},
-            {id: "2", title: 'JS', isDone: true},
-            {id: "3", title: 'ReactJS', isDone: false}
+            {
+                id: '1',
+                title: 'HTML&CSS',
+                status: TaskStatuses.Completed,
+                addedDate: '',
+                deadline: '',
+                order: 0,
+                startDate: '',
+                description: '',
+                priority: TaskPriorities.Low,
+                todoListId: todolistID1
+            },
+            {
+                id: '2',
+                title: 'JS',
+                status: TaskStatuses.Completed,
+                addedDate: '',
+                deadline: '',
+                order: 0,
+                startDate: '',
+                description: '',
+                priority: TaskPriorities.Low,
+                todoListId: todolistID1
+            },
+            {
+                id: '3', title: 'ReactJS',
+                status: TaskStatuses.Completed,
+                addedDate: '',
+                deadline: '',
+                order: 0,
+                startDate: '',
+                description: '',
+                priority: TaskPriorities.Low,
+                todoListId: todolistID1
+            }
         ],
         [todolistID2]: [
-            {id: "1", title: 'Chocolate', isDone: true},
-            {id: "2", title: 'Pizza', isDone: false},
-            {id: "3", title: 'Hot Dog', isDone: false}
+            {
+                id: '1',
+                title: 'Chocolate',
+                status: TaskStatuses.Completed,
+                addedDate: '',
+                deadline: '',
+                order: 0,
+                startDate: '',
+                description: '',
+                priority: TaskPriorities.Low,
+                todoListId: todolistID2
+            },
+            {
+                id: '2',
+                title: 'Pizza',
+                status: TaskStatuses.Completed,
+                addedDate: '',
+                deadline: '',
+                order: 0,
+                startDate: '',
+                description: '',
+                priority: TaskPriorities.Low,
+                todoListId: todolistID2
+            },
+            {
+                id: '3',
+                title: 'Hot Dog',
+                status: TaskStatuses.Completed,
+                addedDate: '',
+                deadline: '',
+                order: 0,
+                startDate: '',
+                description: '',
+                priority: TaskPriorities.Low,
+                todoListId: todolistID2
+            }
         ]
     }
 })
 
-test('correct task should be added', ()=> {
+test('correct task should be added', () => {
     const newTitle = 'Redux'
 
     const endState = tasksReducer(startState, {type: 'ADD-TASK', payload: {todoId: todolistID1, title: newTitle}})
@@ -34,7 +99,7 @@ test('correct task should be added', ()=> {
     expect(endState[todolistID2].length).toBe(3)
 })
 
-test('correct task should be removed', ()=> {
+test('correct task should be removed', () => {
     const endState = tasksReducer(startState, {type: 'REMOVE-TASK', payload: {todoId: todolistID1, taskId: '1'}})
 
     expect(endState[todolistID1].length).toBe(2)
@@ -43,31 +108,37 @@ test('correct task should be removed', ()=> {
     expect(endState[todolistID2].length).toBe(3)
 })
 
-test('correct task isDone should be changed to newIsDone', ()=> {
-    const endState = tasksReducer(startState, {type: 'CHANGE-IS-DONE', payload: {todoId: todolistID1, taskId: '1', newIsDone: false}})
+test('correct task isDone should be changed to newIsDone', () => {
+    const endState = tasksReducer(startState, {
+        type: 'CHANGE-STATUS',
+        payload: {todoId: todolistID1, taskId: '1', newStatus: TaskStatuses.New}
+    })
 
-    expect(endState[todolistID1][0].isDone).toBeFalsy()
-    expect(endState[todolistID1][1].isDone).toBeTruthy()
-    expect(endState[todolistID2][0].isDone).toBeTruthy()
+    expect(endState[todolistID1][0].status).toBe(TaskStatuses.New)
+    expect(endState[todolistID1][1].status).toBe(TaskStatuses.Completed)
+    expect(endState[todolistID2][0].status).toBe(TaskStatuses.Completed)
 })
 
-test('correct task isDone should be changed to newIsDone', ()=> {
+test('correct task isDone should be changed to newIsDone', () => {
     const newTitle = 'Bounty'
 
-    const endState = tasksReducer(startState, {type: 'UPDATE-TASK', payload: {todoId: todolistID2, taskId: '1', newTitle: newTitle}})
+    const endState = tasksReducer(startState, {
+        type: 'UPDATE-TASK',
+        payload: {todoId: todolistID2, taskId: '1', newTitle: newTitle}
+    })
 
     expect(endState[todolistID2][0].title).toBe(newTitle)
     expect(endState[todolistID1][0].title).toBe('HTML&CSS')
 })
 
-test ('new property with new array should be added when new todolist is added', ()=> {
-    const action = addTodoListAC("new todilist")
+test('new property with new array should be added when new todolist is added', () => {
+    const action = addTodoListAC('new todilist')
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
-    const newKey = keys.find(k => k!=todolistID1 && k!=todolistID2)
+    const newKey = keys.find(k => k != todolistID1 && k != todolistID2)
     if (!newKey) {
-        throw Error ('new key should be added')
+        throw Error('new key should be added')
     }
 
     expect(keys.length).toBe(3)
