@@ -1,24 +1,12 @@
 import {v1} from 'uuid';
-import {AddTodoListACType, RemoveTodoListACType, todolistID1, todolistID2} from './TodolistReducer';
+import {AddTodoListACType, RemoveTodoListACType} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../api/tasks-api';
-
 
 export type TasksDomainType = {
     [key: string] : TaskType[]
 }
 
-const initialState: TasksDomainType = {
-    [todolistID1]: [
-        {id: v1(), title: 'HTML&CSS', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1},
-        {id: v1(), title: 'JS', status: TaskStatuses.Completed, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1},
-        {id: v1(), title: 'ReactJS', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID1}
-    ],
-    [todolistID2]: [
-        {id: v1(), title: 'Chocolate', status: TaskStatuses.Completed, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
-        {id: v1(), title: 'Pizza', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
-        {id: v1(), title: 'Hot Dog', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2}
-    ]
-}
+const initialState: TasksDomainType = {}
 
 export const tasksReducer = (state: TasksDomainType = initialState, action: TasksReducerType): TasksDomainType => {
     switch (action.type) {
