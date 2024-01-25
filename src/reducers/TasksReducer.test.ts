@@ -1,6 +1,6 @@
 import {TasksDomainType, tasksReducer} from './TasksReducer'
 import {v1} from 'uuid';
-import {addTodoListAC} from './TodolistReducer';
+import {addTodoListAC, setTodolistsAC} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 
 let todolistID1: string
@@ -143,4 +143,18 @@ test('new property with new array should be added when new todolist is added', (
 
     expect(keys.length).toBe(3)
     expect(endState[newKey]).toStrictEqual([])
+})
+
+test('empty array should be added when we set todolists', () => {
+    const action = setTodolistsAC([{id: "1", title: "title1", order: 0, addedDate: ""},
+        {id: "2", title: "title2", order: 0, addedDate: ""}
+    ])
+
+    const endState = tasksReducer({}, action)
+
+    const keys = Object.keys(endState)
+
+    expect(keys.length).toBe(2)
+    expect(endState['1']).toStrictEqual([])
+    expect(endState['2']).toStrictEqual([])
 })

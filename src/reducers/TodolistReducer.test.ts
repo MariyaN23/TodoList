@@ -1,4 +1,4 @@
-import {todolistReducer, TodolistsDomainType} from './TodolistReducer'
+import {setTodolistsAC, todolistReducer, TodolistsDomainType} from './TodolistReducer'
 import {v1} from 'uuid';
 
 let todolistID1:string
@@ -50,4 +50,13 @@ test('correct title should be updated', ()=> {
 
     expect(endState[0].title).toBe('What to learn')
     expect(endState[1].title).toBe('New Title')
+})
+
+test('todolists should be setted', ()=> {
+
+    const action = setTodolistsAC(startState)
+
+    const endState = todolistReducer([], action)
+
+    expect(endState.length).toBe(2)
 })

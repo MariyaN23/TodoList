@@ -1,5 +1,5 @@
 import {v1} from 'uuid';
-import {AddTodoListACType, RemoveTodoListACType} from './TodolistReducer';
+import {AddTodoListACType, RemoveTodoListACType, SetTodolistsACType} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../api/tasks-api';
 
 export type TasksDomainType = {
@@ -41,12 +41,17 @@ export const tasksReducer = (state: TasksDomainType = initialState, action: Task
             delete stateCopy[action.payload.todoId]
             return stateCopy
         }
+        case 'SET-TODOLISTS': {
+            const stateCopy = {...state}
+            action.payload.todolists.forEach(el => stateCopy[el.id] = [])
+            return stateCopy
+        }
         default:
             return state
     }
 }
 
-export type TasksReducerType = addTaskACType | removeTaskACType | changeStatusACType | updateTaskACType | AddTodoListACType | RemoveTodoListACType
+export type TasksReducerType = addTaskACType | removeTaskACType | changeStatusACType | updateTaskACType | AddTodoListACType | RemoveTodoListACType | SetTodolistsACType
 
 type addTaskACType = ReturnType<typeof addTaskAC>
 

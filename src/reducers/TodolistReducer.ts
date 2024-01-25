@@ -74,7 +74,7 @@ export const updateTodolistTitleAC = (todoId: string, newTitle: string) => {
     } as const
 }
 
-type SetTodolistsACType = ReturnType<typeof setTodolistsAC>
+export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>
 export const setTodolistsAC = (todolists: TodolistsType[]) => {
     return {
         type: 'SET-TODOLISTS',
