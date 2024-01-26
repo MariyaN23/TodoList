@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Todolist} from '../Todolist/Todolist';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
@@ -15,8 +15,14 @@ function App() {
         todolists,
         changeFilter,
         removeTodoList,
-        updateTodolistTitle
+        updateTodolistTitle,
+        fetchTodolistsFunction
     } = useTodoLists()
+
+    useEffect(()=>{
+        fetchTodolistsFunction()
+    }, [])
+
     return (
         <div className="App">
             <ButtonAppBar/>

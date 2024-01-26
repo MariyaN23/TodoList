@@ -1,5 +1,6 @@
 import {v1} from 'uuid';
-import {TodolistsType} from '../api/todolists-api';
+import {todolistsApi, TodolistsType} from '../api/todolists-api';
+import {Dispatch} from 'redux';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -31,7 +32,7 @@ export const todolistReducer = (state: TodolistsDomainType[] = initialState, act
             return state.map(t => t.id === action.payload.todoId ? {...t, title: action.payload.newTitle} : t)
         }
         case 'SET-TODOLISTS': {
-            return action.payload.todolists.map(el=>({...el, filter: "all"}))
+            return action.payload.todolists.map(el => ({...el, filter: 'all'}))
         }
         default:
             return state
@@ -39,8 +40,8 @@ export const todolistReducer = (state: TodolistsDomainType[] = initialState, act
 }
 
 type TodolistReducerType = RemoveTodoListACType | AddTodoListACType |
-                            ChangeFilterACType | UpdateTodolistTitleACType |
-                            SetTodolistsACType
+    ChangeFilterACType | UpdateTodolistTitleACType |
+    SetTodolistsACType
 
 export type RemoveTodoListACType = ReturnType<typeof removeTodoListAC>
 export const removeTodoListAC = (todoId: string) => {
@@ -80,4 +81,13 @@ export const setTodolistsAC = (todolists: TodolistsType[]) => {
         type: 'SET-TODOLISTS',
         payload: {todolists}
     } as const
+}
+
+export const fetchTodolistsTC = () => {
+    return (dispatch: Dispatch) => {
+        todolistsApi.getTodolists()
+            .then((res) => {
+                dispatch(setTodolistsAC(res.data))
+            })
+    }
 }

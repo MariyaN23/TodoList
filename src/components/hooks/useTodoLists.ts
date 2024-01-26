@@ -1,9 +1,9 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from '../../reducers/store';
-import {useCallback} from 'react';
+import {useCallback, useEffect} from 'react';
 import {
     addTodoListAC,
-    changeFilterAC,
+    changeFilterAC, fetchTodolistsTC, fetchTodolistsThunk,
     FilterValuesType,
     removeTodoListAC, TodolistsDomainType,
     updateTodolistTitleAC
@@ -11,7 +11,7 @@ import {
 
 
 export function useTodoLists () {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<any>()
     const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
 
     const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
@@ -30,11 +30,17 @@ export function useTodoLists () {
         dispatch(updateTodolistTitleAC(todoId, newTitle))
     }, [dispatch])
 
+     const fetchTodolistsFunction = () => {
+         dispatch(fetchTodolistsTC())
+     }
+
+
     return  {
         addTodoList,
         todolists,
         changeFilter,
         removeTodoList,
-        updateTodolistTitle
+        updateTodolistTitle,
+        fetchTodolistsFunction
     }
 }
