@@ -1,4 +1,4 @@
-import {TasksDomainType, tasksReducer} from './TasksReducer'
+import {setTasksAC, TasksDomainType, tasksReducer} from './TasksReducer'
 import {v1} from 'uuid';
 import {addTodoListAC, setTodolistsAC} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
@@ -157,4 +157,14 @@ test('empty array should be added when we set todolists', () => {
     expect(keys.length).toBe(2)
     expect(endState['1']).toStrictEqual([])
     expect(endState['2']).toStrictEqual([])
+})
+
+test('tasks should be setted', () => {
+    const action = setTasksAC(todolistID1, startState[todolistID1])
+
+    const endState = tasksReducer({}, action)
+    const keys = Object.keys(endState)
+
+    expect(keys.length).toBe(1)
+    expect(endState[todolistID1][0].startDate).toBe("")
 })

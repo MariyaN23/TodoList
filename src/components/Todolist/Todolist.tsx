@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TodoListButton} from '../TodoListButton';
 import {AddItemForm} from '../AddItemForm/AddItemForm';
 import {EditableSpan} from '../EditableSpan';
@@ -26,7 +26,11 @@ export const Todolist = React.memo(function (props: PropsType) {
         removeTaskHandler,
         changeIsDoneHandler,
         buttonName,
-        changeFilterHandler} = useTasks(props.todoId, props.changeFilter, props.filter, props.updateTodolistTitle)
+        changeFilterHandler,
+        fetchTasksFunction} = useTasks(props.todoId, props.changeFilter, props.filter, props.updateTodolistTitle)
+    useEffect(()=>{
+        fetchTasksFunction()
+    }, [])
     return <div>
         <h3><EditableSpan title={props.title} callback={updateTodolistTitleHandler}/>
             <IconButton aria-label="delete" onClick={() => props.removeTodoList(props.todoId)}>

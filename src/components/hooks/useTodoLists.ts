@@ -3,7 +3,7 @@ import {AppRootState} from '../../reducers/store';
 import {useCallback, useEffect} from 'react';
 import {
     addTodoListAC,
-    changeFilterAC, fetchTodolistsTC, fetchTodolistsThunk,
+    changeFilterAC, fetchTodolistsTC,
     FilterValuesType,
     removeTodoListAC, TodolistsDomainType,
     updateTodolistTitleAC

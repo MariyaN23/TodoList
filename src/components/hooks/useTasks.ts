@@ -1,7 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from '../../reducers/store';
 import {useCallback, useState} from 'react';
-import {addTaskAC, changeStatusAC, removeTaskAC, updateTaskAC} from '../../reducers/TasksReducer';
+import {
+    addTaskAC,
+    changeStatusAC,
+    fetchTasksTC,
+    removeTaskAC,
+    updateTaskAC
+} from '../../reducers/TasksReducer';
 import {FilterValuesType} from '../../reducers/TodolistReducer';
 import {TaskStatuses, TaskType} from '../../api/tasks-api';
 
@@ -9,7 +15,7 @@ export function useTasks(todoId: string,
                          changeFilter: (todoId: string, value: FilterValuesType) => void,
                          filter: FilterValuesType,
                          updateTodolistTitle: (todoId: string, newTitle: string) => void) {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<any>()
     const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todoId])
 
     const [buttonName, setButtonName] = useState('all')
@@ -45,6 +51,10 @@ export function useTasks(todoId: string,
         dispatch(changeStatusAC(todoId, tId, checked ? TaskStatuses.Completed : TaskStatuses.New ))
     }, [dispatch, todoId])
 
+    const fetchTasksFunction = () => {
+        dispatch(fetchTasksTC(todoId))
+    }
+
     return {
         updateTodolistTitleHandler,
         addTaskHandler,
@@ -53,6 +63,7 @@ export function useTasks(todoId: string,
         removeTaskHandler,
         changeIsDoneHandler,
         buttonName,
-        changeFilterHandler
+        changeFilterHandler,
+        fetchTasksFunction,
     }
 }
