@@ -90,13 +90,24 @@ beforeEach(() => {
 })
 
 test('correct task should be added', () => {
-    const newTitle = 'Redux'
+    const newTask = {
+        id: '4',
+        title: 'Chocolate',
+        status: TaskStatuses.Completed,
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        startDate: '',
+        description: '',
+        priority: TaskPriorities.Low,
+        todoListId: todolistID2
+    }
 
-    const endState = tasksReducer(startState, {type: 'ADD-TASK', payload: {todoId: todolistID1, title: newTitle}})
+    const endState = tasksReducer(startState, {type: 'ADD-TASK', payload: {task: newTask}})
 
-    expect(endState[todolistID1].length).toBe(4)
-    expect(endState[todolistID1][0].title).toBe(newTitle)
-    expect(endState[todolistID2].length).toBe(3)
+    expect(endState[todolistID2].length).toBe(4)
+    expect(endState[todolistID2][0].title).toBe(newTask.title)
+    expect(endState[todolistID1].length).toBe(3)
 })
 
 test('correct task should be removed', () => {

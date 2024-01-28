@@ -50,7 +50,7 @@ export const tasksApi = {
         return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
     },
     createTasks(todolistId: string, title: string) {
-        return instance.post<ResponseType<{item: TaskType[]}>>(`todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
     },
     deleteTasks(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
