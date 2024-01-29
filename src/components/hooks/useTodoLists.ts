@@ -2,10 +2,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from '../../reducers/store';
 import {useCallback, useEffect} from 'react';
 import {
-    addTodoListAC,
+    addTodolistTC,
     changeFilterAC, fetchTodolistsTC,
     FilterValuesType,
-    removeTodoListAC, TodolistsDomainType,
+    removeTodolistTC, TodolistsDomainType,
     updateTodolistTitleAC
 } from '../../reducers/TodolistReducer';
 
@@ -19,11 +19,11 @@ export function useTodoLists () {
     }, [dispatch])
 
     const removeTodoList = useCallback((todoId: string) => {
-        dispatch(removeTodoListAC(todoId))
+        dispatch(removeTodolistTC(todoId))
     }, [dispatch])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title))
+        dispatch(addTodolistTC(title))
     }, [dispatch])
 
     const updateTodolistTitle = useCallback((todoId: string, newTitle: string) => {

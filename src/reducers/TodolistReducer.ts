@@ -17,11 +17,8 @@ export const todolistReducer = (state: TodolistsDomainType[] = initialState, act
         }
         case 'ADD-TODOLIST': {
             const newTodoList: TodolistsDomainType = {
-                id: action.payload.todoId,
-                title: action.payload.title,
+                ...action.payload,
                 filter: 'all',
-                addedDate: '',
-                order: 0
             };
             return [newTodoList, ...state]
         }
@@ -52,10 +49,10 @@ export const removeTodoListAC = (todoId: string) => {
 }
 
 export type AddTodoListACType = ReturnType<typeof addTodoListAC>
-export const addTodoListAC = (title: string) => {
+export const addTodoListAC = (todolist: TodolistsType) => {
     return {
         type: 'ADD-TODOLIST',
-        payload: {title, todoId: v1()}
+        payload: todolist
     } as const
 }
 
@@ -88,6 +85,24 @@ export const fetchTodolistsTC = () => {
         todolistsApi.getTodolists()
             .then((res) => {
                 dispatch(setTodolistsAC(res.data))
+            })
+    }
+}
+
+export const removeTodolistTC = (id: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsApi.deleteTodolists(id)
+            .then((res) => {
+                dispatch(removeTodoListAC(id))
+            })
+    }
+}
+
+export const addTodolistTC = (title: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsApi.createTodolists(title)
+            .then((res) => {
+                dispatch(addTodoListAC(res.data.data.item))
             })
     }
 }
