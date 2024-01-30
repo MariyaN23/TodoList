@@ -135,7 +135,18 @@ test('correct task isDone should be changed to newIsDone', () => {
 
     const endState = tasksReducer(startState, {
         type: 'UPDATE-TASK',
-        payload: {todoId: todolistID2, taskId: '1', newTitle: newTitle}
+        payload: {
+            id: '1',
+            title: newTitle,
+            status: TaskStatuses.Completed,
+            addedDate: '',
+            deadline: '',
+            order: 0,
+            startDate: '',
+            description: '',
+            priority: TaskPriorities.Low,
+            todoListId: todolistID2
+        }
     })
 
     expect(endState[todolistID2][0].title).toBe(newTitle)
@@ -143,7 +154,12 @@ test('correct task isDone should be changed to newIsDone', () => {
 })
 
 test('new property with new array should be added when new todolist is added', () => {
-    const action = addTodoListAC('new todilist')
+    const action = addTodoListAC({
+        id: '78',
+        title: 'pizza',
+        addedDate: '',
+        order: 2
+    })
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)

@@ -6,7 +6,7 @@ import {
     changeFilterAC, fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC, TodolistsDomainType,
-    updateTodolistTitleAC
+    updateTodolistTitleTC
 } from '../../reducers/TodolistReducer';
 
 
@@ -27,7 +27,7 @@ export function useTodoLists () {
     }, [dispatch])
 
     const updateTodolistTitle = useCallback((todoId: string, newTitle: string) => {
-        dispatch(updateTodolistTitleAC(todoId, newTitle))
+        dispatch(updateTodolistTitleTC(todoId, newTitle))
     }, [dispatch])
 
      const fetchTodolistsFunction = () => {

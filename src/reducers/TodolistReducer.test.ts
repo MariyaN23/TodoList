@@ -26,14 +26,15 @@ test('correct todolist should be removed', ()=> {
 })
 
 test('correct todolist should be added', ()=> {
-
-    const newTodolistTitle = "New Todolist"
-    const newTodolistID = v1()
-
-    const endState = todolistReducer(startState, {type: 'ADD-TODOLIST', payload: {}})
+    const endState = todolistReducer(startState, {type: 'ADD-TODOLIST', payload: {
+            id: '78',
+            title: 'pizza',
+            addedDate: '',
+            order: 2
+        }})
 
     expect(endState.length).toBe(3)
-    expect(endState[0].id).toBe(newTodolistID)
+    expect(endState[0].id).toBe('78')
 })
 
 test('correct filter should be changed', ()=> {

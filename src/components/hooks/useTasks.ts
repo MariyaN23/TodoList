@@ -2,15 +2,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from '../../reducers/store';
 import {useCallback, useState} from 'react';
 import {
-    addTaskAC, addTaskTC,
-    changeStatusAC, deleteTaskTC,
+    addTaskTC,
+    deleteTaskTC,
     fetchTasksTC,
-    removeTaskAC,
-    updateTaskAC
+    updateTaskTC
 } from '../../reducers/TasksReducer';
 import {FilterValuesType} from '../../reducers/TodolistReducer';
-import {tasksApi, TaskStatuses, TaskType} from '../../api/tasks-api';
-import {todolistsApi} from '../../api/todolists-api';
+import {TaskStatuses, TaskType} from '../../api/tasks-api';
+
 
 export function useTasks(todoId: string,
                          changeFilter: (todoId: string, value: FilterValuesType) => void,
@@ -30,10 +29,10 @@ export function useTasks(todoId: string,
     let tasksForTodolist = tasks
 
     if (filter === 'active') {
-        tasksForTodolist = allTasksForTodolist.filter(t => t.status===TaskStatuses.New);
+        tasksForTodolist = allTasksForTodolist.filter(t => t.status === TaskStatuses.New);
     }
     if (filter === 'completed') {
-        tasksForTodolist = allTasksForTodolist.filter(t => t.status===TaskStatuses.Completed);
+        tasksForTodolist = allTasksForTodolist.filter(t => t.status === TaskStatuses.Completed);
     }
 
     const addTaskHandler = useCallback((title: string) => {
@@ -48,10 +47,10 @@ export function useTasks(todoId: string,
         dispatch(deleteTaskTC(todoId, tId))
     }, [dispatch, todoId])
 
-    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskAC(todoId, tId, newTitle)), [dispatch, todoId])
+    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC(todoId, tId, {title: newTitle})), [dispatch, todoId])
 
     const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
-        dispatch(changeStatusAC(todoId, tId, checked ? TaskStatuses.Completed : TaskStatuses.New ))
+        dispatch(updateTaskTC(todoId, tId, {status: checked ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch, todoId])
 
     const fetchTasksFunction = () => {
