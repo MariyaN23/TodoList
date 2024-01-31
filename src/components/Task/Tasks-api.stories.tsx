@@ -67,7 +67,7 @@ export const DeleteTask = () => {
 }
 
 export const UpdateTask = () => {
-    const [state, setState] = useState<ResponseType<{item: TaskType[]}> | null>(null)
+    const [state, setState] = useState<ResponseType<{item: TaskType}> | null>(null)
     const [todolistId, setTodolistId] = useState("")
     const [taskId, setTaskId] = useState("")
     const [title, setTitle] = useState("title 1")
@@ -80,7 +80,6 @@ export const UpdateTask = () => {
             description,
             title,
             status,
-            completed: false,
             priority,
             startDate: ''
         })

@@ -1,4 +1,4 @@
-import {setTasksAC, TasksDomainType, tasksReducer} from './TasksReducer'
+import {setTasksAC, TasksDomainType, tasksReducer, updateTaskAC} from './TasksReducer'
 import {v1} from 'uuid';
 import {addTodoListAC, setTodolistsAC} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
@@ -120,17 +120,26 @@ test('correct task should be removed', () => {
 })
 
 test('correct task isDone should be changed to newIsDone', () => {
-    const endState = tasksReducer(startState, {
-        type: 'CHANGE-STATUS',
-        payload: {todoId: todolistID1, taskId: '1', newStatus: TaskStatuses.New}
-    })
+    const newTask = {
+        id: '3',
+        title: 'Hot Dog',
+        status: TaskStatuses.New,
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        startDate: '',
+        description: '',
+        priority: TaskPriorities.Low,
+        todoListId: todolistID2
+    }
+    const endState = tasksReducer(startState, updateTaskAC(newTask))
 
-    expect(endState[todolistID1][0].status).toBe(TaskStatuses.New)
+    expect(endState[todolistID1][0].status).toBe(TaskStatuses.Completed)
     expect(endState[todolistID1][1].status).toBe(TaskStatuses.Completed)
-    expect(endState[todolistID2][0].status).toBe(TaskStatuses.Completed)
+    expect(endState[todolistID2][2].status).toBe(TaskStatuses.New)
 })
 
-test('correct task isDone should be changed to newIsDone', () => {
+test('correct task title should be changed to newTitle', () => {
     const newTitle = 'Bounty'
 
     const endState = tasksReducer(startState, {
