@@ -1,13 +1,13 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from '../../reducers/store';
+import {AppRootState} from '../../app/store';
 import {useCallback, useState} from 'react';
 import {
     addTaskTC,
     deleteTaskTC,
     fetchTasksTC,
     updateTaskTC
-} from '../../reducers/TasksReducer';
-import {FilterValuesType} from '../../reducers/TodolistReducer';
+} from '../../features/TodolistsList/TasksReducer';
+import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
 import {TaskStatuses, TaskType} from '../../api/tasks-api';
 
 

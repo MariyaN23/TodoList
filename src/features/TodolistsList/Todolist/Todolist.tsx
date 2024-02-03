@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
-import {TodoListButton} from '../TodoListButton';
-import {AddItemForm} from '../AddItemForm/AddItemForm';
-import {EditableSpan} from '../EditableSpan';
+import {TodoListButton} from '../../../components/TodoListButton';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {Task} from '../Task/Task';
-import {useTasks} from '../hooks/useTasks';
-import {FilterValuesType} from '../../reducers/TodolistReducer';
+import {Task} from './Task/Task';
+import {useTasks} from '../../../components/hooks/useTasks';
+import {FilterValuesType} from '../TodolistReducer';
 
 type PropsType = {
     title: string

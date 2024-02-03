@@ -37,7 +37,6 @@ export type ResponseTasksType = {
 export type UpdateTaskType = {
     title: string
     description: string
-    //completed: boolean
     status: number
     priority: number
     startDate: string

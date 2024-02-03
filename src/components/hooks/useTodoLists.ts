@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from '../../reducers/store';
+import {AppRootState} from '../../app/store';
 import {useCallback, useEffect} from 'react';
 import {
     addTodolistTC,
@@ -7,7 +7,7 @@ import {
     FilterValuesType,
     removeTodolistTC, TodolistsDomainType,
     updateTodolistTitleTC
-} from '../../reducers/TodolistReducer';
+} from '../../features/TodolistsList/TodolistReducer';
 
 
 export function useTodoLists () {

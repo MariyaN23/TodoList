@@ -1,9 +1,9 @@
 import React from 'react';
-import s from '../Todolist/Todolist.module.css';
-import {SuperCheckbox} from '../SuperCheckbox';
-import {EditableSpan} from '../EditableSpan';
-import {TodoListButton} from '../TodoListButton';
-import {TaskStatuses, TaskType} from '../../api/tasks-api';
+import s from '../Todolist.module.css';
+import {SuperCheckbox} from '../../../../components/SuperCheckbox';
+import {EditableSpan} from '../../../../components/EditableSpan';
+import {TodoListButton} from '../../../../components/TodoListButton';
+import {TaskStatuses, TaskType} from '../../../../api/tasks-api';
 
 type TaskPropsType = {
     removeTask: (tId: string)=>void
