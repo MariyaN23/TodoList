@@ -1,6 +1,7 @@
 import {AddTodoListACType, RemoveTodoListACType, SetTodolistsACType} from './TodolistReducer';
 import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState, AppThunk} from '../../app/store';
+import {ThunkDispatch} from 'redux-thunk';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
@@ -45,34 +46,44 @@ export const tasksReducer = (state: TasksDomainType = initialState, action: Task
 }
 
 export type TasksReducerType =
-    | ReturnType<typeof addTaskAC>
-    | ReturnType<typeof removeTaskAC>
-    | ReturnType<typeof updateTaskAC>
-    | ReturnType<typeof setTasksAC>
+    | AddTaskACType
+    | RemoveTaskACType
+    | UpdateTaskACType
+    | SetTasksACType
     | AddTodoListACType
     | RemoveTodoListACType
     | SetTodolistsACType
 
+type AddTaskACType= ReturnType<typeof addTaskAC>
 export const addTaskAC = (task: TaskType) =>
     ({type: 'ADD-TASK', payload: {task}} as const)
+
+type RemoveTaskACType= ReturnType<typeof removeTaskAC>
 export const removeTaskAC = (todoId: string, taskId: string) =>
     ({type: 'REMOVE-TASK', payload: {todoId, taskId}} as const)
+
+type UpdateTaskACType = ReturnType<typeof updateTaskAC>
 export const updateTaskAC = (newTask: TaskType) =>
     ({type: 'UPDATE-TASK', payload: newTask} as const)
+
+type SetTasksACType = ReturnType<typeof setTasksAC>
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
     ({type: 'SET-TASKS', payload: {todolistId, tasks}} as const)
 
-export const fetchTasksTC = (todolistId: string): AppThunk => async dispatch => {
+export const fetchTasksTC = (todolistId: string): AppThunk =>
+    async (dispatch: ThunkDispatch<AppRootState, unknown, SetTasksACType>) => {
     const response = await tasksApi.getTasks(todolistId)
     dispatch(setTasksAC(todolistId, response.data.items))
 }
 
-export const deleteTaskTC = (todoId: string, tId: string): AppThunk => async dispatch => {
+export const deleteTaskTC = (todoId: string, tId: string): AppThunk =>
+    async (dispatch: ThunkDispatch<AppRootState, unknown, RemoveTaskACType>) => {
     await tasksApi.deleteTasks(todoId, tId)
     dispatch(removeTaskAC(todoId, tId))
 }
 
-export const addTaskTC = (todoId: string, title: string): AppThunk => async dispatch => {
+export const addTaskTC = (todoId: string, title: string): AppThunk =>
+    async (dispatch: ThunkDispatch<AppRootState, unknown, AddTaskACType>) => {
     const response = await tasksApi.createTasks(todoId, title)
     dispatch(addTaskAC(response.data.data.item))
 }
@@ -87,7 +98,8 @@ type UpdateDomainTaskType = {
 }
 
 export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType): AppThunk =>
-    async (dispatch, getState: () => AppRootState) => {
+    async (dispatch: ThunkDispatch<AppRootState, unknown, UpdateTaskACType>,
+           getState: () => AppRootState)=> {
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
