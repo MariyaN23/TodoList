@@ -15,10 +15,10 @@ export const rootReducer = combineReducers({
 export const todolistID1 = v1()
 export const todolistID2 = v1()
 
-const initialState = {
+const initialState: AppRootState = {
     todoLists: [
-        {id: todolistID1, title: 'Who is admin', filter: 'all', addedDate: '', order: 0},
-        {id: todolistID2, title: 'What to buy', filter: 'all', addedDate: '', order: 1}
+        {id: todolistID1, title: 'Who is admin', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
+        {id: todolistID2, title: 'What to buy', filter: 'all', addedDate: '', order: 1, entityStatus: 'idle'}
     ],
     tasks: {
         [todolistID1]: [
@@ -31,6 +31,10 @@ const initialState = {
             {id: v1(), title: 'Duck for bath', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2},
             {id: v1(), title: 'Vodka', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2}
         ]
+    },
+    app: {
+        status: 'idle',
+        error: null
     }
 }
 

@@ -1,17 +1,18 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from '../../app/store';
+import {AppActionsType, AppRootState, AppThunk} from '../../app/store';
 import {useCallback, useEffect} from 'react';
 import {
     addTodolistTC,
     changeFilterAC, fetchTodolistsTC,
     FilterValuesType,
-    removeTodolistTC, TodolistsDomainType,
+    removeTodolistTC, TodolistReducerType, TodolistsDomainType,
     updateTodolistTitleTC
 } from '../../features/TodolistsList/TodolistReducer';
+import {ThunkDispatch} from 'redux-thunk';
 
 
 export function useTodoLists () {
-    const dispatch = useDispatch<any>()
+    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, TodolistReducerType>>()
     const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
 
     const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {

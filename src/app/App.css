@@ -8,3 +8,14 @@
   margin-right: 50px;
 }
 */
+
+.App {
+    position: relative;
+}
+
+.loading {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    top: 0
+}

@@ -2,6 +2,7 @@ import {AddTodoListACType, RemoveTodoListACType, SetTodolistsACType} from './Tod
 import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState, AppThunk} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
+import {AppReducerType, setErrorAC, setStatusAC, setStatusACType} from '../../app/app-reducer';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
@@ -71,9 +72,11 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
     ({type: 'SET-TASKS', payload: {todolistId, tasks}} as const)
 
 export const fetchTasksTC = (todolistId: string): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, SetTasksACType>) => {
-    const response = await tasksApi.getTasks(todolistId)
-    dispatch(setTasksAC(todolistId, response.data.items))
+    async (dispatch: ThunkDispatch<AppRootState, unknown, SetTasksACType | setStatusACType>) => {
+        dispatch(setStatusAC('loading'))
+        const response = await tasksApi.getTasks(todolistId)
+        dispatch(setTasksAC(todolistId, response.data.items))
+        dispatch(setStatusAC('succeeded'))
 }
 
 export const deleteTaskTC = (todoId: string, tId: string): AppThunk =>
@@ -83,9 +86,20 @@ export const deleteTaskTC = (todoId: string, tId: string): AppThunk =>
 }
 
 export const addTaskTC = (todoId: string, title: string): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, AddTaskACType>) => {
+    async (dispatch: ThunkDispatch<AppRootState, unknown, AddTaskACType | AppReducerType>) => {
+    dispatch(setStatusAC('loading'))
     const response = await tasksApi.createTasks(todoId, title)
-    dispatch(addTaskAC(response.data.data.item))
+    if (response.data.resultCode === 0) {
+        dispatch(addTaskAC(response.data.data.item))
+        dispatch(setStatusAC('succeeded'))
+    } else {
+        if (response.data.messages.length) {
+            dispatch(setErrorAC(response.data.messages[0]))
+        } else {
+            dispatch(setErrorAC('Some error occurred'))
+        }
+        dispatch(setStatusAC('failed'))
+    }
 }
 
 type UpdateDomainTaskType = {
