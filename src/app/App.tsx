@@ -9,7 +9,11 @@ import {useSelector} from 'react-redux';
 import {AppRootState} from './store';
 import {StatusType} from './app-reducer';
 
-function App() {
+type AppPropsType = {
+    demo?: boolean
+}
+
+function App({demo = false}: AppPropsType){
     console.log('App is called')
     const status = useSelector<AppRootState, StatusType>(state => state.app.status)
     return (
@@ -20,7 +24,7 @@ function App() {
             </div>}
             <ButtonAppBar/>
             <Container>
-                <TodolistsList/>
+                <TodolistsList demo={demo}/>
             </Container>
         </div>
     );

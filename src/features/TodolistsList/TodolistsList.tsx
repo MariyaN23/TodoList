@@ -5,7 +5,11 @@ import {Todolist} from './Todolist/Todolist';
 import {useTodoLists} from '../../components/hooks/useTodoLists';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 
-export const TodolistsList = () => {
+type TodolistsPropsType = {
+    demo?: boolean
+}
+
+export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
     const {
         addTodoList,
         todolists,
@@ -16,6 +20,9 @@ export const TodolistsList = () => {
     } = useTodoLists()
 
     useEffect(() => {
+        if (demo) {
+            return;
+        }
         fetchTodolistsFunction()
     }, [])
 
@@ -29,13 +36,12 @@ export const TodolistsList = () => {
                     <Grid item key={el.id}>
                         <Paper elevation={3}
                                style={{padding: '10px'}}>
-                            <Todolist title={el.title}
-                                      key={el.id}
+                            <Todolist key={el.id}
+                                      todolist={el}
                                       changeFilter={changeFilter}
-                                      todoId={el.id}
                                       removeTodoList={removeTodoList}
                                       updateTodolistTitle={updateTodolistTitle}
-                                      filter={el.filter}
+                                      demo={demo}
                             />
                         </Paper>
                     </Grid>)

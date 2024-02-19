@@ -16,7 +16,7 @@ type ButtonPropsType = {
     variant?: "text" | "contained" | "outlined" | undefined
 }
 
-export const TodoListButton = React.memo((props: ButtonPropsType) => {
+export const TodoListButton: React.FC<ButtonPropsType> = React.memo((props) => {
 
     const onClickButtonHandler = () => {
         props.callBack()

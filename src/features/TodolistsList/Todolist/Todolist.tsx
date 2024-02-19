@@ -6,18 +6,17 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Task} from './Task/Task';
 import {useTasks} from '../../../components/hooks/useTasks';
-import {FilterValuesType} from '../TodolistReducer';
+import {FilterValuesType, TodolistsDomainType} from '../TodolistReducer';
 
 type PropsType = {
-    title: string
+    todolist: TodolistsDomainType
     changeFilter: (todoId: string, value: FilterValuesType) => void
-    todoId: string
     removeTodoList: (todoId: string) => void
     updateTodolistTitle: (todoId: string, newTitle: string) => void
-    filter: FilterValuesType
+    demo?: boolean
 }
 
-export const Todolist = React.memo(function (props: PropsType) {
+export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false, ...props}) {
     console.log('Todolist is called')
     const {updateTodolistTitleHandler,
         addTaskHandler,
@@ -27,13 +26,16 @@ export const Todolist = React.memo(function (props: PropsType) {
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        fetchTasksFunction} = useTasks(props.todoId, props.changeFilter, props.filter, props.updateTodolistTitle)
+        fetchTasksFunction} = useTasks(props.todolist.id, props.changeFilter, props.todolist.filter, props.updateTodolistTitle)
     useEffect(()=>{
+        if (demo) {
+            return;
+        }
         fetchTasksFunction()
     }, [])
     return <div>
-        <h3><EditableSpan title={props.title} callback={updateTodolistTitleHandler}/>
-            <IconButton aria-label="delete" onClick={() => props.removeTodoList(props.todoId)}>
+        <h3><EditableSpan title={props.todolist.title} callback={updateTodolistTitleHandler}/>
+            <IconButton aria-label="delete" onClick={() => props.removeTodoList(props.todolist.id)}>
                 <DeleteIcon/>
             </IconButton>
         </h3>
