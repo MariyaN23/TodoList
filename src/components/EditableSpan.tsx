@@ -3,14 +3,16 @@ import React, {ChangeEvent, useState} from 'react';
 type EditableSpanPropsType = {
     title: string
     callback: (newTitle: string) => void
+    disabled?: boolean
 }
 
-export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) => {
+export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({disabled, ...props}) => {
     console.log('EditableSpan')
     const [edit, setEdit] = useState(()=>false)
     const [inputValue, setInputValue] = useState(props.title)
 
     const onHandler = ()=> {
+        if (disabled) return
         setEdit((prev)=>!prev)
         if (edit) {
             props.callback(inputValue)

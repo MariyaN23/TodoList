@@ -1,4 +1,4 @@
-import {AppDomainType, appReducer, setErrorAC, setStatusAC} from './app-reducer';
+import {AppDomainType, appReducer, setAppErrorAC, setAppStatusAC} from './app-reducer';
 
 let startState: AppDomainType
 
@@ -10,13 +10,13 @@ beforeEach(()=>{
 })
 
 test ('error message should be set', ()=> {
-    const endState = appReducer(startState, setErrorAC('error'))
+    const endState = appReducer(startState, setAppErrorAC('error'))
 
     expect(endState.error).toBe('error')
 })
 
 test ('correct status should be set', ()=> {
-    const endState = appReducer(startState, setStatusAC('loading'))
+    const endState = appReducer(startState, setAppStatusAC('loading'))
 
     expect(endState.status).toBe('loading')
 })

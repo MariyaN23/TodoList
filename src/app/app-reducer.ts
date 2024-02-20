@@ -22,13 +22,13 @@ export const appReducer =(state: any = initialState, action: AppReducerType): Ap
 }
 
 export type AppReducerType =
-    | setStatusACType
-    | setErrorACType
+    | setAppStatusACType
+    | setAppErrorACType
 
-export type setStatusACType = ReturnType<typeof setStatusAC>
-export const setStatusAC =(status: StatusType) =>
+export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
+export const setAppStatusAC =(status: StatusType) =>
     ({type: 'APP/SET-STATUS', status} as const)
 
-export type setErrorACType = ReturnType<typeof setErrorAC>
-export const setErrorAC =(error: string | null) =>
+export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
+export const setAppErrorAC =(error: string | null) =>
     ({type: 'APP/SET-ERROR', error} as const)

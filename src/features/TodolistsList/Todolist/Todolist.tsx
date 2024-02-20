@@ -34,12 +34,17 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         fetchTasksFunction()
     }, [])
     return <div>
-        <h3><EditableSpan title={props.todolist.title} callback={updateTodolistTitleHandler}/>
-            <IconButton aria-label="delete" onClick={() => props.removeTodoList(props.todolist.id)}>
+        <h3><EditableSpan title={props.todolist.title}
+                          callback={updateTodolistTitleHandler}
+                          disabled={props.todolist.entityStatus === 'loading'}
+        />
+            <IconButton aria-label="delete"
+                        disabled={props.todolist.entityStatus === 'loading'}
+                        onClick={() => props.removeTodoList(props.todolist.id)}>
                 <DeleteIcon/>
             </IconButton>
         </h3>
-        <AddItemForm callBack={addTaskHandler}/>
+        <AddItemForm callBack={addTaskHandler} disabled={props.todolist.entityStatus === 'loading'}/>
         <ul>
             {tasksForTodolist.map(t => <Task
                 updateTask={updateTaskHandler}

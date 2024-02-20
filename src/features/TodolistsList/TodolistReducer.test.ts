@@ -61,3 +61,10 @@ test('todolists should be setted', ()=> {
 
     expect(endState.length).toBe(2)
 })
+
+test('correct status should be updated', ()=> {
+
+    const endState = todolistReducer(startState, {type: 'CHANGE-ENTITY-STATUS', payload: {todoId: todolistID1, entityStatus: 'loading'}})
+
+    expect(endState[0].entityStatus).toBe("loading")
+})

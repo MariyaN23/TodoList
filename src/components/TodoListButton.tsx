@@ -14,9 +14,10 @@ type ButtonPropsType = {
     className?: string
     style?: StyleType
     variant?: "text" | "contained" | "outlined" | undefined
+    disabled?: boolean
 }
 
-export const TodoListButton: React.FC<ButtonPropsType> = React.memo((props) => {
+export const TodoListButton: React.FC<ButtonPropsType> = React.memo(({disabled = false, ...props}) => {
 
     const onClickButtonHandler = () => {
         props.callBack()
@@ -27,7 +28,9 @@ export const TodoListButton: React.FC<ButtonPropsType> = React.memo((props) => {
                 className={props.className}
                 style={props.style}
                 onClick={onClickButtonHandler}
-                color={'secondary'}>{props.name}</Button>
-
+                color={'secondary'}
+                disabled={disabled}
+        >{props.name}
+        </Button>
     )
 });

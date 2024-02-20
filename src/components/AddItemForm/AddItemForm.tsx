@@ -5,16 +5,16 @@ import {useAddItemForm} from '../hooks/useAddItemForm';
 
 type AddItemFormPropsType = {
     callBack: (title: string)=>void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo(({disabled = false, ...props}: AddItemFormPropsType) => {
     console.log('AddItemForm is called')
     const {error,
         newTitle,
         onChangeHandler,
         onKeyDownHandler,
         addTaskHandler} = useAddItemForm(props.callBack)
-
     return (
         <div>
             <TextField id="outlined-basic"
@@ -25,14 +25,16 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
                        error={!!error}
                        value={newTitle}
                        onChange={onChangeHandler}
-                       onKeyDown={onKeyDownHandler}/>
+                       onKeyDown={onKeyDownHandler}
+                       disabled={disabled}/>
             <TodoListButton name={"+"}
                             style={{maxWidth: "38px",
                                 maxHeight: "38px",
                                 minWidth: "38px",
                                 minHeight: "38px"}}
                             variant={"contained"}
-                            callBack={addTaskHandler}/>
+                            callBack={addTaskHandler}
+                            disabled={disabled}/>
         </div>
     );
 })
