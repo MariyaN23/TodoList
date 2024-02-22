@@ -19,7 +19,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({disabl
         }
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>)=> {setInputValue(e.currentTarget.value)}
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setInputValue(e.currentTarget.value)
 
     return (edit
         ? <input value={inputValue} onBlur={onHandler} onChange={onChangeHandler} autoFocus />

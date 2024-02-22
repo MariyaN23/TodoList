@@ -8,7 +8,9 @@ export function useAddItemForm(callBack: (title: string)=>void) {
     const addTaskHandler = () => {
         if (newTitle.trim() !== '') {
             callBack(newTitle.trim())
-            setNewTitle('')
+            if (newTitle.length <= 100) {
+                setNewTitle('')
+            }
         } else {
             setError('Title is required')
         }
