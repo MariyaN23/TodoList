@@ -7,7 +7,7 @@ import {
     fetchTasksTC, TasksReducerType,
     updateTaskTC
 } from '../../features/TodolistsList/TasksReducer';
-import {FilterValuesType, TodolistReducerType} from '../../features/TodolistsList/TodolistReducer';
+import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
 import {TaskStatuses, TaskType} from '../../api/tasks-api';
 import {ThunkDispatch} from 'redux-thunk';
 

@@ -38,6 +38,12 @@ const initialState: AppRootState = {
     app: {
         status: 'idle',
         error: null
+    },
+    login: {
+        email: '',
+        password: '',
+        rememberMe: false,
+        isAuthorised: false,
     }
 }
 
