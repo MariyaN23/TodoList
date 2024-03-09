@@ -4,12 +4,17 @@ import Paper from '@mui/material/Paper';
 import {Todolist} from './Todolist/Todolist';
 import {useTodoLists} from '../../components/hooks/useTodoLists';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
+import {useSelector} from 'react-redux';
+import {AppRootState} from '../../app/store';
+import {Navigate} from 'react-router-dom';
 
 type TodolistsPropsType = {
     demo?: boolean
 }
 
 export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
+    const isAuthorised = useSelector<AppRootState, boolean>(state => state.login.isAuthorised)
+
     const {
         addTodoList,
         todolists,
@@ -20,11 +25,15 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
     } = useTodoLists()
 
     useEffect(() => {
-        if (demo) {
+        if (demo || !isAuthorised) {
             return;
         }
         fetchTodolistsFunction()
     }, [])
+
+    if (!isAuthorised) {
+        return <Navigate to={'/login'} replace={true}/>
+    }
 
     return <>
         <Grid container style={{padding: '20px'}}>

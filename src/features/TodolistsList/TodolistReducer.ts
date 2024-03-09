@@ -2,6 +2,7 @@ import {todolistsApi, TodolistsType} from '../../api/todolists-api';
 import {AppRootState, AppThunk} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppReducerType, setAppErrorAC, setAppStatusAC, setAppStatusACType, StatusType} from '../../app/app-reducer';
+import {handleServerNetworkError} from '../../utils/error-utils';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -67,9 +68,13 @@ export const setTodolistsAC = (todolists: TodolistsType[]) =>
 export const fetchTodolistsTC = (): AppThunk =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, SetTodolistsACType | setAppStatusACType>) => {
         dispatch(setAppStatusAC('loading'))
-        const response = await todolistsApi.getTodolists()
-        dispatch(setTodolistsAC(response.data))
-        dispatch(setAppStatusAC('succeeded'))
+        try {
+            const response = await todolistsApi.getTodolists()
+            dispatch(setTodolistsAC(response.data))
+            dispatch(setAppStatusAC('succeeded'))
+        } catch (error: any) {
+            handleServerNetworkError(dispatch, error.message)
+        }
 }
 
 export const removeTodolistTC = (id: string): AppThunk =>

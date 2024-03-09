@@ -4,10 +4,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import {useFormik} from 'formik';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {loginFormSendingTC, LoginReducerType} from './LoginReducer';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppRootState} from '../../app/store';
+import {Navigate} from 'react-router-dom';
+import React from 'react';
 
 /*type validatedErrorsType = {
     email: null | string
@@ -17,6 +19,7 @@ import {AppRootState} from '../../app/store';
 
 export const Login = () => {
     const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, LoginReducerType>>()
+    const isAuthorised = useSelector<AppRootState, boolean>(state => state.login.isAuthorised)
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -25,7 +28,6 @@ export const Login = () => {
         },
         onSubmit: values => {
             dispatch(loginFormSendingTC(values))
-            //alert(JSON.stringify(values))
         },
         /*validate: values => {
             const validatedErrors: validatedErrorsType = {
@@ -43,6 +45,9 @@ export const Login = () => {
             return validatedErrors
         },*/
     })
+    if (isAuthorised) {
+        return <Navigate to={'/'} replace={true}/>
+    }
     return (
         <Grid container justifyContent="center">
             <Grid item xs={4}>

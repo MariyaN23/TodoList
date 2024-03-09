@@ -5,7 +5,8 @@ let startState: AppDomainType
 beforeEach(()=>{
     startState = {
         status: 'idle',
-        error: 'null'
+        error: 'null',
+        isInitialised: false
     }
 })
 

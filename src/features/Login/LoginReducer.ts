@@ -1,40 +1,53 @@
 import {AppRootState, AppThunk} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
-import {tasksApi} from '../../api/tasks-api';
-import {setTasksAC, updateTaskAC} from '../TodolistsList/TasksReducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
-type LoginStateType = {
-    email: string
-    password: string
-    rememberMe: boolean
+export type LoginStateType = {
     isAuthorised: boolean
 }
 
 const initialState = {
-    email: '',
-    password: '',
-    rememberMe: false,
     isAuthorised: false,
 }
 
 export const loginReducer =(state: LoginStateType = initialState, action: LoginReducerType): LoginStateType => {
     switch (action.type) {
+        case 'login/SET-IS-AUTHORISED':
+            return {...state, isAuthorised: action.payload.value}
         default: return state
     }
 }
 
-export type LoginReducerType = any
+export type LoginReducerType = setIsAuthorisedACType
+
+export type setIsAuthorisedACType = ReturnType<typeof setIsAuthorisedAC>
+export const setIsAuthorisedAC =(value: boolean)=> ({type: 'login/SET-IS-AUTHORISED', payload: {value}} as const)
 
 export const loginFormSendingTC = (data: LoginParamsType): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, any | setAppStatusACType>) => {
+    async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType>) => {
         dispatch(setAppStatusAC('loading'))
         try {
             const response = await authApi.login(data)
             if (response.data.resultCode === 0) {
-                alert('succeeded')
+                dispatch(setIsAuthorisedAC(true))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handleServerAppError(dispatch, response.data.messages)
+            }
+        } catch (error: any) {
+            handleServerNetworkError(dispatch, error.message)
+        }
+    }
+
+export const logoutTC = (): AppThunk =>
+    async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType>) => {
+        dispatch(setAppStatusAC('loading'))
+        try {
+            const response = await authApi.logout()
+            if (response.data.resultCode === 0) {
+                dispatch(setIsAuthorisedAC(false))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(dispatch, response.data.messages)
