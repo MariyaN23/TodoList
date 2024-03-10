@@ -3,6 +3,7 @@ import {AppRootState, AppThunk} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppReducerType, setAppErrorAC, setAppStatusAC, setAppStatusACType, StatusType} from '../../app/app-reducer';
 import {handleServerNetworkError} from '../../utils/error-utils';
+import {fetchTasksTC} from './TasksReducer';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -28,6 +29,8 @@ export const todolistReducer = (state: TodolistsDomainType[] = initialState, act
             return action.payload.map(el => ({...el, filter: 'all', entityStatus: 'idle'}))
         case 'CHANGE-ENTITY-STATUS':
             return state.map(el => el.id === action.payload.todoId ? {...el, entityStatus: action.payload.entityStatus} : el)
+        case 'CLEAR-TODOLISTS-DATA':
+            return []
         default:
             return state
     }
@@ -40,6 +43,7 @@ export type TodolistReducerType =
     | ChangeFilterACType
     | UpdateTodolistTitleACType
     | ChangeTodolistEntityStatusType
+    | ClearTodolistsDataACType
 
 export type RemoveTodoListACType = ReturnType<typeof removeTodoListAC>
 export const removeTodoListAC = (todoId: string) =>
@@ -65,6 +69,9 @@ export type SetTodolistsACType = ReturnType<typeof setTodolistsAC>
 export const setTodolistsAC = (todolists: TodolistsType[]) =>
     ({type: 'SET-TODOLISTS', payload: todolists} as const)
 
+export type ClearTodolistsDataACType = ReturnType<typeof clearTodolistsDataAC>
+export const clearTodolistsDataAC = () => ({type: 'CLEAR-TODOLISTS-DATA'} as const)
+
 export const fetchTodolistsTC = (): AppThunk =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, SetTodolistsACType | setAppStatusACType>) => {
         dispatch(setAppStatusAC('loading'))
@@ -72,6 +79,7 @@ export const fetchTodolistsTC = (): AppThunk =>
             const response = await todolistsApi.getTodolists()
             dispatch(setTodolistsAC(response.data))
             dispatch(setAppStatusAC('succeeded'))
+            response.data.forEach((todolist)=> dispatch(fetchTasksTC(todolist.id)))
         } catch (error: any) {
             handleServerNetworkError(dispatch, error.message)
         }

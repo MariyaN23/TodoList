@@ -3,6 +3,7 @@ import {ThunkDispatch} from 'redux-thunk';
 import {setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {clearTodolistsDataAC, ClearTodolistsDataACType} from '../TodolistsList/TodolistReducer';
 
 export type LoginStateType = {
     isAuthorised: boolean
@@ -42,13 +43,14 @@ export const loginFormSendingTC = (data: LoginParamsType): AppThunk =>
     }
 
 export const logoutTC = (): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType>) => {
+    async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType | ClearTodolistsDataACType>) => {
         dispatch(setAppStatusAC('loading'))
         try {
             const response = await authApi.logout()
             if (response.data.resultCode === 0) {
                 dispatch(setIsAuthorisedAC(false))
                 dispatch(setAppStatusAC('succeeded'))
+                dispatch(clearTodolistsDataAC())
             } else {
                 handleServerAppError(dispatch, response.data.messages)
             }

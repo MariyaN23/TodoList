@@ -54,9 +54,9 @@ export function useTasks(todoId: string,
         dispatch(updateTaskTC(todoId, tId, {status: checked ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch, todoId])
 
-    const fetchTasksFunction = () => {
+    /*const fetchTasksFunction = () => {
         dispatch(fetchTasksTC(todoId))
-    }
+    }*/
 
     return {
         updateTodolistTitleHandler,
@@ -67,6 +67,6 @@ export function useTasks(todoId: string,
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        fetchTasksFunction,
+        //fetchTasksFunction,
     }
 }
