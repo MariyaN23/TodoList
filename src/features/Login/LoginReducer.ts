@@ -4,30 +4,27 @@ import {setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {clearTodolistsDataAC, ClearTodolistsDataACType} from '../TodolistsList/TodolistReducer';
-
-export type LoginStateType = {
-    isAuthorised: boolean
-}
+import {createSlice, Dispatch} from '@reduxjs/toolkit';
 
 const initialState = {
     isAuthorised: false,
 }
 
-export const loginReducer =(state: LoginStateType = initialState, action: LoginReducerType): LoginStateType => {
-    switch (action.type) {
-        case 'login/SET-IS-AUTHORISED':
-            return {...state, isAuthorised: action.payload.value}
-        default: return state
+const slice = createSlice({
+    name: "login",
+    initialState,
+    reducers: {
+        setIsAuthorisedAC(state, action) {
+            state.isAuthorised = action.payload.value
+        }
     }
-}
+})
 
-export type LoginReducerType = setIsAuthorisedACType
+export const loginReducer = slice.reducer
+const {setIsAuthorisedAC} = slice.actions
 
-export type setIsAuthorisedACType = ReturnType<typeof setIsAuthorisedAC>
-export const setIsAuthorisedAC =(value: boolean)=> ({type: 'login/SET-IS-AUTHORISED', payload: {value}} as const)
-
-export const loginFormSendingTC = (data: LoginParamsType): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType>) => {
+export const loginFormSendingTC = (data: LoginParamsType) =>
+    async (dispatch: Dispatch) => {
         dispatch(setAppStatusAC('loading'))
         try {
             const response = await authApi.login(data)
@@ -42,8 +39,8 @@ export const loginFormSendingTC = (data: LoginParamsType): AppThunk =>
         }
     }
 
-export const logoutTC = (): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType | ClearTodolistsDataACType>) => {
+export const logoutTC = () =>
+    async (dispatch: Dispatch) => {
         dispatch(setAppStatusAC('loading'))
         try {
             const response = await authApi.logout()
