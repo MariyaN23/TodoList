@@ -1,8 +1,7 @@
-import {AppRootState, AppThunk} from './store';
-import {ThunkDispatch} from 'redux-thunk';
 import {authApi} from '../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
-import {setIsAuthorisedAC, setIsAuthorisedACType} from '../features/Login/LoginReducer';
+import {Dispatch} from '@reduxjs/toolkit';
+import {setIsAuthorisedAC} from '../features/Login/LoginReducer';
 
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -49,11 +48,11 @@ const setAppInitialisedAC = (value: boolean) =>
     ({type: 'APP/SET-INITIALISED', value} as const)
 
 export const initialiseAppTC = () =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, setAppInitialisedACType | setIsAuthorisedACType>) => {
+    async (dispatch: Dispatch) => {
         try {
             const response = await authApi.me()
             if (response.data.resultCode === 0) {
-                dispatch(setIsAuthorisedAC(true))
+                dispatch(setIsAuthorisedAC({value: true}))
             } else {
                 handleServerAppError(dispatch, response.data.messages)
             }

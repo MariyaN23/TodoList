@@ -6,11 +6,10 @@ import Checkbox from '@mui/material/Checkbox';
 import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginFormSendingTC} from './LoginReducer';
-import {ThunkDispatch} from 'redux-thunk';
 import {AppRootState} from '../../app/store';
 import {Navigate} from 'react-router-dom';
 import React from 'react';
-import {Dispatch} from '@reduxjs/toolkit';
+import {ThunkDispatch} from 'redux-thunk';
 
 /*type validatedErrorsType = {
     email: null | string
@@ -19,7 +18,7 @@ import {Dispatch} from '@reduxjs/toolkit';
 
 
 export const Login = () => {
-    const dispatch = useDispatch<Dispatch>()
+    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
     const isAuthorised = useSelector<AppRootState, boolean>(state => state.login.isAuthorised)
     const formik = useFormik({
         initialValues: {
@@ -28,7 +27,7 @@ export const Login = () => {
             rememberMe: false,
         },
         onSubmit: values => {
-            dispatch(loginFormSendingTC(values))
+           dispatch(loginFormSendingTC(values))
         },
         /*validate: values => {
             const validatedErrors: validatedErrorsType = {

@@ -1,10 +1,8 @@
-import {AppRootState, AppThunk} from '../../app/store';
-import {ThunkDispatch} from 'redux-thunk';
-import {setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
+import {setAppStatusAC} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {clearTodolistsDataAC, ClearTodolistsDataACType} from '../TodolistsList/TodolistReducer';
-import {createSlice, Dispatch} from '@reduxjs/toolkit';
+import {clearTodolistsDataAC} from '../TodolistsList/TodolistReducer';
+import {createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState = {
     isAuthorised: false,
@@ -14,14 +12,14 @@ const slice = createSlice({
     name: "login",
     initialState,
     reducers: {
-        setIsAuthorisedAC(state, action) {
+        setIsAuthorisedAC(state, action: PayloadAction<{value: boolean}>) {
             state.isAuthorised = action.payload.value
         }
     }
 })
 
 export const loginReducer = slice.reducer
-const {setIsAuthorisedAC} = slice.actions
+export const {setIsAuthorisedAC} = slice.actions
 
 export const loginFormSendingTC = (data: LoginParamsType) =>
     async (dispatch: Dispatch) => {
@@ -29,7 +27,7 @@ export const loginFormSendingTC = (data: LoginParamsType) =>
         try {
             const response = await authApi.login(data)
             if (response.data.resultCode === 0) {
-                dispatch(setIsAuthorisedAC(true))
+                dispatch(setIsAuthorisedAC({value: true}))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(dispatch, response.data.messages)
@@ -45,7 +43,7 @@ export const logoutTC = () =>
         try {
             const response = await authApi.logout()
             if (response.data.resultCode === 0) {
-                dispatch(setIsAuthorisedAC(false))
+                dispatch(setIsAuthorisedAC({value: false}))
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(clearTodolistsDataAC())
             } else {

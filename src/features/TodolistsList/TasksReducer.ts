@@ -1,6 +1,6 @@
 import {AddTodoListACType, ClearTodolistsDataACType, RemoveTodoListACType, SetTodolistsACType} from './TodolistReducer';
 import {tasksApi, TaskType} from '../../api/tasks-api';
-import {AppRootState, AppThunk} from '../../app/store';
+import {AppRootState} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppReducerType, setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
@@ -75,7 +75,7 @@ type SetTasksACType = ReturnType<typeof setTasksAC>
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
     ({type: 'SET-TASKS', payload: {todolistId, tasks}} as const)
 
-export const fetchTasksTC = (todolistId: string): AppThunk =>
+export const fetchTasksTC = (todolistId: string) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, SetTasksACType | setAppStatusACType>) => {
         dispatch(setAppStatusAC('loading'))
         const response = await tasksApi.getTasks(todolistId)
@@ -83,13 +83,13 @@ export const fetchTasksTC = (todolistId: string): AppThunk =>
         dispatch(setAppStatusAC('succeeded'))
 }
 
-export const deleteTaskTC = (todoId: string, tId: string): AppThunk =>
+export const deleteTaskTC = (todoId: string, tId: string) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, RemoveTaskACType>) => {
     await tasksApi.deleteTasks(todoId, tId)
     dispatch(removeTaskAC(todoId, tId))
 }
 
-export const addTaskTC = (todoId: string, title: string): AppThunk =>
+export const addTaskTC = (todoId: string, title: string) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, AddTaskACType | AppReducerType>) => {
     dispatch(setAppStatusAC('loading'))
         try {
@@ -114,7 +114,7 @@ type UpdateDomainTaskType = {
     deadline?: string
 }
 
-export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType): AppThunk =>
+export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, UpdateTaskACType | AppReducerType>,
            getState: () => AppRootState)=> {
         const state = getState()

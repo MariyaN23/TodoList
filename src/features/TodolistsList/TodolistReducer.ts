@@ -1,5 +1,5 @@
 import {todolistsApi, TodolistsType} from '../../api/todolists-api';
-import {AppRootState, AppThunk} from '../../app/store';
+import {AppRootState} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppReducerType, setAppErrorAC, setAppStatusAC, setAppStatusACType, StatusType} from '../../app/app-reducer';
 import {handleServerNetworkError} from '../../utils/error-utils';
@@ -72,7 +72,7 @@ export const setTodolistsAC = (todolists: TodolistsType[]) =>
 export type ClearTodolistsDataACType = ReturnType<typeof clearTodolistsDataAC>
 export const clearTodolistsDataAC = () => ({type: 'CLEAR-TODOLISTS-DATA'} as const)
 
-export const fetchTodolistsTC = (): AppThunk =>
+export const fetchTodolistsTC = () =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, SetTodolistsACType | setAppStatusACType>) => {
         dispatch(setAppStatusAC('loading'))
         try {
@@ -85,7 +85,7 @@ export const fetchTodolistsTC = (): AppThunk =>
         }
 }
 
-export const removeTodolistTC = (id: string): AppThunk =>
+export const removeTodolistTC = (id: string) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, RemoveTodoListACType | AppReducerType | ChangeTodolistEntityStatusType>) => {
         dispatch(setAppStatusAC('loading'))
         dispatch(changeTodolistEntityStatusAC(id, 'loading'))
@@ -94,7 +94,7 @@ export const removeTodolistTC = (id: string): AppThunk =>
         dispatch(setAppStatusAC('succeeded'))
 }
 
-export const addTodolistTC = (title: string): AppThunk =>
+export const addTodolistTC = (title: string) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, AddTodoListACType | AppReducerType>) => {
         dispatch(setAppStatusAC('loading'))
         const response = await todolistsApi.createTodolists(title)
@@ -111,7 +111,7 @@ export const addTodolistTC = (title: string): AppThunk =>
         }
 }
 
-export const updateTodolistTitleTC = (id: string, title: string): AppThunk => async (dispatch: ThunkDispatch<AppRootState, unknown, UpdateTodolistTitleACType>) => {
+export const updateTodolistTitleTC = (id: string, title: string)=> async (dispatch: ThunkDispatch<AppRootState, unknown, UpdateTodolistTitleACType>) => {
     await todolistsApi.updateTodolists(id, title)
     dispatch(updateTodolistTitleAC(id, title))
 }
