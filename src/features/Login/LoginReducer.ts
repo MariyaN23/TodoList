@@ -23,12 +23,12 @@ export const {setIsAuthorisedAC} = slice.actions
 
 export const loginFormSendingTC = (data: LoginParamsType) =>
     async (dispatch: Dispatch) => {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         try {
             const response = await authApi.login(data)
             if (response.data.resultCode === 0) {
                 dispatch(setIsAuthorisedAC({value: true}))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError(dispatch, response.data.messages)
             }
@@ -39,12 +39,12 @@ export const loginFormSendingTC = (data: LoginParamsType) =>
 
 export const logoutTC = () =>
     async (dispatch: Dispatch) => {
-        dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC({status: 'loading'}))
         try {
             const response = await authApi.logout()
             if (response.data.resultCode === 0) {
                 dispatch(setIsAuthorisedAC({value: false}))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
                 dispatch(clearTodolistsDataAC())
             } else {
                 handleServerAppError(dispatch, response.data.messages)

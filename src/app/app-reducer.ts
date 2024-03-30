@@ -1,10 +1,9 @@
 import {authApi} from '../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
-import {Dispatch} from '@reduxjs/toolkit';
+import {createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {setIsAuthorisedAC} from '../features/Login/LoginReducer';
 
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
 export type AppDomainType = {
     status: StatusType
     error: string | null
@@ -17,7 +16,26 @@ const initialState: AppDomainType = {
     isInitialised: false,
 }
 
-export const appReducer = (state: any = initialState, action: AppReducerType): AppDomainType => {
+const slice = createSlice({
+    name: "app",
+    initialState,
+    reducers: {
+        setAppStatusAC(state, action: PayloadAction<{status: StatusType}>) {
+            state.status = action.payload.status
+        },
+        setAppErrorAC(state, action: PayloadAction<{error: string | null}>) {
+            state.error = action.payload.error
+        },
+        setAppInitialisedAC(state, action: PayloadAction<{isInitialised: boolean}>) {
+            state.isInitialised = action.payload.isInitialised
+        }
+    }
+})
+
+export const appReducer = slice.reducer
+export const {setAppStatusAC, setAppErrorAC, setAppInitialisedAC} = slice.actions
+
+/*export const appReducer = (state: any = initialState, action: AppReducerType): AppDomainType => {
     switch (action.type) {
         case 'APP/SET-STATUS':
             return {...state, status: action.status}
@@ -28,24 +46,24 @@ export const appReducer = (state: any = initialState, action: AppReducerType): A
         default:
             return state
     }
-}
+}*/
 
-export type AppReducerType =
+/*export type AppReducerType =
     | setAppStatusACType
     | setAppErrorACType
-    | setAppInitialisedACType
+    | setAppInitialisedACType*/
 
-export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
+/*export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
 export const setAppStatusAC = (status: StatusType) =>
-    ({type: 'APP/SET-STATUS', status} as const)
+    ({type: 'APP/SET-STATUS', status} as const)*/
 
-export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
+/*export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
 export const setAppErrorAC = (error: string | null) =>
-    ({type: 'APP/SET-ERROR', error} as const)
+    ({type: 'APP/SET-ERROR', error} as const)*/
 
-type setAppInitialisedACType = ReturnType<typeof setAppInitialisedAC>
+/*type setAppInitialisedACType = ReturnType<typeof setAppInitialisedAC>
 const setAppInitialisedAC = (value: boolean) =>
-    ({type: 'APP/SET-INITIALISED', value} as const)
+    ({type: 'APP/SET-INITIALISED', value} as const)*/
 
 export const initialiseAppTC = () =>
     async (dispatch: Dispatch) => {
@@ -59,5 +77,5 @@ export const initialiseAppTC = () =>
         } catch (error: any) {
             handleServerNetworkError(dispatch, error.message)
         }
-        dispatch(setAppInitialisedAC(true))
+        dispatch(setAppInitialisedAC({isInitialised: true}))
     }

@@ -2,8 +2,9 @@ import {AddTodoListACType, ClearTodolistsDataACType, RemoveTodoListACType, SetTo
 import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
-import {AppReducerType, setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
+import {setAppStatusAC} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {Action} from '@reduxjs/toolkit';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
@@ -76,11 +77,11 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
     ({type: 'SET-TASKS', payload: {todolistId, tasks}} as const)
 
 export const fetchTasksTC = (todolistId: string) =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, SetTasksACType | setAppStatusACType>) => {
-        dispatch(setAppStatusAC('loading'))
+    async (dispatch: ThunkDispatch<AppRootState, unknown, Action>) => {
+        dispatch(setAppStatusAC({status: 'loading'}))
         const response = await tasksApi.getTasks(todolistId)
         dispatch(setTasksAC(todolistId, response.data.items))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatusAC({status: 'succeeded'}))
 }
 
 export const deleteTaskTC = (todoId: string, tId: string) =>
@@ -90,13 +91,13 @@ export const deleteTaskTC = (todoId: string, tId: string) =>
 }
 
 export const addTaskTC = (todoId: string, title: string) =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, AddTaskACType | AppReducerType>) => {
-    dispatch(setAppStatusAC('loading'))
+    async (dispatch: ThunkDispatch<AppRootState, unknown, Action>) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
         try {
             const response = await tasksApi.createTasks(todoId, title)
             if (response.data.resultCode === 0) {
                 dispatch(addTaskAC(response.data.data.item))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError(dispatch, response.data.messages)
             }
@@ -115,7 +116,7 @@ type UpdateDomainTaskType = {
 }
 
 export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType) =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, UpdateTaskACType | AppReducerType>,
+    async (dispatch: ThunkDispatch<AppRootState, unknown, Action>,
            getState: () => AppRootState)=> {
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
@@ -136,7 +137,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDo
             const response = await tasksApi.updateTasks(todolistId, taskId, newTask)
             if (response.data.resultCode === 0) {
                 dispatch(updateTaskAC(response.data.data.item))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError(dispatch, response.data.messages)
             }
