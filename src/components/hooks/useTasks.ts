@@ -1,22 +1,18 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from '../../app/store';
 import {useCallback, useState} from 'react';
-import {
-    addTaskTC,
-    deleteTaskTC,
-    fetchTasksTC, TasksReducerType,
-    updateTaskTC
-} from '../../features/TodolistsList/TasksReducer';
+import {addTaskTC, deleteTaskTC, updateTaskTC} from '../../features/TodolistsList/TasksReducer';
 import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
 import {TaskStatuses, TaskType} from '../../api/tasks-api';
 import {ThunkDispatch} from 'redux-thunk';
+import {Action} from '@reduxjs/toolkit';
 
 
 export function useTasks(todoId: string,
                          changeFilter: (todoId: string, value: FilterValuesType) => void,
                          filter: FilterValuesType,
                          updateTodolistTitle: (todoId: string, newTitle: string) => void) {
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, TasksReducerType>>()
+    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, Action>>()
     const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todoId])
 
     const [buttonName, setButtonName] = useState('all')

@@ -132,7 +132,7 @@ test('correct task isDone should be changed to newIsDone', () => {
         priority: TaskPriorities.Low,
         todoListId: todolistID2
     }
-    const endState = tasksReducer(startState, updateTaskAC(newTask))
+    const endState = tasksReducer(startState, updateTaskAC({newTask: newTask}))
 
     expect(endState[todolistID1][0].status).toBe(TaskStatuses.Completed)
     expect(endState[todolistID1][1].status).toBe(TaskStatuses.Completed)
@@ -163,12 +163,12 @@ test('correct task title should be changed to newTitle', () => {
 })
 
 test('new property with new array should be added when new todolist is added', () => {
-    const action = addTodoListAC({
-        id: '78',
-        title: 'pizza',
-        addedDate: '',
-        order: 2
-    })
+    const action = addTodoListAC({todolist: {
+            id: '78',
+            title: 'pizza',
+            addedDate: '',
+            order: 2
+        }})
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)
@@ -182,9 +182,8 @@ test('new property with new array should be added when new todolist is added', (
 })
 
 test('empty array should be added when we set todolists', () => {
-    const action = setTodolistsAC([{id: "1", title: "title1", order: 0, addedDate: ""},
-        {id: "2", title: "title2", order: 0, addedDate: ""}
-    ])
+    const action = setTodolistsAC({todolists: [{id: '1', title: 'title1', order: 0, addedDate: ''},
+    {id: '2', title: 'title2', order: 0, addedDate: ''}]})
 
     const endState = tasksReducer({}, action)
 
@@ -196,7 +195,7 @@ test('empty array should be added when we set todolists', () => {
 })
 
 test('tasks should be setted', () => {
-    const action = setTasksAC(todolistID1, startState[todolistID1])
+    const action = setTasksAC({ tasks: startState[todolistID1], todolistId: todolistID1})
 
     const endState = tasksReducer({}, action)
     const keys = Object.keys(endState)

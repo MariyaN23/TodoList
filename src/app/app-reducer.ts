@@ -35,36 +35,6 @@ const slice = createSlice({
 export const appReducer = slice.reducer
 export const {setAppStatusAC, setAppErrorAC, setAppInitialisedAC} = slice.actions
 
-/*export const appReducer = (state: any = initialState, action: AppReducerType): AppDomainType => {
-    switch (action.type) {
-        case 'APP/SET-STATUS':
-            return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
-        case 'APP/SET-INITIALISED':
-            return {...state, isInitialised: action.value}
-        default:
-            return state
-    }
-}*/
-
-/*export type AppReducerType =
-    | setAppStatusACType
-    | setAppErrorACType
-    | setAppInitialisedACType*/
-
-/*export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
-export const setAppStatusAC = (status: StatusType) =>
-    ({type: 'APP/SET-STATUS', status} as const)*/
-
-/*export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
-export const setAppErrorAC = (error: string | null) =>
-    ({type: 'APP/SET-ERROR', error} as const)*/
-
-/*type setAppInitialisedACType = ReturnType<typeof setAppInitialisedAC>
-const setAppInitialisedAC = (value: boolean) =>
-    ({type: 'APP/SET-INITIALISED', value} as const)*/
-
 export const initialiseAppTC = () =>
     async (dispatch: Dispatch) => {
         try {

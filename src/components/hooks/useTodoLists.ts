@@ -7,19 +7,19 @@ import {
     fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC,
-    TodolistReducerType,
     TodolistsDomainType,
     updateTodolistTitleTC
 } from '../../features/TodolistsList/TodolistReducer';
 import {ThunkDispatch} from 'redux-thunk';
+import {Action} from '@reduxjs/toolkit';
 
 
 export function useTodoLists () {
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, TodolistReducerType>>()
+    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, Action>>()
     const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
 
     const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
-        dispatch(changeFilterAC(todoId, value))
+        dispatch(changeFilterAC({todoId: todoId, value: value}))
     }, [dispatch])
 
     const removeTodoList = useCallback((todoId: string) => {

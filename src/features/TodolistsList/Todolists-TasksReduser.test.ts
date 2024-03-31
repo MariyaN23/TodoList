@@ -14,7 +14,7 @@ test ('ids should be equal', ()=> {
         order: 1,
         title: "pizza"
     }
-    const action = addTodoListAC(newTodolist)
+    const action = addTodoListAC({todolist: newTodolist})
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistState = todolistReducer(startTodolistState, action)
@@ -23,8 +23,8 @@ test ('ids should be equal', ()=> {
     const idFromTaks = keys[0]
     const idFromTodolists = endTodolistState[0].id
 
-    expect(idFromTaks).toBe(action.payload.id)
-    expect(idFromTodolists).toBe(action.payload.id)
+    expect(idFromTaks).toBe(action.payload.todolist.id)
+    expect(idFromTodolists).toBe(action.payload.todolist.id)
 })
 
 test ('property with todolistId should be deleted', ()=> {
@@ -44,7 +44,7 @@ test ('property with todolistId should be deleted', ()=> {
         ]
     }
 
-    const action = removeTodoListAC(todolistID2)
+    const action = removeTodoListAC({todoId: todolistID2})
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState)

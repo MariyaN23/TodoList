@@ -55,7 +55,7 @@ test('correct title should be updated', ()=> {
 
 test('todolists should be setted', ()=> {
 
-    const action = setTodolistsAC(startState)
+    const action = setTodolistsAC({todolists: startState})
 
     const endState = todolistReducer([], action)
 
