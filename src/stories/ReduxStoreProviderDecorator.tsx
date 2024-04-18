@@ -8,6 +8,8 @@ import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 import {appReducer} from '../app/app-reducer';
 import {thunk} from 'redux-thunk';
+import {MemoryRouter} from 'react-router-dom';
+import {configureStore} from '@reduxjs/toolkit';
 
 export const rootReducer = combineReducers({
     todoLists: todolistReducer,
@@ -48,5 +50,4 @@ const initialState: AppRootState = {
 export const storyBookStore = legacy_createStore(rootReducer, initialState as AppRootState, applyMiddleware(thunk))
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => {
-    return <Provider store={storyBookStore}>{storyFn()}</Provider>
-}
+    return <Provider store={storyBookStore}>{storyFn()}</Provider>}

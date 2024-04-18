@@ -1,4 +1,4 @@
-import {setTasksAC, TasksDomainType, tasksReducer, updateTaskAC} from './TasksReducer'
+import {addTaskAC, removeTaskAC, setTasksAC, TasksDomainType, tasksReducer, updateTaskAC} from './TasksReducer'
 import {v1} from 'uuid';
 import {addTodoListAC, setTodolistsAC} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses} from '../../api/tasks-api';
@@ -102,8 +102,8 @@ test('correct task should be added', () => {
         priority: TaskPriorities.Low,
         todoListId: todolistID2
     }
-
-    const endState = tasksReducer(startState, {type: 'ADD-TASK', payload: {task: newTask}})
+    const action = addTaskAC({task: newTask})
+    const endState = tasksReducer(startState, action)
 
     expect(endState[todolistID2].length).toBe(4)
     expect(endState[todolistID2][0].title).toBe(newTask.title)
@@ -111,7 +111,8 @@ test('correct task should be added', () => {
 })
 
 test('correct task should be removed', () => {
-    const endState = tasksReducer(startState, {type: 'REMOVE-TASK', payload: {todoId: todolistID1, taskId: '1'}})
+    const action = removeTaskAC({todoId: todolistID1, taskId: '1'})
+    const endState = tasksReducer(startState, action)
 
     expect(endState[todolistID1].length).toBe(2)
     expect(endState[todolistID1][0].title).toBe('JS')
@@ -132,7 +133,8 @@ test('correct task isDone should be changed to newIsDone', () => {
         priority: TaskPriorities.Low,
         todoListId: todolistID2
     }
-    const endState = tasksReducer(startState, updateTaskAC({newTask: newTask}))
+    const action = updateTaskAC({newTask})
+    const endState = tasksReducer(startState, action)
 
     expect(endState[todolistID1][0].status).toBe(TaskStatuses.Completed)
     expect(endState[todolistID1][1].status).toBe(TaskStatuses.Completed)
@@ -141,22 +143,20 @@ test('correct task isDone should be changed to newIsDone', () => {
 
 test('correct task title should be changed to newTitle', () => {
     const newTitle = 'Bounty'
-
-    const endState = tasksReducer(startState, {
-        type: 'UPDATE-TASK',
-        payload: {
-            id: '1',
-            title: newTitle,
-            status: TaskStatuses.Completed,
-            addedDate: '',
-            deadline: '',
-            order: 0,
-            startDate: '',
-            description: '',
-            priority: TaskPriorities.Low,
-            todoListId: todolistID2
-        }
-    })
+    const newTask = {
+        id: '1',
+        title: newTitle,
+        status: TaskStatuses.Completed,
+        addedDate: '',
+        deadline: '',
+        order: 0,
+        startDate: '',
+        description: '',
+        priority: TaskPriorities.Low,
+        todoListId: todolistID2
+    }
+    const action = updateTaskAC({newTask})
+    const endState = tasksReducer(startState, action)
 
     expect(endState[todolistID2][0].title).toBe(newTitle)
     expect(endState[todolistID1][0].title).toBe('HTML&CSS')
@@ -170,7 +170,6 @@ test('new property with new array should be added when new todolist is added', (
             order: 2
         }})
     const endState = tasksReducer(startState, action)
-
     const keys = Object.keys(endState)
     const newKey = keys.find(k => k != todolistID1 && k != todolistID2)
     if (!newKey) {
@@ -184,9 +183,7 @@ test('new property with new array should be added when new todolist is added', (
 test('empty array should be added when we set todolists', () => {
     const action = setTodolistsAC({todolists: [{id: '1', title: 'title1', order: 0, addedDate: ''},
     {id: '2', title: 'title2', order: 0, addedDate: ''}]})
-
     const endState = tasksReducer({}, action)
-
     const keys = Object.keys(endState)
 
     expect(keys.length).toBe(2)
@@ -196,7 +193,6 @@ test('empty array should be added when we set todolists', () => {
 
 test('tasks should be setted', () => {
     const action = setTasksAC({ tasks: startState[todolistID1], todolistId: todolistID1})
-
     const endState = tasksReducer({}, action)
     const keys = Object.keys(endState)
 
