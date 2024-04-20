@@ -5,7 +5,8 @@ import {appReducer} from './app-reducer';
 import {loginReducer} from '../features/Login/LoginReducer';
 import {configureStore} from '@reduxjs/toolkit';
 
-export type AppRootState = ReturnType<typeof store.getState>
+export type AppRootState = ReturnType<RootReducerType>
+export type RootReducerType = typeof rootReducer
 
 export const rootReducer = combineReducers({
     todoLists: todolistReducer,

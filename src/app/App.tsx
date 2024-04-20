@@ -32,7 +32,9 @@ function App({demo = false}: AppPropsType){
     const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
 
     useEffect(()=> {
-        dispatch(initialiseAppTC())
+        if (!demo) {
+            dispatch(initialiseAppTC())
+        }
     }, [])
 
     if (!isInitialised) {
@@ -46,7 +48,6 @@ function App({demo = false}: AppPropsType){
         dispatch(logoutTC())
     }
     return (
-        <BrowserRouter>
             <div className="App">
                 <ErrorSnackbar/>
                 {status === 'loading' && <div className={"loading"}>
@@ -78,7 +79,6 @@ function App({demo = false}: AppPropsType){
                     </Routes>
                 </Container>
             </div>
-        </BrowserRouter>
     );
 }
 

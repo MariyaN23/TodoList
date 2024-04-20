@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './App';
 import {ReduxStoreProviderDecorator} from '../stories/ReduxStoreProviderDecorator';
+import {MemoryRouter} from 'react-router-dom';
 
 export default {
     title: 'App',
@@ -9,5 +10,7 @@ export default {
 }
 
 export const AppExample = ()=> {
-    return <App demo={true}/>
+    return <MemoryRouter>
+        <App demo={true}/>
+    </MemoryRouter>
 }
