@@ -41,7 +41,7 @@ export function useTasks(todoId: string,
     }, [updateTodolistTitle, todoId])
 
     const removeTaskHandler = useCallback((tId: string) => {
-        dispatch(deleteTaskTC(todoId, tId))
+        dispatch(deleteTaskTC({todoId, tId}))
     }, [dispatch, todoId])
 
     const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC(todoId, tId, {title: newTitle})), [dispatch, todoId])
