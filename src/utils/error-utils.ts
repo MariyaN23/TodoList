@@ -1,9 +1,7 @@
 import {setAppErrorAC, setAppStatusAC} from '../app/app-reducer';
-import {ThunkDispatch} from 'redux-thunk';
-import {AppRootState} from '../app/store';
-import {Action} from '@reduxjs/toolkit';
+import {Dispatch} from '@reduxjs/toolkit';
 
-export const handleServerAppError =(dispatch: ThunkDispatch<AppRootState, unknown, Action>, errorMessages: string[])=> {
+export const handleServerAppError =(dispatch: Dispatch, errorMessages: string[])=> {
     if (errorMessages.length) {
         dispatch(setAppErrorAC({error: errorMessages[0]}))
     } else {
@@ -12,7 +10,7 @@ export const handleServerAppError =(dispatch: ThunkDispatch<AppRootState, unknow
     dispatch(setAppStatusAC({status: 'failed'}))
 }
 
-export const handleServerNetworkError =(dispatch: ThunkDispatch<AppRootState, unknown, Action>, errorMessage: string)=> {
+export const handleServerNetworkError =(dispatch: Dispatch, errorMessage: string)=> {
     dispatch(setAppErrorAC({error: errorMessage ? errorMessage : 'Some error occurred'}))
     dispatch(setAppStatusAC({status: 'failed'}))
 }

@@ -3,7 +3,7 @@ import {FormControl, FormControlLabel, FormGroup, FormLabel} from '@mui/material
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import {useFormik} from 'formik';
+import {FormikHelpers, useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginFormSendingTC} from './LoginReducer';
 import {AppRootState} from '../../app/store';
@@ -16,6 +16,11 @@ import {ThunkDispatch} from 'redux-thunk';
     password: null | string
 }*/
 
+type FormikValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
 
 export const Login = () => {
     const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
@@ -26,8 +31,9 @@ export const Login = () => {
             password: '',
             rememberMe: false,
         },
-        onSubmit: values => {
-           dispatch(loginFormSendingTC(values))
+        onSubmit: async (values, formikHelpers: FormikHelpers<FormikValuesType>) => {
+           const res = await dispatch(loginFormSendingTC(values))
+            formikHelpers.setFieldError("email", 'fakeLove')
         },
         /*validate: values => {
             const validatedErrors: validatedErrorsType = {
