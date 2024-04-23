@@ -33,11 +33,11 @@ export const loginFormSendingTC = createAsyncThunk('login/loginFormSending', asy
             return {value: true}
         } else {
             handleServerAppError(thunkAPI.dispatch, response.data.messages)
-            return {value: false}
+            return thunkAPI.rejectWithValue({errors: response.data.messages, fieldsErrors: response.data.fieldsErrors})
         }
     } catch (error: any) {
-        handleServerNetworkError(thunkAPI.dispatch, error.message)
-        return {value: false}
+        handleServerNetworkError(thunkAPI.dispatch, error)
+        return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
     }
 })
 

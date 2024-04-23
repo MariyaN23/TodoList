@@ -6,7 +6,7 @@ import Checkbox from '@mui/material/Checkbox';
 import {FormikHelpers, useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginFormSendingTC} from './LoginReducer';
-import {AppRootState} from '../../app/store';
+import {AppDispatchType, AppRootState} from '../../app/store';
 import {Navigate} from 'react-router-dom';
 import React from 'react';
 import {ThunkDispatch} from 'redux-thunk';
@@ -33,7 +33,10 @@ export const Login = () => {
         },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormikValuesType>) => {
            const res = await dispatch(loginFormSendingTC(values))
-            formikHelpers.setFieldError("email", 'fakeLove')
+            debugger
+            if (res.type === loginFormSendingTC.rejected.type) {
+                res.payload.errors.forEach(el=>formikHelpers.setFieldError(el.field, el.error))
+            }
         },
         /*validate: values => {
             const validatedErrors: validatedErrorsType = {
