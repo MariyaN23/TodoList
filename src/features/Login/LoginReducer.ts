@@ -3,28 +3,15 @@ import {authApi, LoginParamsType} from '../../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {clearTodolistsDataAC} from '../TodolistsList/TodolistReducer';
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {FieldErrorType} from '../../api/todolists-api';
 
 const initialState = {
     isAuthorised: false,
 }
 
-export const loginFormSendingTC1 = (data: LoginParamsType) =>
-    async (dispatch: Dispatch) => {
-        dispatch(setAppStatusAC({status: 'loading'}))
-        try {
-            const response = await authApi.login(data)
-            if (response.data.resultCode === 0) {
-                dispatch(setIsAuthorisedAC({value: true}))
-                dispatch(setAppStatusAC({status: 'succeeded'}))
-            } else {
-                handleServerAppError(dispatch, response.data.messages)
-            }
-        } catch (error: any) {
-            handleServerNetworkError(dispatch, error.message)
-        }
-    }
-
-export const loginFormSendingTC = createAsyncThunk('login/loginFormSending', async (data: LoginParamsType, thunkAPI) => {
+export const loginFormSendingTC = createAsyncThunk<{ value: boolean }, LoginParamsType,
+    { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }>('login/loginFormSending',
+    async (data, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const response = await authApi.login(data)
@@ -46,7 +33,7 @@ const slice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        setIsAuthorisedAC(state, action: PayloadAction<{value: boolean}>) {
+        setIsAuthorisedAC(state, action: PayloadAction<{ value: boolean }>) {
             state.isAuthorised = action.payload.value
         }
     },

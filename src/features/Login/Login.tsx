@@ -6,10 +6,11 @@ import Checkbox from '@mui/material/Checkbox';
 import {FormikHelpers, useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginFormSendingTC} from './LoginReducer';
-import {AppDispatchType, AppRootState} from '../../app/store';
+import {AppRootState} from '../../app/store';
 import {Navigate} from 'react-router-dom';
 import React from 'react';
 import {ThunkDispatch} from 'redux-thunk';
+import {action} from '@storybook/addon-actions';
 
 /*type validatedErrorsType = {
     email: null | string
@@ -32,10 +33,12 @@ export const Login = () => {
             rememberMe: false,
         },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormikValuesType>) => {
-           const res = await dispatch(loginFormSendingTC(values))
-            debugger
-            if (res.type === loginFormSendingTC.rejected.type) {
-                res.payload.errors.forEach(el=>formikHelpers.setFieldError(el.field, el.error))
+           const action = await dispatch(loginFormSendingTC(values))
+            if (loginFormSendingTC.rejected.match(action)) {
+                if (action.payload?.fieldsErrors?.length) {
+                    const fieldError = action.payload.fieldsErrors[0]
+                    formikHelpers.setFieldError(fieldError.field, fieldError.error)
+                }
             }
         },
         /*validate: values => {
@@ -73,7 +76,7 @@ export const Login = () => {
                             color="secondary"
                             {...formik.getFieldProps("email")}
                         />
-                            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+                            {formik.errors.email ? <div style={{color: "red"}}>{formik.errors.email}</div> : null}
                         <TextField
                             type="password"
                             label="Password"

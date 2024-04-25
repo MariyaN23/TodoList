@@ -19,10 +19,14 @@ export type TodolistsType = {
     order: number
 }
 
+export type FieldErrorType = {
+    field: string
+    error: string
+}
 export type ResponseType<D = {}> = {
     data: D
     messages: string[]
-    fieldsErrors: Array<{field: string, error: string}>
+    fieldsErrors: Array<FieldErrorType>
     resultCode: number
 }
 
@@ -31,7 +35,7 @@ export const todolistsApi = {
         return instance.get<TodolistsType[]>('todo-lists')
     },
     createTodolists(title: string) {
-        return instance.post<ResponseType<{item: TodolistsType}>>('todo-lists', {title})
+        return instance.post<ResponseType<{ item: TodolistsType }>>('todo-lists', {title})
     },
     deleteTodolists(id: string) {
         return instance.delete<ResponseType>(`todo-lists/${id}`)
