@@ -1,9 +1,8 @@
 import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState} from '../../app/store';
-import {ThunkDispatch} from 'redux-thunk';
 import {setAppStatusAC} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {addTodoListAC, clearTodolistsDataAC, removeTodoListAC, setTodolistsAC} from './TodolistReducer';
 
 export type TasksDomainType = {
@@ -24,20 +23,70 @@ export const deleteTaskTC = createAsyncThunk("tasks/deleteTask", async (param: {
     return {todoId: param.todoId, taskId: param.tId}
 })
 
+export const addTaskTC = createAsyncThunk('tasks/addTask', async (params: {todoId: string, title: string}, {dispatch, rejectWithValue})=> {
+    dispatch(setAppStatusAC({status: 'loading'}))
+    try {
+        const response = await tasksApi.createTasks(params.todoId, params.title)
+        if (response.data.resultCode === 0) {
+            dispatch(setAppStatusAC({status: 'succeeded'}))
+            return {task: response.data.data.item}
+        } else {
+            handleServerAppError(dispatch, response.data.messages)
+            return rejectWithValue(null)
+        }
+    } catch (error: any) {
+        handleServerNetworkError(dispatch, error.message)
+        return rejectWithValue(null)
+    }
+})
+
+type UpdateDomainTaskType = {
+    title?: string
+    description?: string
+    status?: number
+    priority?: number
+    startDate?: string
+    deadline?: string
+}
+
+export const updateTaskTC = createAsyncThunk('tasks/updateTask', async (param: {
+    todolistId: string,
+    taskId: string,
+    model: UpdateDomainTaskType
+}, {dispatch, getState, rejectWithValue})=> {
+    const state = getState() as AppRootState
+    const task = state.tasks[param.todolistId].find(t => t.id === param.taskId)
+    if (!task) {
+        return rejectWithValue('Task not found in state')
+    }
+    const newTask = {
+        title: task.title,
+        description: task.description,
+        status: task.status,
+        priority: task.priority,
+        startDate: task.startDate,
+        deadline: task.deadline,
+        ...param.model
+    }
+    try {
+        const response = await tasksApi.updateTasks(param.todolistId, param.taskId, newTask)
+        if (response.data.resultCode === 0) {
+            dispatch(setAppStatusAC({status: 'succeeded'}))
+            return {newTask: response.data.data.item}
+        } else {
+            handleServerAppError(dispatch, response.data.messages)
+            return rejectWithValue(null)
+        }
+    } catch (error: any) {
+        handleServerNetworkError(dispatch, error.message)
+        return rejectWithValue(null)
+    }
+})
+
 const slice = createSlice({
     name: "tasks",
     initialState,
-    reducers: {
-        addTaskAC(state, action: PayloadAction<{task: TaskType}>) {
-            state[action.payload.task.todoListId].unshift(action.payload.task)
-        },
-        updateTaskAC(state, action: PayloadAction<{newTask: TaskType}>) {
-            const index = state[action.payload.newTask.todoListId].findIndex(el => el.id === action.payload.newTask.id)
-            if (index > -1) {
-                state[action.payload.newTask.todoListId][index] = action.payload.newTask
-            }
-        }
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
             .addCase(addTodoListAC, (state, action) => {
@@ -61,65 +110,16 @@ const slice = createSlice({
                     state[action.payload.todoId].splice(index, 1)
                 }
             })
+            .addCase(addTaskTC.fulfilled, (state, action) => {
+                state[action.payload.task.todoListId].unshift(action.payload.task)
+            })
+            .addCase(updateTaskTC.fulfilled, (state, action)=> {
+                const index = state[action.payload.newTask.todoListId].findIndex(el => el.id === action.payload.newTask.id)
+                if (index > -1) {
+                    state[action.payload.newTask.todoListId][index] = action.payload.newTask
+                }
+            })
     }
 })
 
 export const tasksReducer = slice.reducer
-export const {addTaskAC,
-    updateTaskAC} = slice.actions
-
-export const addTaskTC = (todoId: string, title: string) =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, Action>) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
-        try {
-            const response = await tasksApi.createTasks(todoId, title)
-            if (response.data.resultCode === 0) {
-                dispatch(addTaskAC({task: response.data.data.item}))
-                dispatch(setAppStatusAC({status: 'succeeded'}))
-            } else {
-                handleServerAppError(dispatch, response.data.messages)
-            }
-        } catch (error: any) {
-            handleServerNetworkError(dispatch, error.message)
-        }
-}
-
-type UpdateDomainTaskType = {
-    title?: string
-    description?: string
-    status?: number
-    priority?: number
-    startDate?: string
-    deadline?: string
-}
-
-export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType) =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, Action>,
-           getState: () => AppRootState)=> {
-        const state = getState()
-        const task = state.tasks[todolistId].find(t => t.id === taskId)
-        if (!task) {
-            console.warn('Task not found in state')
-            return
-        }
-        const newTask = {
-            title: task.title,
-            description: task.description,
-            status: task.status,
-            priority: task.priority,
-            startDate: task.startDate,
-            deadline: task.deadline,
-            ...model
-        }
-        try {
-            const response = await tasksApi.updateTasks(todolistId, taskId, newTask)
-            if (response.data.resultCode === 0) {
-                dispatch(updateTaskAC({newTask: response.data.data.item}))
-                dispatch(setAppStatusAC({status: 'succeeded'}))
-            } else {
-                handleServerAppError(dispatch, response.data.messages)
-            }
-        } catch (error: any) {
-            handleServerNetworkError(dispatch, error.message)
-        }
-    }

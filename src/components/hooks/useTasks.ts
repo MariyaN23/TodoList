@@ -33,7 +33,7 @@ export function useTasks(todoId: string,
     }
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTaskTC(todoId, title))
+        dispatch(addTaskTC({todoId, title}))
     }, [dispatch, todoId])
 
     const updateTodolistTitleHandler = useCallback((newTitle: string) => {
@@ -44,15 +44,11 @@ export function useTasks(todoId: string,
         dispatch(deleteTaskTC({todoId, tId}))
     }, [dispatch, todoId])
 
-    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC(todoId, tId, {title: newTitle})), [dispatch, todoId])
+    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC({todolistId: todoId, taskId: tId, model: {title: newTitle}})), [dispatch, todoId])
 
     const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
-        dispatch(updateTaskTC(todoId, tId, {status: checked ? TaskStatuses.Completed : TaskStatuses.New}))
+        dispatch(updateTaskTC({todolistId: todoId, taskId: tId, model: {status: checked ? TaskStatuses.Completed : TaskStatuses.New}}))
     }, [dispatch, todoId])
-
-    /*const fetchTasksFunction = () => {
-        dispatch(fetchTasksTC(todoId))
-    }*/
 
     return {
         updateTodolistTitleHandler,
@@ -63,6 +59,5 @@ export function useTasks(todoId: string,
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        //fetchTasksFunction,
     }
 }
