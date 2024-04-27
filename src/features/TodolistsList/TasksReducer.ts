@@ -3,7 +3,8 @@ import {AppRootState} from '../../app/store';
 import {setAppStatusAC} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {addTodolistTC, clearTodolistsDataAC, fetchTodolistsTC, removeTodolistTC} from './TodolistReducer';
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from './TodolistReducer';
+import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
@@ -98,9 +99,6 @@ const slice = createSlice({
             .addCase(fetchTodolistsTC.fulfilled, (state, action) => {
                 action.payload.todolists.forEach(el => state[el.id] = [])
             })
-            .addCase(clearTodolistsDataAC, () => {
-                return {}
-            })
             .addCase(fetchTasksTC.fulfilled, (state, action)=> {
                 state[action.payload.todolistId] = action.payload.tasks
             })
@@ -118,6 +116,9 @@ const slice = createSlice({
                 if (index > -1) {
                     state[action.payload.newTask.todoListId][index] = action.payload.newTask
                 }
+            })
+            .addCase(clearTasksAndTodolistsAC, ()=> {
+                return {}
             })
     }
 })

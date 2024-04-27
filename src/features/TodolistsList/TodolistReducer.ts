@@ -3,6 +3,7 @@ import {setAppErrorAC, setAppStatusAC, StatusType} from '../../app/app-reducer';
 import {handleServerNetworkError} from '../../utils/error-utils';
 import {fetchTasksTC} from './TasksReducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
@@ -80,10 +81,7 @@ const slice = createSlice({
             if (index > -1) {
                 state[index].entityStatus = action.payload.entityStatus
             }
-        },
-        clearTodolistsDataAC() {
-            return []
-        },
+        }
     },
     extraReducers: builder => {
         builder.addCase(fetchTodolistsTC.fulfilled, (state, action)=> {
@@ -104,9 +102,12 @@ const slice = createSlice({
                     state[index].title = action.payload.newTitle
                 }
             })
+            .addCase(clearTasksAndTodolistsAC, ()=> {
+                return []
+            })
     }
 })
 
 export const todolistReducer = slice.reducer
 export const {changeTodolistEntityStatusAC,
-    changeFilterAC, clearTodolistsDataAC} = slice.actions
+    changeFilterAC} = slice.actions

@@ -1,9 +1,9 @@
 import {setAppStatusAC} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
-import {clearTodolistsDataAC} from '../TodolistsList/TodolistReducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {FieldErrorType} from '../../api/todolists-api';
+import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';
 
 const initialState = {
     isAuthorised: false,
@@ -33,7 +33,7 @@ export const logoutTC = createAsyncThunk('login/logout', async (arg, {dispatch, 
         const response = await authApi.logout()
         if (response.data.resultCode === 0) {
             dispatch(setAppStatusAC({status: 'succeeded'}))
-            dispatch(clearTodolistsDataAC())
+            dispatch(clearTasksAndTodolistsAC())
         } else {
             handleServerAppError(dispatch, response.data.messages)
             return rejectWithValue({})
