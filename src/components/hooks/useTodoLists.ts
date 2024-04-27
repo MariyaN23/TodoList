@@ -23,15 +23,15 @@ export function useTodoLists () {
     }, [dispatch])
 
     const removeTodoList = useCallback((todoId: string) => {
-        dispatch(removeTodolistTC(todoId))
+        dispatch(removeTodolistTC({id: todoId}))
     }, [dispatch])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title))
+        dispatch(addTodolistTC({title}))
     }, [dispatch])
 
     const updateTodolistTitle = useCallback((todoId: string, newTitle: string) => {
-        dispatch(updateTodolistTitleTC(todoId, newTitle))
+        dispatch(updateTodolistTitleTC({id: todoId, title: newTitle}))
     }, [dispatch])
 
      const fetchTodolistsFunction = () => {

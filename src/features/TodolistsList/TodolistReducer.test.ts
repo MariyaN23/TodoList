@@ -1,10 +1,8 @@
 import {
-    addTodoListAC,
-    changeFilterAC, changeTodolistEntityStatusAC,
-    removeTodoListAC,
-    setTodolistsAC,
+    addTodolistTC,
+    changeFilterAC, changeTodolistEntityStatusAC, fetchTodolistsTC, removeTodolistTC,
     todolistReducer,
-    TodolistsDomainType, updateTodolistTitleAC
+    TodolistsDomainType, updateTodolistTitleTC
 } from './TodolistReducer'
 import {v1} from 'uuid';
 
@@ -25,7 +23,7 @@ beforeEach(()=>{
 
 
 test('correct todolist should be removed', ()=> {
-    const action = removeTodoListAC({todoId: todolistID1})
+    const action = removeTodolistTC.fulfilled({todoId: todolistID1}, 'requestId', {id: todolistID1})
     const endState = todolistReducer(startState, action)
 
     expect(endState.length).toBe(1)
@@ -33,14 +31,14 @@ test('correct todolist should be removed', ()=> {
 })
 
 test('correct todolist should be added', ()=> {
-    const action = addTodoListAC({
+    const action = addTodolistTC.fulfilled({
         todolist: {
             id: '78',
             title: 'pizza',
             addedDate: '',
             order: 2
         }
-    })
+    }, 'requestId', {title: 'pizza'})
     const endState = todolistReducer(startState, action)
 
     expect(endState.length).toBe(3)
@@ -56,7 +54,7 @@ test('correct filter should be changed', ()=> {
 })
 
 test('correct title should be updated', ()=> {
-    const action = updateTodolistTitleAC({todoId: todolistID2, newTitle: 'New Title'})
+    const action = updateTodolistTitleTC.fulfilled({todoId: todolistID2, newTitle: 'New Title'}, 'requestId', {id: todolistID2, title: 'New Title'})
     const endState = todolistReducer(startState, action)
 
     expect(endState[0].title).toBe('What to learn')
@@ -64,7 +62,7 @@ test('correct title should be updated', ()=> {
 })
 
 test('todolists should be setted', ()=> {
-    const action = setTodolistsAC({todolists: startState})
+    const action = fetchTodolistsTC.fulfilled({todolists: startState}, 'requestId')
     const endState = todolistReducer([], action)
 
     expect(endState.length).toBe(2)

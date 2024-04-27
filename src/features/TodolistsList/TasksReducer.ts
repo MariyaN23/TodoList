@@ -3,7 +3,7 @@ import {AppRootState} from '../../app/store';
 import {setAppStatusAC} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {addTodoListAC, clearTodolistsDataAC, removeTodoListAC, setTodolistsAC} from './TodolistReducer';
+import {addTodolistTC, clearTodolistsDataAC, fetchTodolistsTC, removeTodolistTC} from './TodolistReducer';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
@@ -89,13 +89,13 @@ const slice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(addTodoListAC, (state, action) => {
+            .addCase(addTodolistTC.fulfilled, (state, action) => {
                 state[action.payload.todolist.id] = []
             })
-            .addCase(removeTodoListAC, (state, action) => {
+            .addCase(removeTodolistTC.fulfilled, (state, action) => {
                 delete state[action.payload.todoId]
             })
-            .addCase(setTodolistsAC, (state, action) => {
+            .addCase(fetchTodolistsTC.fulfilled, (state, action) => {
                 action.payload.todolists.forEach(el => state[el.id] = [])
             })
             .addCase(clearTodolistsDataAC, () => {
