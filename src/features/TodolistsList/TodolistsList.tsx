@@ -5,15 +5,15 @@ import {Todolist} from './Todolist/Todolist';
 import {useTodoLists} from '../../components/hooks/useTodoLists';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {useSelector} from 'react-redux';
-import {AppRootState} from '../../app/store';
 import {Navigate} from 'react-router-dom';
+import {loginSelectors} from '../Login';
 
 type TodolistsPropsType = {
     demo?: boolean
 }
 
 export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
-    const isAuthorised = useSelector<AppRootState, boolean>(state => state.login.isAuthorised)
+    const isAuthorised = useSelector(loginSelectors.selectIsAuthorised)
 
     const {
         addTodoList,

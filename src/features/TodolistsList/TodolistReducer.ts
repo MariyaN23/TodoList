@@ -1,6 +1,6 @@
 import {todolistsApi, TodolistsType} from '../../api/todolists-api';
 import {setAppErrorAC, setAppStatusAC, StatusType} from '../../app/app-reducer';
-import {handleServerNetworkError} from '../../utils/error-utils';
+import {handleServerNetworkError} from '../../common/utils/handle-server-network-error';
 import {fetchTasksTC} from './TasksReducer';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';

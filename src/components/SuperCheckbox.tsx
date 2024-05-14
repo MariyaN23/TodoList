@@ -1,9 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import Checkbox from '@mui/material/Checkbox';
-import {TaskStatuses} from '../api/tasks-api';
+import {TaskStatuses, TaskStatusesType} from '../api/tasks-api';
 
 type SuperCheckboxType = {
-    status: TaskStatuses
+    status: TaskStatusesType
     callback: (checked: boolean)=> void
 }
 

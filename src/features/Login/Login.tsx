@@ -10,7 +10,7 @@ import {AppRootState} from '../../app/store';
 import {Navigate} from 'react-router-dom';
 import React from 'react';
 import {ThunkDispatch} from 'redux-thunk';
-import {action} from '@storybook/addon-actions';
+import {selectIsAuthorised} from './login-selectors';
 
 /*type validatedErrorsType = {
     email: null | string
@@ -25,7 +25,7 @@ type FormikValuesType = {
 
 export const Login = () => {
     const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
-    const isAuthorised = useSelector<AppRootState, boolean>(state => state.login.isAuthorised)
+    const isAuthorised = useSelector(selectIsAuthorised)
     const formik = useFormik({
         initialValues: {
             email: '',

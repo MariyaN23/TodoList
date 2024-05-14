@@ -7,7 +7,6 @@ import {tasksReducer} from '../features/TodolistsList/TasksReducer';
 import {v1} from 'uuid';
 import {TaskPriorities, TaskStatuses} from '../api/tasks-api';
 import {appReducer} from '../app/app-reducer';
-import {thunk} from 'redux-thunk';
 import {loginReducer} from '../features/Login/LoginReducer';
 import {configureStore} from '@reduxjs/toolkit';
 

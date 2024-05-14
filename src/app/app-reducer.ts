@@ -1,7 +1,7 @@
 import {authApi} from '../api/auth-api';
-import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {setIsAuthorisedAC} from '../features/Login/LoginReducer';
+import {handleServerAppError, handleServerNetworkError} from '../common/utils';
 
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type AppDomainType = {

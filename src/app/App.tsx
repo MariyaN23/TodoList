@@ -6,9 +6,9 @@ import {CircularProgress, LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootState} from './store';
-import {initialiseAppTC, StatusType} from './app-reducer';
+import {initialiseAppTC} from './app-reducer';
 import {Login} from '../features/Login/Login';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import {logoutTC} from '../features/Login/LoginReducer';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,6 +18,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {ThunkDispatch} from 'redux-thunk';
+import {loginSelectors} from '../features/Login';
+import {selectIsInitialised, selectStatus} from './app-selectors';
 
 
 type AppPropsType = {
@@ -25,10 +27,9 @@ type AppPropsType = {
 }
 
 function App({demo = false}: AppPropsType){
-    console.log('App is called')
-    const status = useSelector<AppRootState, StatusType>(state => state.app.status)
-    const isInitialised = useSelector<AppRootState, boolean>(state => state.app.isInitialised)
-    const isAuthorised = useSelector<AppRootState, boolean>(state => state.login.isAuthorised)
+    const status = useSelector(selectStatus)
+    const isInitialised = useSelector(selectIsInitialised)
+    const isAuthorised = useSelector(loginSelectors.selectIsAuthorised)
     const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
 
     useEffect(()=> {

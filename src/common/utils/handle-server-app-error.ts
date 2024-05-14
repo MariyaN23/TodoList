@@ -1,5 +1,5 @@
-import {setAppErrorAC, setAppStatusAC} from '../app/app-reducer';
 import {Dispatch} from '@reduxjs/toolkit';
+import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer';
 
 export const handleServerAppError =(dispatch: Dispatch, errorMessages: string[])=> {
     if (errorMessages.length) {
@@ -7,10 +7,5 @@ export const handleServerAppError =(dispatch: Dispatch, errorMessages: string[])
     } else {
         dispatch(setAppErrorAC({error: 'Some error occurred'}))
     }
-    dispatch(setAppStatusAC({status: 'failed'}))
-}
-
-export const handleServerNetworkError =(dispatch: Dispatch, errorMessage: string)=> {
-    dispatch(setAppErrorAC({error: errorMessage ? errorMessage : 'Some error occurred'}))
     dispatch(setAppStatusAC({status: 'failed'}))
 }

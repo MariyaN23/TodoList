@@ -1,25 +1,29 @@
 import {instance, ResponseType} from './todolists-api';
 
-export enum TaskStatuses {
-    New,
-    InProgress,
-    Completed,
-    Draft
-}
+export const TaskStatuses = {
+    New: 0,
+    InProgress: 1,
+    Completed: 2,
+    Draft: 3
+} as const
 
-export enum TaskPriorities {
-    Low,
-    Middle,
-    Hi,
-    Urgently,
-    Later
-}
+export type TaskStatusesType = (typeof TaskStatuses)[keyof typeof TaskStatuses]
+
+export const TaskPriorities = {
+    Low: 0,
+    Middle: 1,
+    Hi: 2,
+    Urgently: 3,
+    Later: 4
+} as const
+
+export type TaskPrioritiesType = (typeof TaskPriorities)[keyof typeof TaskPriorities]
 
 export type TaskType = {
     description: string
     title: string
-    status: TaskStatuses
-    priority: TaskPriorities
+    status: TaskStatusesType
+    priority: TaskPrioritiesType
     startDate: string
     deadline: string
     id: string

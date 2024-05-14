@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {todolistsApi, TodolistsType} from '../../../api/todolists-api';
 import {ResponseType} from '../../../api/todolists-api';
 

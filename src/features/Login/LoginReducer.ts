@@ -1,9 +1,9 @@
 import {setAppStatusAC} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
-import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {FieldErrorType} from '../../api/todolists-api';
 import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';
+import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
 
 const initialState = {
     isAuthorised: false,

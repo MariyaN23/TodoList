@@ -1,10 +1,10 @@
 import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState} from '../../app/store';
 import {setAppStatusAC} from '../../app/app-reducer';
-import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from './TodolistReducer';
 import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';
+import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
