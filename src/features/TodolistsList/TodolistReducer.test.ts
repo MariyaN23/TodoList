@@ -1,10 +1,9 @@
 import {
-    addTodolistTC,
-    changeFilterAC, changeTodolistEntityStatusAC, fetchTodolistsTC, removeTodolistTC,
-    todolistReducer,
-    TodolistsDomainType, updateTodolistTitleTC
+    changeFilterAC, changeTodolistEntityStatusAC, todolistReducer,
+    TodolistsDomainType
 } from './TodolistReducer'
 import {v1} from 'uuid';
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC, updateTodolistTitleTC} from './TodolistsActions';
 
 let todolistID1:string
 let todolistID2:string

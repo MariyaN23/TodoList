@@ -1,7 +1,8 @@
-import {addTaskTC, deleteTaskTC, fetchTasksTC, TasksDomainType, tasksReducer, updateTaskTC} from './TasksReducer'
+import {TasksDomainType, tasksReducer} from './TasksReducer'
 import {v1} from 'uuid';
-import {addTodolistTC, fetchTodolistsTC} from './TodolistReducer';
 import {TaskPriorities, TaskStatuses} from '../../api/tasks-api';
+import {addTaskTC, deleteTaskTC, fetchTasksTC, updateTaskTC} from './TasksActions';
+import {addTodolistTC, fetchTodolistsTC} from './TodolistsActions';
 
 let todolistID1: string
 let todolistID2: string

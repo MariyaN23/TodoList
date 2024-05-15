@@ -1,19 +1,18 @@
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {AppRootState} from '../../app/store';
 import {useCallback, useState} from 'react';
-import {addTaskTC, deleteTaskTC, updateTaskTC} from '../../features/TodolistsList/TasksReducer';
 import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
 import {TaskStatuses, TaskType} from '../../api/tasks-api';
-import {ThunkDispatch} from 'redux-thunk';
-import {Action} from '@reduxjs/toolkit';
+import {useActions} from './useActions';
+import {tasksActions} from '../../features/TodolistsList';
 
 
 export function useTasks(todoId: string,
                          changeFilter: (todoId: string, value: FilterValuesType) => void,
                          filter: FilterValuesType,
                          updateTodolistTitle: (todoId: string, newTitle: string) => void) {
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, Action>>()
     const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todoId])
+    const {updateTaskTC, deleteTaskTC, addTaskTC} = useActions(tasksActions)
 
     const [buttonName, setButtonName] = useState('all')
 
@@ -33,22 +32,23 @@ export function useTasks(todoId: string,
     }
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTaskTC({todoId, title}))
-    }, [dispatch, todoId])
+        addTaskTC({todoId, title})
+    }, [])
 
     const updateTodolistTitleHandler = useCallback((newTitle: string) => {
         updateTodolistTitle(todoId, newTitle)
     }, [updateTodolistTitle, todoId])
 
     const removeTaskHandler = useCallback((tId: string) => {
-        dispatch(deleteTaskTC({todoId, tId}))
-    }, [dispatch, todoId])
+        deleteTaskTC({todoId, tId})
+    }, [])
 
-    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC({todolistId: todoId, taskId: tId, model: {title: newTitle}})), [dispatch, todoId])
+    const updateTaskHandler = useCallback((tId: string, newTitle: string) =>
+        updateTaskTC({todolistId: todoId, taskId: tId, model: {title: newTitle}}), [])
 
     const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
-        dispatch(updateTaskTC({todolistId: todoId, taskId: tId, model: {status: checked ? TaskStatuses.Completed : TaskStatuses.New}}))
-    }, [dispatch, todoId])
+        updateTaskTC({todolistId: todoId, taskId: tId, model: {status: checked ? TaskStatuses.Completed : TaskStatuses.New}})
+    }, [])
 
     return {
         updateTodolistTitleHandler,
