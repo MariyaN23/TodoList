@@ -8,17 +8,17 @@ import {tasksActions} from '../../features/TodolistsList';
 
 
 export function useTasks(todoId: string,
-                         changeFilter: (todoId: string, value: FilterValuesType) => void,
+                         changeFilter: (params: {todoId: string, value: FilterValuesType}) => void,
                          filter: FilterValuesType,
-                         updateTodolistTitle: (todoId: string, newTitle: string) => void) {
+                         updateTodolistTitle: (params: {id: string, title: string}) => void) {
     const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todoId])
-    const {updateTaskTC, deleteTaskTC, addTaskTC} = useActions(tasksActions)
+    const {updateTask, deleteTask, addTask} = useActions(tasksActions)
 
     const [buttonName, setButtonName] = useState('all')
 
-    const changeFilterHandler = useCallback((filter: FilterValuesType) => {
-        changeFilter(todoId, filter)
-        setButtonName(filter)
+    const changeFilterHandler = useCallback((value: FilterValuesType) => {
+        changeFilter({todoId, value})
+        setButtonName(value)
     }, [changeFilter, todoId])
 
     let allTasksForTodolist = tasks
@@ -31,23 +31,23 @@ export function useTasks(todoId: string,
         tasksForTodolist = allTasksForTodolist.filter(t => t.status === TaskStatuses.Completed);
     }
 
-    const addTaskHandler = useCallback((title: string) => {
-        addTaskTC({todoId, title})
+    const addTaskHandler = useCallback((params: {title: string}) => {
+        addTask({todoId, title: params.title})
     }, [])
 
-    const updateTodolistTitleHandler = useCallback((newTitle: string) => {
-        updateTodolistTitle(todoId, newTitle)
-    }, [updateTodolistTitle, todoId])
+    const updateTodolistTitleHandler = useCallback((title: string) => {
+        updateTodolistTitle({id: todoId, title})
+    }, [])
 
     const removeTaskHandler = useCallback((tId: string) => {
-        deleteTaskTC({todoId, tId})
+        deleteTask({todoId, tId})
     }, [])
 
     const updateTaskHandler = useCallback((tId: string, newTitle: string) =>
-        updateTaskTC({todolistId: todoId, taskId: tId, model: {title: newTitle}}), [])
+        updateTask({todolistId: todoId, taskId: tId, model: {title: newTitle}}), [])
 
     const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
-        updateTaskTC({todolistId: todoId, taskId: tId, model: {status: checked ? TaskStatuses.Completed : TaskStatuses.New}})
+        updateTask({todolistId: todoId, taskId: tId, model: {status: checked ? TaskStatuses.Completed : TaskStatuses.New}})
     }, [])
 
     return {

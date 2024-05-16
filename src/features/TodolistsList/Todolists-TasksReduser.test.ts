@@ -2,7 +2,7 @@ import {v1} from 'uuid';
 import {todolistReducer, TodolistsDomainType} from './TodolistReducer';
 import {TasksDomainType, tasksReducer} from './TasksReducer';
 import {TaskPriorities, TaskStatuses} from '../../api/tasks-api';
-import {addTodolistTC, removeTodolistTC} from './TodolistsActions';
+import {addTodolist, removeTodolist} from './TodolistsActions';
 
 test ('ids should be equal', ()=> {
     const startTasksState: TasksDomainType = {}
@@ -13,7 +13,7 @@ test ('ids should be equal', ()=> {
         order: 1,
         title: "pizza"
     }
-    const action = addTodolistTC.fulfilled({todolist: newTodolist}, 'requestId', {title: "pizza"})
+    const action = addTodolist.fulfilled({todolist: newTodolist}, 'requestId', {title: "pizza"})
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistState = todolistReducer(startTodolistState, action)
     const keys = Object.keys(endTasksState)
@@ -39,7 +39,7 @@ test ('property with todolistId should be deleted', ()=> {
             {id: '3', title: 'Hot Dog', status: TaskStatuses.New, addedDate: '', deadline: '', order: 0, startDate: '', description: '', priority: TaskPriorities.Low, todoListId: todolistID2}
         ]
     }
-    const action = removeTodolistTC.fulfilled({todoId: todolistID2}, 'requestId', {id: todolistID2})
+    const action = removeTodolist.fulfilled({todoId: todolistID2}, 'requestId', {id: todolistID2})
     const endState = tasksReducer(startState, action)
     const keys = Object.keys(endState)
 

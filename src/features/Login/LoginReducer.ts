@@ -2,7 +2,7 @@ import {setAppStatusAC} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {FieldErrorType} from '../../api/todolists-api';
-import {clearTasksAndTodolistsAC} from '../../common/actions/common.actions';
+import {clearTasksAndTodolists} from '../../common/actions/common.actions';
 import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
 
 const initialState = {
@@ -33,7 +33,7 @@ export const logoutTC = createAsyncThunk('login/logout', async (arg, {dispatch, 
         const response = await authApi.logout()
         if (response.data.resultCode === 0) {
             dispatch(setAppStatusAC({status: 'succeeded'}))
-            dispatch(clearTasksAndTodolistsAC())
+            dispatch(clearTasksAndTodolists())
         } else {
             handleServerAppError(dispatch, response.data.messages)
             return rejectWithValue({})

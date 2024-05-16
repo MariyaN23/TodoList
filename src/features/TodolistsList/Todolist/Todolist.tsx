@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {TodoListButton} from '../../../components/TodoListButton';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan';
@@ -10,9 +10,9 @@ import {FilterValuesType, TodolistsDomainType} from '../TodolistReducer';
 
 type PropsType = {
     todolist: TodolistsDomainType
-    changeFilter: (todoId: string, value: FilterValuesType) => void
-    removeTodoList: (todoId: string) => void
-    updateTodolistTitle: (todoId: string, newTitle: string) => void
+    changeFilter: (params: {todoId: string, value: FilterValuesType}) => void
+    removeTodoList: (params: {id: string}) => void
+    updateTodolistTitle: (params: {id: string, title: string}) => void
     demo?: boolean
 }
 
@@ -26,13 +26,8 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        /*fetchTasksFunction*/} = useTasks(props.todolist.id, props.changeFilter, props.todolist.filter, props.updateTodolistTitle)
-    /*useEffect(()=>{
-        if (demo) {
-            return;
-        }
-        fetchTasksFunction()
-    }, [])*/
+        } = useTasks(props.todolist.id, props.changeFilter, props.todolist.filter, props.updateTodolistTitle)
+
     return <div>
         <h3><EditableSpan title={props.todolist.title}
                           callback={updateTodolistTitleHandler}
@@ -40,7 +35,7 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         />
             <IconButton aria-label="delete"
                         disabled={props.todolist.entityStatus === 'loading'}
-                        onClick={() => props.removeTodoList(props.todolist.id)}>
+                        onClick={() => props.removeTodoList({id: props.todolist.id})}>
                 <DeleteIcon/>
             </IconButton>
         </h3>

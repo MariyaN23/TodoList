@@ -1,11 +1,11 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer';
 import {todolistsApi} from '../../api/todolists-api';
-import {fetchTasksTC} from './TasksActions';
+import {fetchTasks} from './TasksActions';
 import {handleServerNetworkError} from '../../common/utils';
-import {changeTodolistEntityStatusAC} from './TodolistReducer';
+import {changeTodolistEntityStatus} from './TodolistReducer';
 
-export const fetchTodolistsTC = createAsyncThunk('todoLists/fetchTodolists', async (arg, {
+export const fetchTodolists = createAsyncThunk('todoLists/fetchTodolists', async (arg, {
     dispatch,
     rejectWithValue
 }) => {
@@ -13,20 +13,20 @@ export const fetchTodolistsTC = createAsyncThunk('todoLists/fetchTodolists', asy
     try {
         const response = await todolistsApi.getTodolists()
         dispatch(setAppStatusAC({status: 'succeeded'}))
-        response.data.forEach((todolist) => dispatch(fetchTasksTC(todolist.id)))
+        response.data.forEach((todolist) => dispatch(fetchTasks(todolist.id)))
         return {todolists: response.data}
     } catch (error: any) {
         handleServerNetworkError(dispatch, error.message)
         return rejectWithValue(null)
     }
 })
-export const removeTodolistTC = createAsyncThunk('todoLists/removeTodolist', async (param: { id: string }, {
+export const removeTodolist = createAsyncThunk('todoLists/removeTodolist', async (param: { id: string }, {
     dispatch,
     rejectWithValue
 }) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
-        dispatch(changeTodolistEntityStatusAC({todoId: param.id, entityStatus: 'loading'}))
+        dispatch(changeTodolistEntityStatus({todoId: param.id, entityStatus: 'loading'}))
         await todolistsApi.deleteTodolists(param.id)
         dispatch(setAppStatusAC({status: 'succeeded'}))
         return {todoId: param.id}
@@ -35,7 +35,7 @@ export const removeTodolistTC = createAsyncThunk('todoLists/removeTodolist', asy
         return rejectWithValue(null)
     }
 })
-export const addTodolistTC = createAsyncThunk('todoLists/addTodolist', async (param: { title: string }, {
+export const addTodolist = createAsyncThunk('todoLists/addTodolist', async (param: { title: string }, {
     dispatch,
     rejectWithValue
 }) => {
@@ -54,7 +54,7 @@ export const addTodolistTC = createAsyncThunk('todoLists/addTodolist', async (pa
         return rejectWithValue(null)
     }
 })
-export const updateTodolistTitleTC = createAsyncThunk('todoLists/updateTodolistTitle', async (param: {
+export const updateTodolistTitle = createAsyncThunk('todoLists/updateTodolistTitle', async (param: {
     id: string,
     title: string
 }, {rejectWithValue}) => {

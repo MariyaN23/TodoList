@@ -2,11 +2,14 @@ import React, {useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {Todolist} from './Todolist/Todolist';
-import {useTodoLists} from '../../components/hooks/useTodoLists';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {loginSelectors} from '../Login';
+import {useActions} from '../../components/hooks/useActions';
+import {todolistsActions} from './index';
+import {AppRootState} from '../../app/store';
+import {TodolistsDomainType} from './TodolistReducer';
 
 type TodolistsPropsType = {
     demo?: boolean
@@ -14,21 +17,20 @@ type TodolistsPropsType = {
 
 export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
     const isAuthorised = useSelector(loginSelectors.selectIsAuthorised)
-
+    const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
     const {
-        addTodoList,
-        todolists,
+        addTodolist,
         changeFilter,
-        removeTodoList,
+        removeTodolist,
         updateTodolistTitle,
-        fetchTodolistsFunction
-    } = useTodoLists()
+        fetchTodolists
+    } = useActions(todolistsActions)
 
     useEffect(() => {
         if (demo || !isAuthorised) {
             return;
         }
-        fetchTodolistsFunction()
+        fetchTodolists()
     }, [])
 
     if (!isAuthorised) {
@@ -37,7 +39,7 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
 
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm callBack={addTodoList}/>
+            <AddItemForm callBack={addTodolist}/>
         </Grid>
         <Grid container spacing={3}>
             {todolists.map(el => {
@@ -48,7 +50,7 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
                             <Todolist key={el.id}
                                       todolist={el}
                                       changeFilter={changeFilter}
-                                      removeTodoList={removeTodoList}
+                                      removeTodoList={removeTodolist}
                                       updateTodolistTitle={updateTodolistTitle}
                                       demo={demo}
                             />

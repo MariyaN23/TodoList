@@ -1,3 +1,3 @@
 import {createAction} from '@reduxjs/toolkit';
 
-export const clearTasksAndTodolistsAC = createAction('common/clearTasksAndTodolists')
+export const clearTasksAndTodolists = createAction('common/clearTasksAndTodolists')

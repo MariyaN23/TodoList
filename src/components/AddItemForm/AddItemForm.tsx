@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import {useAddItemForm} from '../hooks/useAddItemForm';
 
 type AddItemFormPropsType = {
-    callBack: (title: string)=>void
+    callBack: (params: {title: string})=>void
     disabled?: boolean
 }
 
