@@ -20,9 +20,6 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
     const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
     const {
         addTodolist,
-        changeFilter,
-        removeTodolist,
-        updateTodolistTitle,
         fetchTodolists
     } = useActions(todolistsActions)
 
@@ -49,9 +46,6 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
                                style={{padding: '10px'}}>
                             <Todolist key={el.id}
                                       todolist={el}
-                                      changeFilter={changeFilter}
-                                      removeTodoList={removeTodolist}
-                                      updateTodolistTitle={updateTodolistTitle}
                                       demo={demo}
                             />
                         </Paper>

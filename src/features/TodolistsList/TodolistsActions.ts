@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer';
+import {setAppError, setAppStatus} from '../../app/app-reducer';
 import {todolistsApi} from '../../api/todolists-api';
 import {fetchTasks} from './TasksActions';
 import {handleServerNetworkError} from '../../common/utils';
@@ -9,10 +9,10 @@ export const fetchTodolists = createAsyncThunk('todoLists/fetchTodolists', async
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await todolistsApi.getTodolists()
-        dispatch(setAppStatusAC({status: 'succeeded'}))
+        dispatch(setAppStatus({status: 'succeeded'}))
         response.data.forEach((todolist) => dispatch(fetchTasks(todolist.id)))
         return {todolists: response.data}
     } catch (error: any) {
@@ -24,11 +24,11 @@ export const removeTodolist = createAsyncThunk('todoLists/removeTodolist', async
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         dispatch(changeTodolistEntityStatus({todoId: param.id, entityStatus: 'loading'}))
         await todolistsApi.deleteTodolists(param.id)
-        dispatch(setAppStatusAC({status: 'succeeded'}))
+        dispatch(setAppStatus({status: 'succeeded'}))
         return {todoId: param.id}
     } catch (error: any) {
         handleServerNetworkError(dispatch, error.message)
@@ -39,18 +39,18 @@ export const addTodolist = createAsyncThunk('todoLists/addTodolist', async (para
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(setAppStatus({status: 'loading'}))
     const response = await todolistsApi.createTodolists(param.title)
     if (response.data.resultCode === 0) {
-        dispatch(setAppStatusAC({status: 'succeeded'}))
+        dispatch(setAppStatus({status: 'succeeded'}))
         return {todolist: response.data.data.item}
     } else {
         if (response.data.messages.length) {
-            dispatch(setAppErrorAC({error: response.data.messages[0]}))
+            dispatch(setAppError({error: response.data.messages[0]}))
         } else {
-            dispatch(setAppErrorAC({error: 'Some error occurred'}))
+            dispatch(setAppError({error: 'Some error occurred'}))
         }
-        dispatch(setAppStatusAC({status: 'failed'}))
+        dispatch(setAppStatus({status: 'failed'}))
         return rejectWithValue(null)
     }
 })

@@ -1,13 +1,13 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {setAppStatusAC} from '../../app/app-reducer';
+import {setAppStatus} from '../../app/app-reducer';
 import {tasksApi} from '../../api/tasks-api';
 import {AppRootState} from '../../app/store';
 import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+    thunkAPI.dispatch(setAppStatus({status: 'loading'}))
     const response = await tasksApi.getTasks(todolistId)
-    thunkAPI.dispatch(setAppStatusAC({status: 'succeeded'}))
+    thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
     return {todolistId, tasks: response.data.items}
 })
 export const deleteTask = createAsyncThunk('tasks/deleteTask', async (param: {
@@ -21,11 +21,11 @@ export const addTask = createAsyncThunk('tasks/addTask', async (params: { todoId
     dispatch,
     rejectWithValue
 }) => {
-    dispatch(setAppStatusAC({status: 'loading'}))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await tasksApi.createTasks(params.todoId, params.title)
         if (response.data.resultCode === 0) {
-            dispatch(setAppStatusAC({status: 'succeeded'}))
+            dispatch(setAppStatus({status: 'succeeded'}))
             return {task: response.data.data.item}
         } else {
             handleServerAppError(dispatch, response.data.messages)
@@ -66,7 +66,7 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async (param: {
     try {
         const response = await tasksApi.updateTasks(param.todolistId, param.taskId, newTask)
         if (response.data.resultCode === 0) {
-            dispatch(setAppStatusAC({status: 'succeeded'}))
+            dispatch(setAppStatus({status: 'succeeded'}))
             return {newTask: response.data.data.item}
         } else {
             handleServerAppError(dispatch, response.data.messages)

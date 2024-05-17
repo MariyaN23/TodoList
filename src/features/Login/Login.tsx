@@ -4,13 +4,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import {FormikHelpers, useFormik} from 'formik';
-import {useDispatch, useSelector} from 'react-redux';
-import {loginFormSendingTC} from './LoginReducer';
-import {AppRootState} from '../../app/store';
+import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import React from 'react';
-import {ThunkDispatch} from 'redux-thunk';
 import {selectIsAuthorised} from './login-selectors';
+import {useActions} from '../../components/hooks/useActions';
+import {loginActions} from './index';
 
 /*type validatedErrorsType = {
     email: null | string
@@ -24,7 +23,7 @@ type FormikValuesType = {
 }
 
 export const Login = () => {
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
+    const {loginFormSending} = useActions(loginActions)
     const isAuthorised = useSelector(selectIsAuthorised)
     const formik = useFormik({
         initialValues: {
@@ -33,8 +32,8 @@ export const Login = () => {
             rememberMe: false,
         },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormikValuesType>) => {
-           const action = await dispatch(loginFormSendingTC(values))
-            if (loginFormSendingTC.rejected.match(action)) {
+           const action = await loginFormSending(values)
+            if (loginFormSending.rejected.match(action)) {
                 if (action.payload?.fieldsErrors?.length) {
                     const fieldError = action.payload.fieldsErrors[0]
                     formikHelpers.setFieldError(fieldError.field, fieldError.error)

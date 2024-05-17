@@ -1,15 +1,12 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import Container from '@mui/material/Container';
-import {TodolistsList} from '../features/TodolistsList/TodolistsList';
+import {TodolistsList} from '../features/TodolistsList';
 import {CircularProgress, LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from './store';
-import {initialiseAppTC} from './app-reducer';
-import {Login} from '../features/Login/Login';
+import {useSelector} from 'react-redux';
+import {Login, loginActions, loginSelectors} from '../features/Login';
 import {Route, Routes} from 'react-router-dom';
-import {logoutTC} from '../features/Login/LoginReducer';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -17,9 +14,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import {ThunkDispatch} from 'redux-thunk';
-import {loginSelectors} from '../features/Login';
 import {selectIsInitialised, selectStatus} from './app-selectors';
+import {useActions} from '../components/hooks/useActions';
+import {appActions} from './index';
 
 
 type AppPropsType = {
@@ -30,11 +27,12 @@ function App({demo = false}: AppPropsType){
     const status = useSelector(selectStatus)
     const isInitialised = useSelector(selectIsInitialised)
     const isAuthorised = useSelector(loginSelectors.selectIsAuthorised)
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, any>>()
+    const {initialiseApp} = useActions(appActions)
+    const {logout} = useActions(loginActions)
 
     useEffect(()=> {
         if (!demo) {
-            dispatch(initialiseAppTC())
+            initialiseApp()
         }
     }, [])
 
@@ -46,7 +44,7 @@ function App({demo = false}: AppPropsType){
             )
     }
     const logoutHandler = ()=> {
-        dispatch(logoutTC())
+        logout()
     }
     return (
             <div className="App">

@@ -6,18 +6,23 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Task} from './Task/Task';
 import {useTasks} from '../../../components/hooks/useTasks';
-import {FilterValuesType, TodolistsDomainType} from '../TodolistReducer';
+import {TodolistsDomainType} from '../TodolistReducer';
+import {useActions} from '../../../components/hooks/useActions';
+import {todolistsActions} from '../index';
 
 type PropsType = {
     todolist: TodolistsDomainType
-    changeFilter: (params: {todoId: string, value: FilterValuesType}) => void
-    removeTodoList: (params: {id: string}) => void
-    updateTodolistTitle: (params: {id: string, title: string}) => void
     demo?: boolean
 }
 
 export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false, ...props}) {
     console.log('Todolist is called')
+    const {
+        changeFilter,
+        removeTodolist,
+        updateTodolistTitle
+    } = useActions(todolistsActions)
+
     const {updateTodolistTitleHandler,
         addTaskHandler,
         tasksForTodolist,
@@ -26,7 +31,7 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        } = useTasks(props.todolist.id, props.changeFilter, props.todolist.filter, props.updateTodolistTitle)
+        } = useTasks(props.todolist.id, changeFilter, props.todolist.filter, updateTodolistTitle)
 
     return <div>
         <h3><EditableSpan title={props.todolist.title}
@@ -35,7 +40,7 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         />
             <IconButton aria-label="delete"
                         disabled={props.todolist.entityStatus === 'loading'}
-                        onClick={() => props.removeTodoList({id: props.todolist.id})}>
+                        onClick={() => removeTodolist({id: props.todolist.id})}>
                 <DeleteIcon/>
             </IconButton>
         </h3>
