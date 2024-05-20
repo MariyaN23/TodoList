@@ -16,7 +16,6 @@ type PropsType = {
 }
 
 export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false, ...props}) {
-    console.log('Todolist is called')
     const {
         changeFilter,
         removeTodolist,
