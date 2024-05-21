@@ -9,6 +9,7 @@ import {useTasks} from '../../../components/hooks/useTasks';
 import {TodolistsDomainType} from '../TodolistReducer';
 import {useActions} from '../../../components/hooks/useActions';
 import {todolistsActions} from '../index';
+import Paper from '@mui/material/Paper';
 
 type PropsType = {
     todolist: TodolistsDomainType
@@ -32,16 +33,18 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         changeFilterHandler,
         } = useTasks(props.todolist.id, changeFilter, props.todolist.filter, updateTodolistTitle)
 
-    return <div>
+    return <Paper elevation={3}
+                  style={{position: "relative", padding: '10px'}}>
+        <IconButton aria-label="delete"
+                            disabled={props.todolist.entityStatus === 'loading'}
+                            style={{position: "absolute", top: "5px", right: "5px"}}
+                            onClick={() => removeTodolist({id: props.todolist.id})}>
+        <DeleteIcon/>
+    </IconButton>
         <h3><EditableSpan title={props.todolist.title}
                           callback={updateTodolistTitleHandler}
                           disabled={props.todolist.entityStatus === 'loading'}
         />
-            <IconButton aria-label="delete"
-                        disabled={props.todolist.entityStatus === 'loading'}
-                        onClick={() => removeTodolist({id: props.todolist.id})}>
-                <DeleteIcon/>
-            </IconButton>
         </h3>
         <AddItemForm callBack={addTaskHandler} disabled={props.todolist.entityStatus === 'loading'}/>
         <ul>
@@ -60,6 +63,6 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
             <TodoListButton variant={buttonName === 'completed' ? 'contained' : 'outlined'} name={'Completed'}
                             callBack={() => changeFilterHandler('completed')}/>
         </div>
-    </div>
+    </Paper>
 })
 
