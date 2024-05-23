@@ -29,11 +29,11 @@ export const addTask = createAsyncThunk('tasks/addTask', async (params: { todoId
             return {task: response.data.data.item}
         } else {
             handleServerAppError(dispatch, response.data.messages)
-            return rejectWithValue(null)
+            return rejectWithValue({errors: response.data.messages, fieldsErrors: response.data.fieldsErrors})
         }
     } catch (error: any) {
         handleServerNetworkError(dispatch, error.message)
-        return rejectWithValue(null)
+        return rejectWithValue({errors: [error.message], fieldsErrors: undefined})
     }
 })
 type UpdateDomainTaskType = {

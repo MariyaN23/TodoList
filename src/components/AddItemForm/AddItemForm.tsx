@@ -4,12 +4,11 @@ import TextField from '@mui/material/TextField';
 import {useAddItemForm} from '../hooks/useAddItemForm';
 
 type AddItemFormPropsType = {
-    callBack: (params: {title: string})=>void
+    callBack: (params: {title: string})=> Promise<any>
     disabled?: boolean
 }
 
 export const AddItemForm = React.memo(({disabled = false, ...props}: AddItemFormPropsType) => {
-    console.log('AddItemForm is called')
     const {error,
         newTitle,
         onChangeHandler,
@@ -31,7 +30,8 @@ export const AddItemForm = React.memo(({disabled = false, ...props}: AddItemForm
                             style={{maxWidth: "38px",
                                 maxHeight: "38px",
                                 minWidth: "38px",
-                                minHeight: "38px"}}
+                                minHeight: "38px",
+                                marginLeft: "12px"}}
                             variant={"contained"}
                             callBack={addTaskHandler}
                             disabled={disabled}/>

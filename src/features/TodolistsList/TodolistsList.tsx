@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {Todolist} from './Todolist/Todolist';
@@ -34,9 +34,14 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
         return <Navigate to={'/login'} replace={true}/>
     }
 
+    const addTodolistHandler = useCallback(async (params: {title: string}) => {
+        addTodolist({title: params.title})
+        return ""
+    }, [])
+
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm callBack={addTodolist}/>
+            <AddItemForm callBack={addTodolistHandler}/>
         </Grid>
         <Grid container spacing={3} style={{flexWrap: "nowrap", overflowX: "scroll"}}>
             {todolists.map(el => {

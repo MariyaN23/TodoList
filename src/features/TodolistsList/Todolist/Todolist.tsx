@@ -55,6 +55,7 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
                 t={t}
                 key={t.id}/>)}
         </ul>
+        {!tasksForTodolist.length && <div style={{padding: "10px", color: "gray"}}>No tasks</div>}
         <div>
             <TodoListButton variant={buttonName === 'all' ? 'contained' : 'outlined'} name={'All'}
                             callBack={() => changeFilterHandler('all')}/>

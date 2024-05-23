@@ -31,8 +31,9 @@ export function useTasks(todoId: string,
         tasksForTodolist = allTasksForTodolist.filter(t => t.status === TaskStatuses.Completed);
     }
 
-    const addTaskHandler = useCallback((params: {title: string}) => {
+    const addTaskHandler = useCallback(async (params: {title: string}) => {
         addTask({todoId, title: params.title})
+        return ""
     }, [])
 
     const updateTodolistTitleHandler = useCallback((title: string) => {

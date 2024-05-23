@@ -14,7 +14,7 @@ const initialState: AppDomainType = {
     isInitialised: false,
 }
 
-const slice = createSlice({
+export const slice = createSlice({
     name: "app",
     initialState,
     reducers: {

@@ -14,16 +14,23 @@ type TaskPropsType = {
 
 export const Task: React.FC<TaskPropsType> = React.memo((props) => {
 
-    return <li key={props.t.id} className={props.t.status===TaskStatuses.Completed ? s.isDone : ''}>
-        <SuperCheckbox status={props.t.status} callback={(checked) => props.changeIsDone(props.t.id, checked)}/>
-        <EditableSpan title={props.t.title} callback={(newTitle) => props.updateTask(props.t.id, newTitle)}/>
+    return <li key={props.t.id} className={props.t.status === TaskStatuses.Completed ? s.isDone : ''} style={{position: "relative"}}>
+        <SuperCheckbox
+            status={props.t.status}
+            callback={(checked) => props.changeIsDone(props.t.id, checked)}/>
+        <EditableSpan
+            title={props.t.title}
+            callback={(newTitle) => props.updateTask(props.t.id, newTitle)}/>
         <TodoListButton name={'x'}
                         callBack={() => props.removeTask(props.t.id)}
                         style={{
                             maxWidth: '30px',
                             maxHeight: '30px',
                             minWidth: '30px',
-                            minHeight: '30px'
+                            minHeight: '30px',
+                            position: 'absolute',
+                            top: '2px',
+                            right: '12px'
                         }}
                         variant={'contained'}/>
     </li>

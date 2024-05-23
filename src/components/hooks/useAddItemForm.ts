@@ -1,15 +1,17 @@
-import {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {ChangeEvent, KeyboardEvent, SetStateAction, useState} from 'react';
 
-export function useAddItemForm(callBack: (params: {title: string})=>void) {
+export function useAddItemForm(callBack: (params: {title: string})=> Promise<any>) {
     const [newTitle, setNewTitle] = useState('')
 
     const [error, setError] = useState<string | null>(null)
 
-    const addTaskHandler = () => {
+    const addTaskHandler = async () => {
         if (newTitle.trim() !== '') {
-            callBack({title: newTitle.trim()})
-            if (newTitle.length <= 100) {
+            try {
+                await callBack({title: newTitle.trim()})
                 setNewTitle('')
+            } catch (error: SetStateAction<any>) {
+                setError(error)
             }
         } else {
             setError('Title is required')

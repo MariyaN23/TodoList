@@ -1,18 +1,11 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 
-type StyleType = {
-    maxWidth: string
-    maxHeight: string
-    minWidth: string
-    minHeight: string
-}
-
 type ButtonPropsType = {
     name: string
     callBack: ()=>void
     className?: string
-    style?: StyleType
+    style?: React.CSSProperties
     variant?: "text" | "contained" | "outlined" | undefined
     disabled?: boolean
 }
