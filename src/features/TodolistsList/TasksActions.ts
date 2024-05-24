@@ -1,8 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {setAppStatus} from '../../app/app-reducer';
-import {tasksApi} from '../../api/tasks-api';
+import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState} from '../../app/store';
 import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
+import {FieldErrorType} from '../../api/todolists-api';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: 'loading'}))
@@ -17,10 +18,7 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (param: {
     await tasksApi.deleteTasks(param.todoId, param.tId)
     return {todoId: param.todoId, taskId: param.tId}
 })
-export const addTask = createAsyncThunk('tasks/addTask', async (params: { todoId: string, title: string }, {
-    dispatch,
-    rejectWithValue
-}) => {
+export const addTask = createAsyncThunk<{task: TaskType}, { todoId: string, title: string }, { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }>('tasks/addTask', async (params, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await tasksApi.createTasks(params.todoId, params.title)

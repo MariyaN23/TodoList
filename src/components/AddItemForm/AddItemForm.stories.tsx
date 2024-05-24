@@ -6,12 +6,14 @@ export default {
     title: 'Add item form',
 }
 
-const callBack = action("Button 'add' was pressed inside the form")
+const asyncCallBack = async (...params: any[])=> {
+    action("Button 'add' was pressed inside the form")(...params)
+}
 
 export const AddItemFormBaseExample = ()=> {
-    return <AddItemForm callBack={callBack}/>
+    return <AddItemForm callBack={asyncCallBack}/>
 }
 
 export const AddItemFormDisabledExample = ()=> {
-    return <AddItemForm callBack={callBack} disabled={true}/>
+    return <AddItemForm callBack={asyncCallBack} disabled={true}/>
 }
