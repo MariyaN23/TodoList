@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import {Todolist} from './Todolist/Todolist';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {useSelector} from 'react-redux';
