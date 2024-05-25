@@ -2,7 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {setAppError, setAppStatus} from '../../app/app-reducer';
 import {todolistsApi} from '../../api/todolists-api';
 import {fetchTasks} from './TasksActions';
-import {handleServerNetworkError} from '../../common/utils';
+import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
 import {changeTodolistEntityStatus} from './TodolistReducer';
 
 export const fetchTodolists = createAsyncThunk('todoLists/fetchTodolists', async (arg, {
@@ -57,10 +57,15 @@ export const addTodolist = createAsyncThunk('todoLists/addTodolist', async (para
 export const updateTodolistTitle = createAsyncThunk('todoLists/updateTodolistTitle', async (param: {
     id: string,
     title: string
-}, {rejectWithValue}) => {
+}, {dispatch, rejectWithValue}) => {
     try {
-        await todolistsApi.updateTodolists(param.id, param.title)
-        return {todoId: param.id, newTitle: param.title}
+        const response = await todolistsApi.updateTodolists(param.id, param.title)
+        if (response.data.resultCode === 0) {
+            return {todoId: param.id, newTitle: param.title}
+        } else {
+            handleServerAppError(dispatch, response.data.messages)
+            return rejectWithValue(null)
+        }
     } catch (error: any) {
         return rejectWithValue(null)
     }

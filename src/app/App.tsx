@@ -71,7 +71,7 @@ function App({demo = false}: AppPropsType){
                         </Toolbar>
                     </AppBar>
                 </Box>
-                <Container>
+                <Container style={{margin: "50px 0 0 50px"}}>
                     <Routes>
                         <Route path={'/'} element={<TodolistsList demo={demo}/>}/>
                         <Route path={'/login'} element={<Login/>}/>

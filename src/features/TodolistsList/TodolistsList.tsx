@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import {Todolist} from './Todolist/Todolist';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {useSelector} from 'react-redux';
@@ -38,17 +37,16 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
         <Grid container style={{padding: '20px'}}>
             <AddItemForm callBack={addTodolist}/>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} style={{flexWrap: "nowrap", overflowX: "scroll"}}>
             {todolists.map(el => {
                 return (
                     <Grid item key={el.id}>
-                        <Paper elevation={3}
-                               style={{padding: '10px'}}>
+                        <div style={{width: '300px'}}>
                             <Todolist key={el.id}
                                       todolist={el}
                                       demo={demo}
                             />
-                        </Paper>
+                        </div>
                     </Grid>)
             })}
         </Grid>
