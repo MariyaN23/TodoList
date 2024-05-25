@@ -9,7 +9,9 @@ export function useAddItemForm(callBack: (params: {title: string})=> Promise<any
         if (newTitle.trim() !== '') {
             try {
                 await callBack({title: newTitle.trim()})
-                setNewTitle('')
+                if (newTitle.length<100) {
+                    setNewTitle('')
+                }
             } catch (error: SetStateAction<any>) {
                 setError(error)
             }

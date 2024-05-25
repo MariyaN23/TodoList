@@ -3,7 +3,8 @@ import {setAppStatus} from '../../app/app-reducer';
 import {tasksApi, TaskType} from '../../api/tasks-api';
 import {AppRootState} from '../../app/store';
 import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
-import {FieldErrorType} from '../../api/todolists-api';
+import {FieldErrorType, todolistsApi} from '../../api/todolists-api';
+import {changeTodolistEntityStatus} from './TodolistReducer';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: 'loading'}))
@@ -15,8 +16,14 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (param: {
     todoId: string,
     tId: string
 }, thunkAPI) => {
-    await tasksApi.deleteTasks(param.todoId, param.tId)
-    return {todoId: param.todoId, taskId: param.tId}
+    thunkAPI.dispatch(setAppStatus({status: 'loading'}))
+    try {
+        await tasksApi.deleteTasks(param.todoId, param.tId)
+        return {todoId: param.todoId, taskId: param.tId}
+    } catch (error: any) {
+        handleServerNetworkError(thunkAPI.dispatch, error.message)
+        return thunkAPI.rejectWithValue(null)
+    }
 })
 export const addTask = createAsyncThunk<{task: TaskType}, { todoId: string, title: string }, { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }>('tasks/addTask', async (params, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatus({status: 'loading'}))
@@ -34,6 +41,7 @@ export const addTask = createAsyncThunk<{task: TaskType}, { todoId: string, titl
         return rejectWithValue({errors: [error.message], fieldsErrors: undefined})
     }
 })
+
 type UpdateDomainTaskType = {
     title?: string
     description?: string

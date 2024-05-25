@@ -40,17 +40,22 @@ export const addTodolist = createAsyncThunk('todoLists/addTodolist', async (para
     rejectWithValue
 }) => {
     dispatch(setAppStatus({status: 'loading'}))
-    const response = await todolistsApi.createTodolists(param.title)
-    if (response.data.resultCode === 0) {
-        dispatch(setAppStatus({status: 'succeeded'}))
-        return {todolist: response.data.data.item}
-    } else {
-        if (response.data.messages.length) {
-            dispatch(setAppError({error: response.data.messages[0]}))
+    try {
+        const response = await todolistsApi.createTodolists(param.title)
+        if (response.data.resultCode === 0) {
+            dispatch(setAppStatus({status: 'succeeded'}))
+            return {todolist: response.data.data.item}
         } else {
-            dispatch(setAppError({error: 'Some error occurred'}))
+            if (response.data.messages.length) {
+                dispatch(setAppError({error: response.data.messages[0]}))
+            } else {
+                dispatch(setAppError({error: 'Some error occurred'}))
+            }
+            dispatch(setAppStatus({status: 'failed'}))
+            return rejectWithValue(null)
         }
-        dispatch(setAppStatus({status: 'failed'}))
+    } catch (error: any) {
+        handleServerNetworkError(dispatch, error.message)
         return rejectWithValue(null)
     }
 })
@@ -58,9 +63,9 @@ export const updateTodolistTitle = createAsyncThunk('todoLists/updateTodolistTit
     id: string,
     title: string
 }, {dispatch, rejectWithValue}) => {
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await todolistsApi.updateTodolists(param.id, param.title)
-
         if (response.data.resultCode === 0) {
             dispatch(setAppStatus({status: 'succeeded'}))
             return {todoId: param.id, newTitle: param.title}
@@ -69,6 +74,7 @@ export const updateTodolistTitle = createAsyncThunk('todoLists/updateTodolistTit
             return rejectWithValue(null)
         }
     } catch (error: any) {
+        handleServerNetworkError(dispatch, error.message)
         return rejectWithValue(null)
     }
 })
