@@ -24,5 +24,5 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(({disabl
 
     return (edit
         ? <TextField id="standard-basic" variant="standard" color="secondary" value={inputValue} onBlur={onHandler} onChange={onChangeHandler} autoFocus/>
-        : <span onDoubleClick={onHandler}>{props.title} </span>);
+        : <span style={{wordBreak: "break-all"}} onDoubleClick={onHandler}>{props.title} </span>);
 });

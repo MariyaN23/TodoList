@@ -18,3 +18,8 @@ ul {
     list-style-type: none;
     padding-inline-start: 0;
 }
+
+ul span {
+    display: inline-block;
+    max-width: 175px
+}

@@ -41,7 +41,7 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
                             onClick={() => removeTodolist({id: props.todolist.id})}>
         <DeleteIcon/>
     </IconButton>
-        <h3><EditableSpan title={props.todolist.title}
+        <h3 style={{maxWidth: "240px"}}><EditableSpan title={props.todolist.title}
                           callback={updateTodolistTitleHandler}
                           disabled={props.todolist.entityStatus === 'loading'}
         />
