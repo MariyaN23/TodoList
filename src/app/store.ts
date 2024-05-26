@@ -1,9 +1,10 @@
 import {loginReducer} from '../features/Login';
 import {combineReducers} from 'redux';
-import {tasksReducer, todolistReducer} from '../features/TodolistsList';
 import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
 import {appReducer} from './';
+import {tasksReducer} from '../features/TodolistsList/Todolist/Tasks';
+import {todolistReducer} from '../features/TodolistsList/Todolists';
 
 export type AppRootState = ReturnType<RootReducerType>
 export type RootReducerType = typeof rootReducer

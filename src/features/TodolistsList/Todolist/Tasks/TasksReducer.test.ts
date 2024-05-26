@@ -1,9 +1,9 @@
-import {TasksDomainType} from './TasksReducer'
 import {v1} from 'uuid';
-import {TaskPriorities, TaskStatuses} from '../../api/tasks-api';
+import {TaskPriorities, TaskStatuses} from '../../../../api/tasks-api';
 import {addTask, deleteTask, fetchTasks, updateTask} from './TasksActions';
-import {addTodolist, fetchTodolists} from './TodolistsActions';
+import {addTodolist, fetchTodolists} from '../../Todolists/TodolistsActions';
 import {tasksReducer} from './';
+import {TasksDomainType} from './TasksReducer';
 
 let todolistID1: string
 let todolistID2: string

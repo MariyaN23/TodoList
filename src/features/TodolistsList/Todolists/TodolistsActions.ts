@@ -1,8 +1,8 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {setAppError, setAppStatus} from '../../app/app-reducer';
-import {todolistsApi} from '../../api/todolists-api';
-import {fetchTasks} from './TasksActions';
-import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
+import {setAppError, setAppStatus} from '../../../app/app-reducer';
+import {todolistsApi} from '../../../api/todolists-api';
+import {fetchTasks} from '../Todolist/Tasks/TasksActions';
+import {handleServerAppError, handleServerNetworkError} from '../../../common/utils';
 import {changeTodolistEntityStatus} from './TodolistReducer';
 
 export const fetchTodolists = createAsyncThunk('todoLists/fetchTodolists', async (arg, {

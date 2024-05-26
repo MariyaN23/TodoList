@@ -6,9 +6,9 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Task} from './Task/Task';
 import {useTasks} from '../../../components/hooks/useTasks';
-import {TodolistsDomainType} from '../TodolistReducer';
+import {TodolistsDomainType} from '../Todolists/TodolistReducer';
 import {useActions} from '../../../components/hooks/useActions';
-import {todolistsActions} from '../index';
+import {todolistsActions} from '../Todolists';
 import Paper from '@mui/material/Paper';
 
 type PropsType = {

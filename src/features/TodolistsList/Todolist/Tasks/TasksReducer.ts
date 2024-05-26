@@ -1,8 +1,8 @@
-import {TaskType} from '../../api/tasks-api';
+import {TaskType} from '../../../../api/tasks-api';
 import {createSlice} from '@reduxjs/toolkit';
-import {clearTasksAndTodolists} from '../../common/actions/common.actions';
+import {clearTasksAndTodolists} from '../../../../common/actions/common.actions';
 import {addTask, deleteTask, fetchTasks, updateTask} from './TasksActions';
-import {addTodolist, fetchTodolists, removeTodolist} from './TodolistsActions';
+import {addTodolist, fetchTodolists, removeTodolist} from '../../Todolists/TodolistsActions';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]

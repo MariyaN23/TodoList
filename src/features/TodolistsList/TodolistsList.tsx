@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import {Todolist} from './Todolist/Todolist';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
@@ -6,9 +6,8 @@ import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {loginSelectors} from '../Login';
 import {useActions} from '../../components/hooks/useActions';
-import {todolistsActions} from './index';
-import {AppRootState} from '../../app/store';
-import {TodolistsDomainType} from './TodolistReducer';
+import {todolistsActions} from './Todolists';
+import {todolistsListSelectors} from './';
 
 type TodolistsPropsType = {
     demo?: boolean
@@ -16,7 +15,7 @@ type TodolistsPropsType = {
 
 export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
     const isAuthorised = useSelector(loginSelectors.selectIsAuthorised)
-    const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
+    const todolists = useSelector(todolistsListSelectors.selectTodolists)
     const {
         addTodolist,
         fetchTodolists
@@ -27,16 +26,15 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
             return;
         }
         fetchTodolists()
-    }, [])
+    }, [demo, fetchTodolists, isAuthorised])
 
     if (!isAuthorised) {
         return <Navigate to={'/login'} replace={true}/>
     }
 
-    const addTodolistHandler = useCallback(async (params: {title: string}) => {
+    const addTodolistHandler = (params: {title: string}) => {
         addTodolist({title: params.title})
-        return ""
-    }, [])
+    }
 
     return <>
         <Grid container style={{padding: '20px'}}>
@@ -46,7 +44,7 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
             {todolists.map(el => {
                 return (
                     <Grid item key={el.id}>
-                        <div style={{width: '300px'}}>
+                        <div style={{width: '300px', paddingBottom: "20px"}}>
                             <Todolist key={el.id}
                                       todolist={el}
                                       demo={demo}

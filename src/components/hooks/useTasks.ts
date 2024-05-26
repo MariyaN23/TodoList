@@ -1,17 +1,15 @@
 import {useSelector} from 'react-redux';
-import {AppRootState} from '../../app/store';
 import {useCallback, useState} from 'react';
-import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
-import {TaskStatuses, TaskType} from '../../api/tasks-api';
+import {FilterValuesType} from '../../features/TodolistsList/Todolists/TodolistReducer';
+import {TaskStatuses} from '../../api/tasks-api';
 import {useActions} from './useActions';
-import {tasksActions} from '../../features/TodolistsList';
-
+import {tasksActions, tasksSelectors} from '../../features/TodolistsList/Todolist/Tasks';
 
 export function useTasks(todoId: string,
                          changeFilter: (params: {todoId: string, value: FilterValuesType}) => void,
                          filter: FilterValuesType,
                          updateTodolistTitle: (params: {id: string, title: string}) => void) {
-    const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todoId])
+    const tasks = useSelector(tasksSelectors.selectTasks(todoId))
     const {updateTask, deleteTask, addTask} = useActions(tasksActions)
 
     const [buttonName, setButtonName] = useState('all')
