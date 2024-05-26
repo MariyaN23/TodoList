@@ -9,7 +9,7 @@ export const slice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        setIsAuthorisedAC(state, action: PayloadAction<{ value: boolean }>) {
+        setIsAuthorised(state, action: PayloadAction<{ value: boolean }>) {
             state.isAuthorised = action.payload.value
         }
     },
@@ -23,4 +23,4 @@ export const slice = createSlice({
     }
 })
 
-export const {setIsAuthorisedAC} = slice.actions
+export const {setIsAuthorised} = slice.actions

@@ -1,9 +1,9 @@
 import {useSelector} from 'react-redux';
 import {useCallback, useState} from 'react';
 import {FilterValuesType} from '../../features/TodolistsList/Todolists/TodolistReducer';
-import {TaskStatuses} from '../../api/tasks-api';
-import {useActions} from './useActions';
 import {tasksActions, tasksSelectors} from '../../features/TodolistsList/Todolist/Tasks';
+import {useActions} from '../../common/utils/redux-utils';
+import {TaskStatuses} from '../../api/types';
 
 export function useTasks(todoId: string,
                          changeFilter: (params: {todoId: string, value: FilterValuesType}) => void,

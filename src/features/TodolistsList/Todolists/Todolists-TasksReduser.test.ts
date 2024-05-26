@@ -1,10 +1,10 @@
 import {v1} from 'uuid';
 import {TodolistsDomainType} from './TodolistReducer';
 import {TasksDomainType} from '../Todolist/Tasks/TasksReducer';
-import {TaskPriorities, TaskStatuses} from '../../../api/tasks-api';
 import {addTodolist, removeTodolist} from './TodolistsActions';
 import {todolistReducer} from './.';
 import {tasksReducer} from '../Todolist/Tasks';
+import {TaskPriorities, TaskStatuses} from '../../../api/types';
 
 test ('ids should be equal', ()=> {
     const startTasksState: TasksDomainType = {}

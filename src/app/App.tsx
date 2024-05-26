@@ -14,9 +14,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {selectIsInitialised, selectStatus} from './app-selectors';
-import {useActions} from '../components/hooks/useActions';
 import {appActions} from './index';
 import {TodolistsList} from '../features/TodolistsList';
+import {useActions} from '../common/utils/redux-utils';
 
 
 type AppPropsType = {

@@ -5,9 +5,9 @@ import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import {loginSelectors} from '../Login';
-import {useActions} from '../../components/hooks/useActions';
 import {todolistsActions} from './Todolists';
 import {todolistsListSelectors} from './';
+import {useActions} from '../../common/utils/redux-utils';
 
 type TodolistsPropsType = {
     demo?: boolean

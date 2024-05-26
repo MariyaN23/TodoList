@@ -1,13 +1,13 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {authApi, LoginParamsType} from '../../api/auth-api';
-import {FieldErrorType} from '../../api/todolists-api';
+import {authApi} from '../../api/auth-api';
 import {setAppStatus} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../common/utils';
 import {clearTasksAndTodolists} from '../../common/actions/common.actions';
+import {FieldErrorType, LoginParamsType} from '../../api/types';
 
 export const loginFormSending = createAsyncThunk<undefined, LoginParamsType,
     { rejectValue: { errors: string[], fieldsErrors?: FieldErrorType[] } }>('login/loginFormSending',
-    async (data, {dispatch, rejectWithValue}) => {
+    async (data: LoginParamsType, {dispatch, rejectWithValue}) => {
         dispatch(setAppStatus({status: 'loading'}))
         try {
             const response = await authApi.login(data)

@@ -1,9 +1,9 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {setAppStatus} from '../../../../app/app-reducer';
-import {tasksApi, TaskType} from '../../../../api/tasks-api';
-import {AppRootState} from '../../../../app/store';
+import {tasksApi} from '../../../../api/tasks-api';
 import {handleServerAppError, handleServerNetworkError} from '../../../../common/utils';
-import {FieldErrorType} from '../../../../api/todolists-api';
+import {AppRootState} from '../../../../common/utils/types';
+import {FieldErrorType, TaskType} from '../../../../api/types';
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (todolistId: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: 'loading'}))

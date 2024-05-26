@@ -8,8 +8,8 @@ import {useSelector} from 'react-redux';
 import {Navigate} from 'react-router-dom';
 import React from 'react';
 import {selectIsAuthorised} from './login-selectors';
-import {useActions} from '../../components/hooks/useActions';
 import {loginActions} from './index';
+import {useActions} from '../../common/utils/redux-utils';
 
 /*type validatedErrorsType = {
     email: null | string

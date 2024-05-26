@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
-import {todolistsApi, TodolistsType} from '../../../api/todolists-api';
-import {ResponseType} from '../../../api/todolists-api';
+import {todolistsApi} from '../../../api/todolists-api';
+
+import {ResponseType, TodolistsType} from '../../../api/types';
 
 export default {
     title: 'API todolists'

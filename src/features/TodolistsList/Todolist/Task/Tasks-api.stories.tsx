@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import {tasksApi, TaskType} from '../../../../api/tasks-api';
-import {ResponseType} from '../../../../api/todolists-api';
+import {tasksApi} from '../../../../api/tasks-api';
+import {ResponseType, TaskType} from '../../../../api/types';
 
 export default {
     title: 'API tasks'

@@ -1,8 +1,8 @@
-import {TodolistsType} from '../../../api/todolists-api';
 import {StatusType} from '../../../app/app-reducer';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {clearTasksAndTodolists} from '../../../common/actions/common.actions';
 import {addTodolist, fetchTodolists, removeTodolist, updateTodolistTitle} from './TodolistsActions';
+import {TodolistsType} from '../../../api/types';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 

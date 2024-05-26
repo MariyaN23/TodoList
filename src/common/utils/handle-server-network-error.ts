@@ -1,7 +1,8 @@
-import {setAppError, setAppStatus} from '../../app/app-reducer';
+import {appActions} from '../../app';
 import {Dispatch} from '@reduxjs/toolkit';
 
 export const handleServerNetworkError =(dispatch: Dispatch, errorMessage: string)=> {
-    dispatch(setAppError({error: errorMessage ? errorMessage : 'Some error occurred'}))
-    dispatch(setAppStatus({status: 'failed'}))
+    debugger
+    dispatch(appActions.setAppError({error: errorMessage ? errorMessage : 'Some error occurred'}))
+    dispatch(appActions.setAppStatus({status: 'failed'}))
 }

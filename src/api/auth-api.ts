@@ -1,17 +1,5 @@
-import {instance, ResponseType} from './todolists-api';
-
-export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
-}
-
-type AuthMeDataType = {
-    id: string
-    email: string
-    login: string
-}
+import {instance} from './todolists-api';
+import {AuthMeDataType, LoginParamsType, ResponseType} from './types';
 
 export const authApi = {
     login(data: LoginParamsType) {
