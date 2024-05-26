@@ -10,7 +10,7 @@ export type TasksDomainType = {
 
 const initialState: TasksDomainType = {}
 
-const slice = createSlice({
+export const slice = createSlice({
     name: "tasks",
     initialState,
     reducers: {},
@@ -49,4 +49,3 @@ const slice = createSlice({
     }
 })
 
-export const tasksReducer = slice.reducer

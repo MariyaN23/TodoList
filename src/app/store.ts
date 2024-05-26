@@ -1,19 +1,18 @@
+import {loginReducer} from '../features/Login';
 import {combineReducers} from 'redux';
-import {tasksReducer} from '../features/TodolistsList/TasksReducer';
-import {todolistReducer} from '../features/TodolistsList/TodolistReducer';
-import {appReducer} from './app-reducer';
-import {loginReducer} from '../features/Login/LoginReducer';
+import {tasksReducer, todolistReducer} from '../features/TodolistsList';
 import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
+import {appReducer} from './';
 
 export type AppRootState = ReturnType<RootReducerType>
 export type RootReducerType = typeof rootReducer
 
 export const rootReducer = combineReducers({
-    todoLists: todolistReducer,
-    tasks: tasksReducer,
     app: appReducer,
     login: loginReducer,
+    tasks: tasksReducer,
+    todoLists: todolistReducer,
 })
 
 export const store = configureStore({

@@ -1,4 +1,5 @@
-import {AppDomainType, appReducer, setAppError, setAppStatus} from './app-reducer';
+import {AppDomainType, setAppError, setAppStatus} from './app-reducer';
+import {appReducer} from './';
 
 let startState: AppDomainType
 

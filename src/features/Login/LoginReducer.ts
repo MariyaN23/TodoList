@@ -5,7 +5,7 @@ const initialState = {
     isAuthorised: false,
 }
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'login',
     initialState,
     reducers: {
@@ -23,5 +23,4 @@ const slice = createSlice({
     }
 })
 
-export const loginReducer = slice.reducer
 export const {setIsAuthorisedAC} = slice.actions
