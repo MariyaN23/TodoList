@@ -5,7 +5,7 @@ import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
 import {store} from './app/store';
-import {BrowserRouter} from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 
 const rerenderEntireTree =()=> {
     const root = ReactDOM.createRoot(
@@ -13,9 +13,9 @@ const rerenderEntireTree =()=> {
     );
     root.render(
         <Provider store={store}>
-            <BrowserRouter>
+            <HashRouter basename={"/"}>
                 <App />
-            </BrowserRouter>
+            </HashRouter>
         </Provider>
     );
 }

@@ -5,7 +5,7 @@ import {CircularProgress, LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {useSelector} from 'react-redux';
 import {Login, loginActions, loginSelectors} from '../features/Login';
-import {Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -17,6 +17,7 @@ import {selectIsInitialised, selectStatus} from './app-selectors';
 import {appActions} from './index';
 import {TodolistsList} from '../features/TodolistsList';
 import {useActions} from '../common/utils/redux-utils';
+import {Error404} from '../features/Error404/Error404';
 
 function App(){
     const status = useSelector(selectStatus)
@@ -70,6 +71,8 @@ function App(){
                     <Routes>
                         <Route path={'/'} element={<TodolistsList demo={false}/>}/>
                         <Route path={'/login'} element={<Login/>}/>
+                        <Route path={'/Error404'} element={<Error404/>}/>
+                        <Route path={'/*'} element={<Navigate to={'/Error404'}/>}/>
                     </Routes>
                 </Container >
             </div>
