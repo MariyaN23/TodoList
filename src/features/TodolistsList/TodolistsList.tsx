@@ -25,9 +25,10 @@ export const TodolistsList: React.FC<TodolistsPropsType> = ({demo = false}) => {
         if (demo || !isAuthorised) {
             return;
         }
-        fetchTodolists()
+        if (!todolists.length) {
+            fetchTodolists()
+        }
     }, [demo, fetchTodolists, isAuthorised])
-
     if (!isAuthorised) {
         return <Navigate to={'/login'} replace={true}/>
     }

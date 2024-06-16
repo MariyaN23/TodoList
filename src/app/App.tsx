@@ -18,12 +18,7 @@ import {appActions} from './index';
 import {TodolistsList} from '../features/TodolistsList';
 import {useActions} from '../common/utils/redux-utils';
 
-
-type AppPropsType = {
-    demo?: boolean
-}
-
-function App({demo = false}: AppPropsType){
+function App(){
     const status = useSelector(selectStatus)
     const isInitialised = useSelector(selectIsInitialised)
     const isAuthorised = useSelector(loginSelectors.selectIsAuthorised)
@@ -31,7 +26,7 @@ function App({demo = false}: AppPropsType){
     const {logout} = useActions(loginActions)
 
     useEffect(()=> {
-        if (!demo) {
+        if (!isInitialised) {
             initialiseApp()
         }
     }, [])
@@ -73,7 +68,7 @@ function App({demo = false}: AppPropsType){
                 </Box>
                 <Container style={{margin: "50px 0 0 50px"}}>
                     <Routes>
-                        <Route path={'/'} element={<TodolistsList demo={demo}/>}/>
+                        <Route path={'/'} element={<TodolistsList demo={false}/>}/>
                         <Route path={'/login'} element={<Login/>}/>
                     </Routes>
                 </Container >

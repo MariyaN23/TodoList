@@ -1,4 +1,5 @@
-import {rootReducer, store} from '../../app/store';
+import {store} from '../../app/store';
+import {rootReducer} from '../../app/reducers';
 
 export type AppRootState = ReturnType<RootReducerType>
 export type RootReducerType = typeof rootReducer

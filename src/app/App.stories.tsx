@@ -11,6 +11,6 @@ export default {
 
 export const AppExample = ()=> {
     return <MemoryRouter>
-        <App demo={true}/>
+        <App />
     </MemoryRouter>
 }
