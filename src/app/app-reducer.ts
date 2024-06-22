@@ -1,8 +1,7 @@
-import {AppRootState, AppThunk} from './store';
-import {ThunkDispatch} from 'redux-thunk';
 import {authApi} from '../api/auth-api';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 import {setIsAuthorisedAC, setIsAuthorisedACType} from '../features/Login/LoginReducer';
+import {put, call, takeEvery} from 'redux-saga/effects'
 
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -48,6 +47,27 @@ type setAppInitialisedACType = ReturnType<typeof setAppInitialisedAC>
 const setAppInitialisedAC = (value: boolean) =>
     ({type: 'APP/SET-INITIALISED', value} as const)
 
+export function* appWatcherSaga(){
+    yield takeEvery('APP/INITIALIZE-APP', initialiseAppWorkerSaga)
+}
+
+export function* initialiseAppWorkerSaga(): any {
+    try {
+        const response = yield call(authApi.me)
+        if (response.data.resultCode === 0) {
+            yield put(setIsAuthorisedAC(true))
+        } else {
+            handleServerAppError(put, response.data.messages)
+        }
+    } catch (error: any) {
+        handleServerNetworkError(put, error.message)
+    }
+    yield put(setAppInitialisedAC(true))
+}
+
+export const initialiseApp =()=> ({type: 'APP/INITIALIZE-APP'})
+
+/*
 export const initialiseAppTC = () =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, setAppInitialisedACType | setIsAuthorisedACType>) => {
         try {
@@ -61,4 +81,4 @@ export const initialiseAppTC = () =>
             handleServerNetworkError(dispatch, error.message)
         }
         dispatch(setAppInitialisedAC(true))
-    }
+    }*/

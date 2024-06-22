@@ -26,13 +26,13 @@ export const Todolist: React.FC<PropsType> = React.memo(function ({demo = false,
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        /*fetchTasksFunction*/} = useTasks(props.todolist.id, props.changeFilter, props.todolist.filter, props.updateTodolistTitle)
-    /*useEffect(()=>{
+        fetchTasksFunction} = useTasks(props.todolist.id, props.changeFilter, props.todolist.filter, props.updateTodolistTitle)
+    useEffect(()=>{
         if (demo) {
             return;
         }
         fetchTasksFunction()
-    }, [])*/
+    }, [])
     return <div>
         <h3><EditableSpan title={props.todolist.title}
                           callback={updateTodolistTitleHandler}

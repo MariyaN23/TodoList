@@ -1,4 +1,4 @@
-import {AppRootState, AppThunk} from '../../app/store';
+import {AppRootState} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
@@ -26,7 +26,7 @@ export type LoginReducerType = setIsAuthorisedACType
 export type setIsAuthorisedACType = ReturnType<typeof setIsAuthorisedAC>
 export const setIsAuthorisedAC =(value: boolean)=> ({type: 'login/SET-IS-AUTHORISED', payload: {value}} as const)
 
-export const loginFormSendingTC = (data: LoginParamsType): AppThunk =>
+export const loginFormSendingTC = (data: LoginParamsType) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType>) => {
         dispatch(setAppStatusAC('loading'))
         try {
@@ -42,7 +42,7 @@ export const loginFormSendingTC = (data: LoginParamsType): AppThunk =>
         }
     }
 
-export const logoutTC = (): AppThunk =>
+export const logoutTC = () =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, setIsAuthorisedACType | setAppStatusACType | ClearTodolistsDataACType>) => {
         dispatch(setAppStatusAC('loading'))
         try {

@@ -1,9 +1,12 @@
 import {AddTodoListACType, ClearTodolistsDataACType, RemoveTodoListACType, SetTodolistsACType} from './TodolistReducer';
-import {tasksApi, TaskType} from '../../api/tasks-api';
-import {AppRootState, AppThunk} from '../../app/store';
+import {ResponseTasksType, tasksApi, TaskType} from '../../api/tasks-api';
+import {AppRootState} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppReducerType, setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {put, call, takeEvery} from 'redux-saga/effects';
+import {AxiosResponse} from 'axios';
+import {ResponseType} from '../../api/todolists-api';
 
 export type TasksDomainType = {
     [key: string]: TaskType[]
@@ -13,36 +16,36 @@ const initialState: TasksDomainType = {}
 
 export const tasksReducer = (state: TasksDomainType = initialState, action: TasksReducerType): TasksDomainType => {
     switch (action.type) {
-        case 'ADD-TASK':
+        case 'TASKS/ADD-TASK':
             return {
                 ...state,
                 [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]]
             }
-        case 'REMOVE-TASK':
+        case 'TASKS/REMOVE-TASK':
             return {
                 ...state, [action.payload.todoId]: state[action.payload.todoId]
                     .filter(t => t.id !== action.payload.taskId)
             }
-        case 'UPDATE-TASK':
+        case 'TASKS/UPDATE-TASK':
             return {
                 ...state, [action.payload.todoListId]: state[action.payload.todoListId]
                     .map(t => t.id === action.payload.id ? action.payload : t)
             }
-        case 'ADD-TODOLIST' :
+        case 'TODOLIST/ADD-TODOLIST' :
             return {...state, [action.payload.id]: []}
-        case 'REMOVE-TODOLIST': {
+        case 'TODOLIST/REMOVE-TODOLIST': {
             const stateCopy = {...state}
             delete stateCopy[action.payload.todoId]
             return stateCopy
         }
-        case 'SET-TODOLISTS': {
+        case 'TODOLIST/SET-TODOLISTS': {
             const stateCopy = {...state}
             action.payload.forEach(el => stateCopy[el.id] = [])
             return stateCopy
         }
-        case 'SET-TASKS':
+        case 'TASKS/SET-TASKS':
             return {...state, [action.payload.todolistId]: action.payload.tasks}
-        case 'CLEAR-TODOLISTS-DATA':
+        case 'TODOLIST/CLEAR-TODOLISTS-DATA':
             return {}
         default:
             return state
@@ -59,39 +62,48 @@ export type TasksReducerType =
     | SetTodolistsACType
     | ClearTodolistsDataACType
 
-export type AddTaskACType= ReturnType<typeof addTaskAC>
+export type AddTaskACType = ReturnType<typeof addTaskAC>
 export const addTaskAC = (task: TaskType) =>
-    ({type: 'ADD-TASK', payload: {task}} as const)
+    ({type: 'TASKS/ADD-TASK', payload: {task}} as const)
 
-type RemoveTaskACType= ReturnType<typeof removeTaskAC>
+type RemoveTaskACType = ReturnType<typeof removeTaskAC>
 export const removeTaskAC = (todoId: string, taskId: string) =>
-    ({type: 'REMOVE-TASK', payload: {todoId, taskId}} as const)
+    ({type: 'TASKS/REMOVE-TASK', payload: {todoId, taskId}} as const)
 
 type UpdateTaskACType = ReturnType<typeof updateTaskAC>
 export const updateTaskAC = (newTask: TaskType) =>
-    ({type: 'UPDATE-TASK', payload: newTask} as const)
+    ({type: 'TASKS/UPDATE-TASK', payload: newTask} as const)
 
 type SetTasksACType = ReturnType<typeof setTasksAC>
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
-    ({type: 'SET-TASKS', payload: {todolistId, tasks}} as const)
+    ({type: 'TASKS/SET-TASKS', payload: {todolistId, tasks}} as const)
 
-export const fetchTasksTC = (todolistId: string): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, SetTasksACType | setAppStatusACType>) => {
-        dispatch(setAppStatusAC('loading'))
-        const response = await tasksApi.getTasks(todolistId)
-        dispatch(setTasksAC(todolistId, response.data.items))
-        dispatch(setAppStatusAC('succeeded'))
+
+
+export function* tasksWatcherSaga() {
+    yield takeEvery('TASKS/FETCH-TASKS', fetchTasksWorkerSaga)
+    yield takeEvery('TASKS/DELETE-TASK', deleteTaskWorkerSaga)
 }
 
-export const deleteTaskTC = (todoId: string, tId: string): AppThunk =>
-    async (dispatch: ThunkDispatch<AppRootState, unknown, RemoveTaskACType>) => {
-    await tasksApi.deleteTasks(todoId, tId)
-    dispatch(removeTaskAC(todoId, tId))
+export function* fetchTasksWorkerSaga(action: ReturnType<typeof fetchTasks>) {
+    yield put(setAppStatusAC('loading'))
+    const response: AxiosResponse<ResponseTasksType> = yield call(tasksApi.getTasks, action.todolistId)
+    yield put(setTasksAC(action.todolistId, response.data.items))
+    yield put(setAppStatusAC('succeeded'))
 }
+export const fetchTasks = (todolistId: string) => ({type: 'TASKS/FETCH-TASKS', todolistId})
 
-export const addTaskTC = (todoId: string, title: string): AppThunk =>
+export function* deleteTaskWorkerSaga(action: ReturnType<typeof deleteTask>) {
+    yield put(setAppStatusAC('loading'))
+    const response: AxiosResponse<ResponseType> = yield call(tasksApi.deleteTasks, action.todoId, action.tId)
+    yield put(removeTaskAC(action.todoId, action.tId))
+    yield put(setAppStatusAC('succeeded'))
+}
+export const deleteTask =(todoId: string, tId: string)=> ({type: 'TASKS/DELETE-TASK', todoId, tId})
+
+export const addTaskTC = (todoId: string, title: string) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, AddTaskACType | AppReducerType>) => {
-    dispatch(setAppStatusAC('loading'))
+        dispatch(setAppStatusAC('loading'))
         try {
             const response = await tasksApi.createTasks(todoId, title)
             if (response.data.resultCode === 0) {
@@ -103,7 +115,7 @@ export const addTaskTC = (todoId: string, title: string): AppThunk =>
         } catch (error: any) {
             handleServerNetworkError(dispatch, error.message)
         }
-}
+    }
 
 type UpdateDomainTaskType = {
     title?: string
@@ -114,9 +126,38 @@ type UpdateDomainTaskType = {
     deadline?: string
 }
 
-export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType): AppThunk =>
+/*export function* updateTaskWorkerSaga(todolistId: string, taskId: string, model: UpdateDomainTaskType) {
+    const state = getState()
+    const task = state.tasks[todolistId].find(t => t.id === taskId)
+    if (!task) {
+        console.warn('Task not found in state')
+        return
+    }
+    const newTask = {
+        title: task.title,
+        description: task.description,
+        status: task.status,
+        priority: task.priority,
+        startDate: task.startDate,
+        deadline: task.deadline,
+        ...model
+    }
+    try {
+        const response = yield call(tasksApi.updateTasks(todolistId, taskId, newTask))
+        if (response.data.resultCode === 0) {
+            dispatch(updateTaskAC(response.data.data.item))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(dispatch, response.data.messages)
+        }
+    } catch (error: any) {
+        handleServerNetworkError(dispatch, error.message)
+    }
+}*/
+
+export const updateTaskTC = (todolistId: string, taskId: string, model: UpdateDomainTaskType) =>
     async (dispatch: ThunkDispatch<AppRootState, unknown, UpdateTaskACType | AppReducerType>,
-           getState: () => AppRootState)=> {
+           getState: () => AppRootState) => {
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {

@@ -1,10 +1,9 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from '../../app/store';
+import {AppDispatch, AppRootState} from '../../app/store';
 import {useCallback} from 'react';
 import {
     addTodolistTC,
-    changeFilterAC,
-    fetchTodolistsTC,
+    changeFilterAC, fetchTodolists,
     FilterValuesType,
     removeTodolistTC,
     TodolistReducerType,
@@ -15,7 +14,7 @@ import {ThunkDispatch} from 'redux-thunk';
 
 
 export function useTodoLists () {
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, TodolistReducerType>>()
+    const dispatch = useDispatch<AppDispatch>()
     const todolists = useSelector<AppRootState, TodolistsDomainType[]>(state => state.todoLists)
 
     const changeFilter = useCallback((todoId: string, value: FilterValuesType) => {
@@ -35,7 +34,7 @@ export function useTodoLists () {
     }, [dispatch])
 
      const fetchTodolistsFunction = () => {
-         dispatch(fetchTodolistsTC())
+         dispatch(fetchTodolists())
      }
 
 

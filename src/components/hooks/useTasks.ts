@@ -1,10 +1,9 @@
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootState} from '../../app/store';
+import {AppDispatch, AppRootState} from '../../app/store';
 import {useCallback, useState} from 'react';
 import {
-    addTaskTC,
-    deleteTaskTC,
-    fetchTasksTC, TasksReducerType,
+    addTaskTC, deleteTask, fetchTasks,
+    TasksReducerType,
     updateTaskTC
 } from '../../features/TodolistsList/TasksReducer';
 import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
@@ -16,7 +15,7 @@ export function useTasks(todoId: string,
                          changeFilter: (todoId: string, value: FilterValuesType) => void,
                          filter: FilterValuesType,
                          updateTodolistTitle: (todoId: string, newTitle: string) => void) {
-    const dispatch = useDispatch<ThunkDispatch<AppRootState, unknown, TasksReducerType>>()
+    const dispatch = useDispatch<AppDispatch>()
     const tasks = useSelector<AppRootState, TaskType[]>(state => state.tasks[todoId])
 
     const [buttonName, setButtonName] = useState('all')
@@ -45,7 +44,7 @@ export function useTasks(todoId: string,
     }, [updateTodolistTitle, todoId])
 
     const removeTaskHandler = useCallback((tId: string) => {
-        dispatch(deleteTaskTC(todoId, tId))
+        dispatch(deleteTask(todoId, tId))
     }, [dispatch, todoId])
 
     const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC(todoId, tId, {title: newTitle})), [dispatch, todoId])
@@ -54,9 +53,9 @@ export function useTasks(todoId: string,
         dispatch(updateTaskTC(todoId, tId, {status: checked ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch, todoId])
 
-    /*const fetchTasksFunction = () => {
-        dispatch(fetchTasksTC(todoId))
-    }*/
+    const fetchTasksFunction = () => {
+        dispatch(fetchTasks(todoId))
+    }
 
     return {
         updateTodolistTitleHandler,
@@ -67,6 +66,6 @@ export function useTasks(todoId: string,
         changeIsDoneHandler,
         buttonName,
         changeFilterHandler,
-        //fetchTasksFunction,
+        fetchTasksFunction,
     }
 }

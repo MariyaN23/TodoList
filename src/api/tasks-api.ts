@@ -1,4 +1,5 @@
 import {instance, ResponseType} from './todolists-api';
+import {AxiosResponse} from 'axios';
 
 export enum TaskStatuses {
     New,
@@ -44,13 +45,13 @@ export type UpdateTaskType = {
 }
 
 export const tasksApi = {
-    getTasks(todolistId: string) {
+    getTasks(todolistId: string): Promise<AxiosResponse<ResponseTasksType>> {
         return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
     },
     createTasks(todolistId: string, title: string) {
         return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
     },
-    deleteTasks(todolistId: string, taskId: string) {
+    deleteTasks(todolistId: string, taskId: string): Promise<AxiosResponse<ResponseType>> {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     updateTasks(todolistId: string, taskId: string, newTask: UpdateTaskType) {
