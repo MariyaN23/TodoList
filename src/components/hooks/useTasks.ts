@@ -2,13 +2,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, AppRootState} from '../../app/store';
 import {useCallback, useState} from 'react';
 import {
-    addTaskTC, deleteTask, fetchTasks,
-    TasksReducerType,
-    updateTaskTC
+    addTask, deleteTask, fetchTasks, updateTask
 } from '../../features/TodolistsList/TasksReducer';
 import {FilterValuesType} from '../../features/TodolistsList/TodolistReducer';
 import {TaskStatuses, TaskType} from '../../api/tasks-api';
-import {ThunkDispatch} from 'redux-thunk';
 
 
 export function useTasks(todoId: string,
@@ -36,7 +33,7 @@ export function useTasks(todoId: string,
     }
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTaskTC(todoId, title))
+        dispatch(addTask(todoId, title))
     }, [dispatch, todoId])
 
     const updateTodolistTitleHandler = useCallback((newTitle: string) => {
@@ -47,10 +44,10 @@ export function useTasks(todoId: string,
         dispatch(deleteTask(todoId, tId))
     }, [dispatch, todoId])
 
-    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTaskTC(todoId, tId, {title: newTitle})), [dispatch, todoId])
+    const updateTaskHandler = useCallback((tId: string, newTitle: string) => dispatch(updateTask(todoId, tId, {title: newTitle})), [dispatch, todoId])
 
     const changeIsDoneHandler = useCallback((tId: string, checked: boolean) => {
-        dispatch(updateTaskTC(todoId, tId, {status: checked ? TaskStatuses.Completed : TaskStatuses.New}))
+        dispatch(updateTask(todoId, tId, {status: checked ? TaskStatuses.Completed : TaskStatuses.New}))
     }, [dispatch, todoId])
 
     const fetchTasksFunction = () => {

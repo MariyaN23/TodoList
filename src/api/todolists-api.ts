@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios';
+import axios, {AxiosResponse} from 'axios';
 
 const settings = {
     withCredentials: true,
@@ -27,16 +27,16 @@ export type ResponseType<D = {}> = {
 }
 
 export const todolistsApi = {
-    getTodolists() {
+    getTodolists(): Promise<AxiosResponse<TodolistsType[]>> {
         return instance.get<TodolistsType[]>('todo-lists')
     },
-    createTodolists(title: string) {
+    createTodolists(title: string): Promise<AxiosResponse<ResponseType<{item: TodolistsType}>>> {
         return instance.post<ResponseType<{item: TodolistsType}>>('todo-lists', {title})
     },
-    deleteTodolists(id: string) {
+    deleteTodolists(id: string): Promise<AxiosResponse<ResponseType>>  {
         return instance.delete<ResponseType>(`todo-lists/${id}`)
     },
-    updateTodolists(id: string, title: string) {
+    updateTodolists(id: string, title: string): Promise<AxiosResponse<ResponseType>>  {
         return instance.put<ResponseType>(`todo-lists/${id}`, {title})
     }
 }

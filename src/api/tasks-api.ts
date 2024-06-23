@@ -48,13 +48,14 @@ export const tasksApi = {
     getTasks(todolistId: string): Promise<AxiosResponse<ResponseTasksType>> {
         return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
     },
-    createTasks(todolistId: string, title: string) {
+    createTasks(todolistId: string, title: string): Promise<AxiosResponse<ResponseType<{item: TaskType}>>> {
         return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
     },
     deleteTasks(todolistId: string, taskId: string): Promise<AxiosResponse<ResponseType>> {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
-    updateTasks(todolistId: string, taskId: string, newTask: UpdateTaskType) {
+    updateTasks(todolistId: string, taskId: string, newTask: UpdateTaskType):
+        Promise<AxiosResponse<ResponseType<{item: TaskType}>>> {
         return instance.put<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks/${taskId}`, newTask)
     }
 }

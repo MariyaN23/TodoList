@@ -1,4 +1,5 @@
 import {instance, ResponseType} from './todolists-api';
+import {AxiosResponse} from 'axios';
 
 export type LoginParamsType = {
     email: string
@@ -7,20 +8,22 @@ export type LoginParamsType = {
     captcha?: string
 }
 
-type AuthMeDataType = {
+export type AuthMeDataType = {
     id: string
     email: string
     login: string
 }
+export type MeResponseType = ResponseType<AuthMeDataType>
 
 export const authApi = {
-    login(data: LoginParamsType) {
+    login(data: LoginParamsType): Promise<AxiosResponse<ResponseType<{userId?: number}>>> {
         return instance.post<ResponseType<{userId?: number}>>('auth/login', data)
     },
-    logout() {
+    logout(): Promise<AxiosResponse<ResponseType>> {
         return instance.delete<ResponseType>('auth/login')
     },
-    me() {
-        return instance.get<ResponseType<AuthMeDataType>>('auth/me')
+    me()  {
+        const promise = instance.get<MeResponseType>('auth/me')
+        return promise.then(res=>res.data)
     }
 }

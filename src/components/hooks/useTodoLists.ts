@@ -2,15 +2,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, AppRootState} from '../../app/store';
 import {useCallback} from 'react';
 import {
-    addTodolistTC,
+    addTodolist,
     changeFilterAC, fetchTodolists,
-    FilterValuesType,
-    removeTodolistTC,
-    TodolistReducerType,
-    TodolistsDomainType,
-    updateTodolistTitleTC
+    FilterValuesType, removeTodolist,
+    TodolistsDomainType, updateTodolisttitle
 } from '../../features/TodolistsList/TodolistReducer';
-import {ThunkDispatch} from 'redux-thunk';
 
 
 export function useTodoLists () {
@@ -22,15 +18,15 @@ export function useTodoLists () {
     }, [dispatch])
 
     const removeTodoList = useCallback((todoId: string) => {
-        dispatch(removeTodolistTC(todoId))
+        dispatch(removeTodolist(todoId))
     }, [dispatch])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title))
+        dispatch(addTodolist(title))
     }, [dispatch])
 
     const updateTodolistTitle = useCallback((todoId: string, newTitle: string) => {
-        dispatch(updateTodolistTitleTC(todoId, newTitle))
+        dispatch(updateTodolisttitle(todoId, newTitle))
     }, [dispatch])
 
      const fetchTodolistsFunction = () => {
