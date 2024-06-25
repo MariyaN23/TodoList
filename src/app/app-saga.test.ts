@@ -19,22 +19,19 @@ beforeEach(()=> {
 
 test('initialize app worker saga success', () => {
     const gen = initialiseAppWorkerSaga()
-    let result = gen.next()
-    expect(result.value).toEqual(call(authApi.me))
+    expect(gen.next().value).toEqual(call(authApi.me))
 
-    result = gen.next(meResponse)
-    expect(result.value).toEqual(put(setIsAuthorisedAC(true)))
+    expect(gen.next(meResponse).value).toEqual(put(setIsAuthorisedAC(true)))
 
-    result = gen.next()
-    expect(result.value).toEqual(put(setAppInitialisedAC(true)))
+    expect(gen.next().value).toEqual(put(setAppInitialisedAC(true)))
 })
 
 test('initialize app worker saga unsuccessful', () => {
     const gen = initialiseAppWorkerSaga()
-    let result = gen.next()
-    expect(result.value).toEqual(call(authApi.me))
+
+    expect(gen.next().value).toEqual(call(authApi.me))
 
     meResponse.resultCode = 1
-    result = gen.next(meResponse)
-    expect(result.value).toEqual(put(setAppInitialisedAC(true)))
+
+    expect(gen.next(meResponse).value).toEqual(put(setAppInitialisedAC(true)))
 })

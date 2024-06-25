@@ -2,7 +2,7 @@ import {AppRootState} from '../../app/store';
 import {ThunkDispatch} from 'redux-thunk';
 import {setAppStatusAC, setAppStatusACType} from '../../app/app-reducer';
 import {authApi, LoginParamsType} from '../../api/auth-api';
-import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {handleServerAppErrorSaga, handleServerNetworkErrorSaga} from '../../utils/error-utils';
 import {clearTodolistsDataAC, ClearTodolistsDataACType} from '../TodolistsList/TodolistReducer';
 
 export type LoginStateType = {
@@ -35,10 +35,10 @@ export const loginFormSendingTC = (data: LoginParamsType) =>
                 dispatch(setIsAuthorisedAC(true))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                handleServerAppError(dispatch, response.data.messages)
+                handleServerAppErrorSaga(response.data.messages)
             }
         } catch (error: any) {
-            handleServerNetworkError(dispatch, error.message)
+            handleServerNetworkErrorSaga(error.message)
         }
     }
 
@@ -52,9 +52,9 @@ export const logoutTC = () =>
                 dispatch(setAppStatusAC('succeeded'))
                 dispatch(clearTodolistsDataAC())
             } else {
-                handleServerAppError(dispatch, response.data.messages)
+                handleServerAppErrorSaga(response.data.messages)
             }
         } catch (error: any) {
-            handleServerNetworkError(dispatch, error.message)
+            handleServerNetworkErrorSaga(error.message)
         }
     }

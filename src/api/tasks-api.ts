@@ -45,8 +45,9 @@ export type UpdateTaskType = {
 }
 
 export const tasksApi = {
-    getTasks(todolistId: string): Promise<AxiosResponse<ResponseTasksType>> {
-        return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
+    getTasks(todolistId: string) {
+        const promise = instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
+        return promise.then(res=>res.data)
     },
     createTasks(todolistId: string, title: string): Promise<AxiosResponse<ResponseType<{item: TaskType}>>> {
         return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})

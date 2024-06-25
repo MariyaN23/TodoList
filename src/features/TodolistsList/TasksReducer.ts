@@ -10,7 +10,10 @@ import {
 } from './TodolistReducer';
 import {ResponseTasksType, tasksApi, TaskType} from '../../api/tasks-api';
 import {setAppStatusAC} from '../../app/app-reducer';
-import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {
+    handleServerAppErrorSaga,
+    handleServerNetworkErrorSaga
+} from '../../utils/error-utils';
 import {call, put, select, takeEvery} from 'redux-saga/effects';
 import {AxiosResponse} from 'axios';
 import {ResponseType} from '../../api/todolists-api';
@@ -29,10 +32,10 @@ const UPDATE_TASK = 'TASKS/UPDATE-TASK'
 const SET_TASKS = 'TASKS/SET-TASKS'
 
 //saga
-const FETCH_TASKS = 'TASKS/FETCH-TASKS'
+export const FETCH_TASKS = 'TASKS/FETCH-TASKS'
 const DELETE_TASK = 'TASKS/DELETE-TASK'
-const CREATE_TASK = 'TASKS/CREATE-TASK'
-const CHANGE_TASK = 'TASKS/CHANGE-TASK'
+export const CREATE_TASK = 'TASKS/CREATE-TASK'
+export const CHANGE_TASK = 'TASKS/CHANGE-TASK'
 
 export const tasksReducer = (state: TasksDomainType = initialState, action: TasksReducerType): TasksDomainType => {
     switch (action.type) {
@@ -108,11 +111,11 @@ export function* tasksWatcherSaga() {
 
 export function* fetchTasksWorkerSaga(action: ReturnType<typeof fetchTasks>) {
     yield put(setAppStatusAC('loading'))
-    const response: AxiosResponse<ResponseTasksType> = yield call(tasksApi.getTasks, action.todolistId)
-    yield put(setTasksAC(action.todolistId, response.data.items))
+    const data: ResponseTasksType = yield call(tasksApi.getTasks, action.todolistId)
+    yield put(setTasksAC(action.todolistId, data.items))
     yield put(setAppStatusAC('succeeded'))
 }
-export const fetchTasks = (todolistId: string) => ({type: FETCH_TASKS, todolistId})
+export const fetchTasks = (todolistId: string) => ({type: FETCH_TASKS, todolistId} as const)
 
 export function* deleteTaskWorkerSaga(action: ReturnType<typeof deleteTask>) {
     yield put(setAppStatusAC('loading'))
@@ -120,7 +123,7 @@ export function* deleteTaskWorkerSaga(action: ReturnType<typeof deleteTask>) {
     yield put(removeTaskAC(action.todoId, action.tId))
     yield put(setAppStatusAC('succeeded'))
 }
-export const deleteTask = (todoId: string, tId: string) => ({type: DELETE_TASK, todoId, tId})
+export const deleteTask = (todoId: string, tId: string) => ({type: DELETE_TASK, todoId, tId} as const)
 
 export function* addTaskWorkerSaga(action: ReturnType<typeof addTask>) {
     yield put(setAppStatusAC('loading'))
@@ -131,13 +134,13 @@ export function* addTaskWorkerSaga(action: ReturnType<typeof addTask>) {
             yield put(addTaskAC(response.data.data.item))
             yield put(setAppStatusAC('succeeded'))
         } else {
-            handleServerAppError(put, response.data.messages)
+            yield* handleServerAppErrorSaga(response.data.messages)
         }
     } catch (error: any) {
-        handleServerNetworkError(put, error.message)
+        yield* handleServerNetworkErrorSaga(error.message)
     }
 }
-export const addTask = (todoId: string, title: string) => ({type: CREATE_TASK, todoId, title})
+export const addTask = (todoId: string, title: string) => ({type: CREATE_TASK, todoId, title} as const)
 
 type UpdateDomainTaskType = {
     title?: string
@@ -149,7 +152,6 @@ type UpdateDomainTaskType = {
 }
 
 export function* updateTaskWorkerSaga(action: ReturnType<typeof updateTask>) {
-    //const state = getState()
     const state: AppRootState  = yield select()
     const task = state.tasks[action.todolistId].find((t: any) => t.id === action.taskId)
     if (!task) {
@@ -171,10 +173,10 @@ export function* updateTaskWorkerSaga(action: ReturnType<typeof updateTask>) {
             yield put(updateTaskAC(response.data.data.item))
             yield put(setAppStatusAC('succeeded'))
         } else {
-            handleServerAppError(put, response.data.messages)
+            yield handleServerAppErrorSaga(response.data.messages)
         }
     } catch (error: any) {
-        handleServerNetworkError(put, error.message)
+        yield handleServerNetworkErrorSaga(error.message)
     }
 }
-export const updateTask =(todolistId: string, taskId: string, model: UpdateDomainTaskType)=> ({type: CHANGE_TASK, todolistId, taskId, model})
+export const updateTask =(todolistId: string, taskId: string, model: UpdateDomainTaskType)=> ({type: CHANGE_TASK, todolistId, taskId, model} as const)

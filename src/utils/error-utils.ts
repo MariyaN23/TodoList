@@ -1,18 +1,16 @@
-import {AppReducerType, setAppErrorAC, setAppStatusAC} from '../app/app-reducer';
-import {ThunkDispatch} from 'redux-thunk';
-import {AppRootState} from '../app/store';
-import {AddTaskACType} from '../features/TodolistsList/TasksReducer';
+import {setAppErrorAC, setAppStatusAC} from '../app/app-reducer';
+import {put} from 'redux-saga/effects';
 
-export const handleServerAppError =(put: ThunkDispatch<AppRootState, unknown, AddTaskACType | AppReducerType>, errorMessages: string[])=> {
+export function* handleServerAppErrorSaga(errorMessages: string[]) {
     if (errorMessages.length) {
-        put(setAppErrorAC(errorMessages[0]))
+        yield put(setAppErrorAC(errorMessages[0]))
     } else {
-        put(setAppErrorAC('Some error occurred'))
+        yield put(setAppErrorAC('Some error occurred'))
     }
-    put(setAppStatusAC('failed'))
+    yield put(setAppStatusAC('failed'))
 }
 
-export const handleServerNetworkError =(put: ThunkDispatch<AppRootState, unknown, AddTaskACType | AppReducerType>, errorMessage: string)=> {
-    put(setAppErrorAC(errorMessage ? errorMessage : 'Some error occurred'))
-    put(setAppStatusAC('failed'))
+export function* handleServerNetworkErrorSaga(errorMessage: string) {
+    yield put(setAppErrorAC(errorMessage ? errorMessage : 'Some error occurred'))
+    yield put(setAppStatusAC('failed'))
 }

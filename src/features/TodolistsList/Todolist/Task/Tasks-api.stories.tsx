@@ -11,8 +11,8 @@ export const GetTasks = () => {
     const [todolistId, setTodolistId] = useState("")
     const getTasks =(() => {
         tasksApi.getTasks(todolistId)
-            .then(response => {
-                setState(response.data.items)
+            .then(data => {
+                setState(data.items)
             })
         setTodolistId('')
     })

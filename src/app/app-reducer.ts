@@ -1,9 +1,7 @@
-import {authApi, AuthMeDataType, MeResponseType} from '../api/auth-api';
-import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
+import {authApi, MeResponseType} from '../api/auth-api';
+import {handleServerAppErrorSaga, handleServerNetworkErrorSaga} from '../utils/error-utils';
 import {setIsAuthorisedAC} from '../features/Login/LoginReducer';
-import {put, call, takeEvery} from 'redux-saga/effects'
-import {AxiosResponse} from 'axios';
-import {ResponseType} from '../api/todolists-api';
+import {call, put, takeEvery} from 'redux-saga/effects'
 
 export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -67,10 +65,10 @@ export function* initialiseAppWorkerSaga() {
         if (data.resultCode === 0) {
             yield put(setIsAuthorisedAC(true))
         } else {
-            handleServerAppError(put, data.messages)
+            yield handleServerAppErrorSaga(data.messages)
         }
     } catch (error: any) {
-        handleServerNetworkError(put, error.message)
+        yield handleServerNetworkErrorSaga(error.message)
     }
     yield put(setAppInitialisedAC(true))
 }

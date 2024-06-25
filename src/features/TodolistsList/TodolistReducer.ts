@@ -1,6 +1,6 @@
 import {ResponseType, todolistsApi, TodolistsType} from '../../api/todolists-api';
 import {setAppErrorAC, setAppStatusAC, StatusType} from '../../app/app-reducer';
-import {handleServerNetworkError} from '../../utils/error-utils';
+import {handleServerNetworkErrorSaga} from '../../utils/error-utils';
 import {call, put, takeEvery} from 'redux-saga/effects';
 import {AxiosResponse} from 'axios';
 
@@ -105,7 +105,7 @@ export function* fetchTodolistsWorkerSaga() {
         yield put(setAppStatusAC('succeeded'))
         //yield all(response.data.map((todolist: TodolistsDomainType) => call(fetchTasks(todolist.id))));
     } catch (error: any) {
-        handleServerNetworkError(put, error.message)
+        yield handleServerNetworkErrorSaga(error.message)
     }
 }
 export const fetchTodolists = () => ({type: FETCH_TODOLISTS})
