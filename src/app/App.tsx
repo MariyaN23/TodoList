@@ -32,13 +32,13 @@ function App(){
         }
     }, [])
 
-    if (!isInitialised) {
+    /*if (!isInitialised) {
         return (
             <div style={{height: "100vh", display: 'flex', alignItems: "center", justifyContent: "center"}} >
                 <CircularProgress color={"secondary"}/>
             </div>
             )
-    }
+    }*/
     const logoutHandler = ()=> {
         logout()
     }
@@ -67,7 +67,7 @@ function App(){
                         </Toolbar>
                     </AppBar>
                 </Box>
-                <Container style={{margin: "50px 0 0 50px"}}>
+                <Container style={{padding: "50px 0 0 0"}}>
                     <Routes>
                         <Route path={'/'} element={<TodolistsList demo={false}/>}/>
                         <Route path={'/login'} element={<Login/>}/>
