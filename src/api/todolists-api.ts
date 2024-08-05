@@ -2,10 +2,7 @@ import axios from 'axios';
 import {ResponseType, TodolistsType} from './types';
 
 const settings = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'fcbd2d1d-5aab-433e-b249-8b4e322d91d2'
-    }
+    withCredentials: true
 }
 
 export const instance = axios.create({
